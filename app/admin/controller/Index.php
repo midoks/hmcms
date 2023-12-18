@@ -3,11 +3,12 @@
 namespace app\admin\controller;
 
 use app\BaseController;
+use app\common\controller\Admin;
 use think\facade\View;
 use think\facade\Db;
 
 
-class Index extends BaseController
+class Index extends Admin
 {
 
     private function fetch($tpl='index/index')
