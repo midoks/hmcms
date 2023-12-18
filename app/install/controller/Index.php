@@ -165,27 +165,27 @@ class Index extends BaseController
         }
     }
 
-    public function testdb()
-    {
-        $data = [
-            'type'=>'mysql',
-            'hostname'=>'127.0.0.1',
-            'hostport'=>'3306',
-            'username'=>'root',
-            'password'=>'root',
-            'prefix'=>'hm_',
-            'database' => 'test',
-        ];
+    // public function testdb()
+    // {
+    //     $data = [
+    //         'type'=>'mysql',
+    //         'hostname'=>'127.0.0.1',
+    //         'hostport'=>'3306',
+    //         'username'=>'root',
+    //         'password'=>'root',
+    //         'prefix'=>'hm_',
+    //         'database' => 'test',
+    //     ];
 
-        $db = $this->db_connect($data);
-        $data = $db->query('select version()');
-        var_dump($data);
-    }
+    //     $db = $this->db_connect($data);
+    //     $data = $db->query('select version()');
+    //     var_dump($data);
+    // }
 
-    public function testerr()
-    {
-        $this->error("11",null,'',100000);
-    }
+    // public function testerr()
+    // {
+    //     $this->error("11",null,'',100000);
+    // }
 
 
     private function db_connect($data){
