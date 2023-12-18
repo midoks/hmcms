@@ -4,7 +4,9 @@ namespace app\install\controller;
 
 use app\BaseController;
 use think\facade\View;
+use think\facade\Db;
 use think\DbManager;
+
 
 class Index extends BaseController
 {
@@ -131,9 +133,8 @@ class Index extends BaseController
             $database = $data['database'];
             unset($data['database']);
 
-            var_dump($data);
             // 创建数据库连接
-            $db_connect = Db::connect($data);
+            $db_connect = $this->db_connect($data);
             // 检测数据库连接
             try{
                 $db_connect->execute('select version()');
@@ -145,12 +146,11 @@ class Index extends BaseController
             $data['database'] = $database;
             self::mkDatabase($data);
 
-
             // 不覆盖检测是否已存在数据库
             if (!$cover) {
-                $check = $db_connect->execute('SELECT * FROM information_schema.schemata WHERE schema_name="'.$database.'"');
-                if ($check) {
-                    $this->success(lang('install/database_name_haved'),'');
+                $check = $db_connect->execute("SELECT * FROM information_schema.schemata WHERE schema_name='{$database}'");
+                if ($check>0) {
+                    return $this->success(lang('install/database_name_haved'),'');
                 }
             }
             // 创建数据库
@@ -181,6 +181,13 @@ class Index extends BaseController
         $data = $db->query('select version()');
         var_dump($data);
     }
+
+    public function testerr()
+    {
+        $this->error("11",null,'',100000);
+    }
+
+
     private function db_connect($data){
         $config =  [
             'default'         => 'mysql',
@@ -228,8 +235,11 @@ class Index extends BaseController
         $install_dir = input('post.install_dir');
         $initdata = input('post.initdata');
 
-        $config = include APP_PATH.'database.php';
-        if (empty($config['hostname']) || empty($config['database']) || empty($config['username'])) {
+        $root_path = $this->app->getRootPath();
+
+        $config = include $root_path.'config/database.php';
+        $db_config = $config['connections']['mysql'];
+        if (empty($db_config['hostname']) || empty($db_config['database']) || empty($db_config['username'])) {
             return $this->error(lang('install/please_test_connect'));
         }
         if (empty($account) || empty($password)) {
@@ -238,7 +248,7 @@ class Index extends BaseController
 
         $rule = [
             'account|'.lang('install/admin_name') => 'require|alphaNum',
-            'password|'.lang('install/admin_pass') => 'require|length:6,20',
+            'password|'.lang('install/admin_pass') => 'require|length:4,20',
         ];
         $validate = $this->validate(['account' => $account, 'password' => $password], $rule);
         if (true !== $validate) {
@@ -247,7 +257,7 @@ class Index extends BaseController
         if(empty($install_dir)) {
             $install_dir='/';
         }
-        $config_new = config('maccms');
+        $config_new = config('hmcms');
         $cofnig_new['app']['cache_flag'] = substr(md5(time()),0,10);
         $cofnig_new['app']['lang'] = session('lang');
 
@@ -255,21 +265,21 @@ class Index extends BaseController
         $config_new['api']['art']['status'] = 0;
 
         $config_new['interface']['status'] = 0;
-        $config_new['interface']['pass'] = mac_get_rndstr(16);
+        $config_new['interface']['pass'] = hm_get_rndstr(16);
         $config_new['site']['install_dir'] = $install_dir;
         
         // 更新程序配置文件
-        $res = mac_arr2file(APP_PATH . 'extra/maccms.php', $config_new);
+        $res = hm_arr2file($root_path . 'config/hmcms.php', $config_new);
         if ($res === false) {
             return $this->error(lang('write_err_config'));
         }
         
         // 导入系统初始数据库结构
         // 导入SQL
-        $sql_file = APP_PATH.'install/sql/install.sql';
+        $sql_file = $root_path.'app/install/sql/install.sql';
         if (file_exists($sql_file)) {
             $sql = file_get_contents($sql_file);
-            $sql_list = mac_parse_sql($sql, 0, ['mac_' => $config['prefix']]);
+            $sql_list = hm_parse_sql($sql, 0, ['hm_' => $db_config['prefix']]);
             if ($sql_list) {
                 $sql_list = array_filter($sql_list);
                 foreach ($sql_list as $v) {
@@ -283,10 +293,10 @@ class Index extends BaseController
         }
         //初始化数据
         if($initdata=='1'){
-            $sql_file = APP_PATH.'install/sql/initdata.sql';
+            $sql_file = $root_path.'app/install/sql/initdata.sql';
             if (file_exists($sql_file)) {
                 $sql = file_get_contents($sql_file);
-                $sql_list = mac_parse_sql($sql, 0, ['mac_' => $config['prefix']]);
+                $sql_list = hm_parse_sql($sql, 0, ['hm_' => $db_config['prefix']]);
                 if ($sql_list) {
                     $sql_list = array_filter($sql_list);
                     foreach ($sql_list as $v) {
@@ -305,15 +315,16 @@ class Index extends BaseController
             'admin_name' => $account,
             'admin_pwd' => $password,
             'admin_status' =>1,
+            'admin_auth' => '',
         ];
-        $res = model('Admin')->saveData($data);
-        if (!$res['code']>1) {
+        $res = Db::name('admin')->save($data);
+        if ($res>1) {
             return $this->error(lang('install/admin_name_err').'：'.$res['msg']);
         }
-        file_put_contents(APP_PATH.'data/install/install.lock', date('Y-m-d H:i:s'));
+        file_put_contents($root_path.'app/data/install/install.lock', date('Y-m-d H:i:s'));
 
         // 获取站点根目录
-        $root_dir = request()->baseFile();
+        $root_dir = $this->request->baseFile();
         $root_dir  = preg_replace(['/install.php$/'], [''], $root_dir);
         return $this->success(lang('install/is_ok'), $root_dir.'admin.php');
     }
@@ -412,65 +423,72 @@ class Index extends BaseController
     {
         $code = <<<INFO
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006~2016 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
+
 return [
-    // 数据库类型
-    'type'            => 'mysql',
-    // 服务器地址
-    'hostname'        => '{$data['hostname']}',
-    // 数据库名
-    'database'        => '{$data['database']}',
-    // 用户名
-    'username'        => '{$data['username']}',
-    // 密码
-    'password'        => '{$data['password']}',
-    // 端口
-    'hostport'        => '{$data['hostport']}',
-    // 连接dsn
-    'dsn'             => '',
-    // 数据库连接参数
-    'params'          => [],
-    // 数据库编码默认采用utf8
-    'charset'         => 'utf8',
-    // 数据库表前缀
-    'prefix'          => '{$data['prefix']}',
-    // 数据库调试模式
-    'debug'           => false,
-    // 数据库部署方式:0 集中式(单一服务器),1 分布式(主从服务器)
-    'deploy'          => 0,
-    // 数据库读写是否分离 主从式有效
-    'rw_separate'     => false,
-    // 读写分离后 主服务器数量
-    'master_num'      => 1,
-    // 指定从服务器序号
-    'slave_no'        => '',
-    // 是否严格检查字段是否存在
-    'fields_strict'   => false,
-    // 数据集返回类型
-    'resultset_type'  => 'array',
+    // 默认使用的数据库连接配置
+    'default'         => 'mysql',
+
+    // 自定义时间查询规则
+    'time_query_rule' => [],
+
     // 自动写入时间戳字段
-    'auto_timestamp'  => false,
+    // true为自动识别类型 false关闭
+    // 字符串则明确指定时间字段类型 支持 int timestamp datetime date
+    'auto_timestamp'  => true,
+
     // 时间字段取出后的默认时间格式
     'datetime_format' => 'Y-m-d H:i:s',
-    // 是否需要进行SQL性能分析
-    'sql_explain'     => false,
-    // Builder类
-    'builder'         => '',
-    // Query类
-    'query'           => '\\think\\db\\Query',
+
+    // 时间字段配置 配置格式：create_time,update_time
+    'datetime_field'  => '',
+
+    // 数据库连接配置信息
+    'connections'     => [
+        'mysql' => [
+            // 数据库类型
+            'type'            => 'mysql',
+            // 服务器地址
+            'hostname'        => '{$data['hostname']}',
+            // 数据库名
+            'database'        => '{$data['database']}',
+            // 用户名
+            'username'        => '{$data['username']}',
+            // 密码
+            'password'        => '{$data['password']}',
+            // 端口
+            'hostport'        => '{$data['hostport']}',
+            // 数据库连接参数
+            'params'          => [],
+            // 数据库编码默认采用utf8mb4
+            'charset'         => 'utf8mb4',
+            // 数据库表前缀
+            'prefix'          => '{$data['prefix']}',
+
+            // 数据库部署方式:0 集中式(单一服务器),1 分布式(主从服务器)
+            'deploy'          => 0,
+            // 数据库读写是否分离 主从式有效
+            'rw_separate'     => false,
+            // 读写分离后 主服务器数量
+            'master_num'      => 1,
+            // 指定从服务器序号
+            'slave_no'        => '',
+            // 是否严格检查字段是否存在
+            'fields_strict'   => true,
+            // 是否需要断线重连
+            'break_reconnect' => false,
+            // 监听SQL
+            'trigger_sql'     => false,
+            // 开启字段缓存
+            'fields_cache'    => false,
+        ],
+    ],
 ];
+
 INFO;
-        file_put_contents(APP_PATH.'database.php', $code);
+        $root_path = $this->app->getRootPath();
+        file_put_contents($root_path.'config/database.php', $code);
         // 判断写入是否成功
-        $config = include APP_PATH.'database.php';
+        $config = include $root_path.'config/database.php';
         if (empty($config['database']) || $config['database'] != $data['database']) {
             return $this->error('[application/database.php]'.lang('write_err_database'));
             exit;

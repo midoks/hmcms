@@ -5,8 +5,12 @@ namespace app;
 
 use think\App;
 use think\exception\ValidateException;
+use think\exception\HttpResponseException;
 use think\Validate;
-
+use think\response\Json;
+use think\facade\Config;
+use think\facade\View;
+use think\Response;
 /**
  * 控制器基础类
  */
@@ -104,12 +108,6 @@ abstract class BaseController
      */
     protected function success($msg = '', $url = null, $data = '', $wait = 3, array $header = [])
     {
-        if (is_null($url) && !is_null(Request::instance()->server('HTTP_REFERER'))) {
-            $url = Request::instance()->server('HTTP_REFERER');
-        } elseif ('' !== $url && !strpos($url, '://') && 0 !== strpos($url, '/')) {
-            $url = Url::build($url);
-        }
-
         $type = $this->getResponseType();
         $result = [
             'code' => 1,
@@ -120,16 +118,12 @@ abstract class BaseController
         ];
 
         if ('html' == strtolower($type)) {
-            $template = Config::get('template');
-            $view = Config::get('view_replace_str');
-
-            $result = ViewTemplate::instance($template, $view)
-                ->fetch(Config::get('dispatch_success_tmpl'), $result);
+            $data = View::fetch(Config::get('app.dispatch_success_tmpl'), $result);
+            $response = Response::create($data, $type)->header($header);
+            throw new HttpResponseException($response);
         }
 
-        $response = Response::create($result, $type)->header($header);
-
-        throw new HttpResponseException($response);
+        return Json()->data($result);
     }
 
     /**
@@ -145,12 +139,6 @@ abstract class BaseController
      */
     protected function error($msg = '', $url = null, $data = '', $wait = 3, array $header = [])
     {
-        if (is_null($url)) {
-            $url = Request::instance()->isAjax() ? '' : 'javascript:history.back(-1);';
-        } elseif ('' !== $url && !strpos($url, '://') && 0 !== strpos($url, '/')) {
-            $url = Url::build($url);
-        }
-
         $type = $this->getResponseType();
         $result = [
             'code' => 0,
@@ -161,16 +149,12 @@ abstract class BaseController
         ];
 
         if ('html' == strtolower($type)) {
-            $template = Config::get('template');
-            $view = Config::get('view_replace_str');
-
-            $result = ViewTemplate::instance($template, $view)
-                ->fetch(Config::get('dispatch_error_tmpl'), $result);
+            $data = View::fetch(Config::get('app.dispatch_error_tmpl'), $result);
+            $response = Response::create($data, $type)->header($header);
+            throw new HttpResponseException($response);
         }
 
-        $response = Response::create($result, $type)->header($header);
-
-        throw new HttpResponseException($response);
+        return Json()->data($result);
     }
 
     /**
@@ -189,13 +173,11 @@ abstract class BaseController
         $result = [
             'code' => $code,
             'msg'  => $msg,
-            'time' => Request::instance()->server('REQUEST_TIME'),
+            'time' => $this->request->server('REQUEST_TIME'),
             'data' => $data,
         ];
-        $type     = $type ?: $this->getResponseType();
-        $response = Response::create($result, $type)->header($header);
 
-        throw new HttpResponseException($response);
+        return Json()->data($result);
     }
 
     /**
@@ -228,9 +210,7 @@ abstract class BaseController
      */
     protected function getResponseType()
     {
-        return Request::instance()->isAjax()
-            ? Config::get('default_ajax_return')
-            : Config::get('default_return_type');
+        return $this->request->isAjax() ? 'json' : 'html';
     }
 
 }
