@@ -6,7 +6,7 @@ return [
     'hello'  => '欢迎使用',
 
     'install/title'=>'鸿蒙CMS系统安装',
-    'install/header'=>'感谢您选择【鸿蒙CMS】系搭建网站',
+    'install/header'=>'感谢您选择【鸿蒙CMS】系统搭建网站',
     'install/lang'=>'语言包[langs]',
     'install/select_lang'=>'请选择语言包[select lang]',
     'install/lang_tip'=>'请根据自己身需要选择后台语言包',
