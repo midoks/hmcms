@@ -4,11 +4,12 @@ namespace app\install\controller;
 
 use app\BaseController;
 use think\facade\View;
+use think\DbManager;
 
 class Index extends BaseController
 {
 
-    private function fech($tpl='index/index')
+    private function fetch($tpl='index/index')
     {
         $root_path = $this->app->getRootPath();
         $install_path = $root_path.'/app/install/view';
@@ -29,7 +30,7 @@ class Index extends BaseController
                 $lang = 'zh-cn';
             }
             session('lang', $lang);
-            $this->lang->load('./app/install/lang/'.$lang.'.php');
+            $this->app->lang->load('./app/install/lang/'.$lang.'.php');
         } else {
             $lang = session('lang');
         }
@@ -63,7 +64,7 @@ class Index extends BaseController
         }
 
 
-        return $this->fech('index/index');
+        return $this->fetch('index/index');
     }
 
 
@@ -77,8 +78,8 @@ class Index extends BaseController
         $data['env'] = self::checkNnv();
         $data['dir'] = self::checkDir();
         $data['func'] = self::checkFunc();
-        $this->assign('data', $data);
-        return $this->fetch('install@index/step2');
+        View::assign('data', $data);
+        return $this->fetch('index/step2');
     }
     
     /**
@@ -88,9 +89,9 @@ class Index extends BaseController
     private function step3()
     {
         $install_dir = $_SERVER["SCRIPT_NAME"];
-        $install_dir = mac_substring($install_dir, strripos($install_dir, "/")+1);
-        $this->assign('install_dir',$install_dir);
-        return $this->fetch('install@index/step3');
+        $install_dir = hm_substring($install_dir, strripos($install_dir, "/")+1);
+        View::assign('install_dir', $install_dir);
+        return $this->fetch('index/step3');
     }
     
     /**
@@ -99,8 +100,9 @@ class Index extends BaseController
      */
     private function step4()
     {
+        $root_path = $this->app->getRootPath();
         if ($this->request->isPost()) {
-            if (!is_writable(APP_PATH.'database.php')) {
+            if (!is_writable($root_path.'config/database.php')) {
                 return $this->error('[app/database.php]'.lang('install/write_read_err'));
             }
             $data = input('post.');
@@ -119,15 +121,17 @@ class Index extends BaseController
             }
             $cover = $data['cover'];
             unset($data['cover']);
-            $config = include APP_PATH.'database.php';
+            $config = include $root_path.'config/database.php';
             foreach ($data as $k => $v) {
-                if (array_key_exists($k, $config) === false) {
+                if (array_key_exists($k, $config['connections']['mysql']) === false) {
                     return $this->error(lang('param').''.$k.''.lang('install/not_found'));
                 }
             }
             // 不存在的数据库会导致连接失败
             $database = $data['database'];
             unset($data['database']);
+
+            var_dump($data);
             // 创建数据库连接
             $db_connect = Db::connect($data);
             // 检测数据库连接
@@ -159,6 +163,58 @@ class Index extends BaseController
         } else {
             return $this->error(lang('install/access_denied'));
         }
+    }
+
+    public function testdb()
+    {
+        $data = [
+            'type'=>'mysql',
+            'hostname'=>'127.0.0.1',
+            'hostport'=>'3306',
+            'username'=>'root',
+            'password'=>'root',
+            'prefix'=>'hm_',
+            'database' => 'test',
+        ];
+
+        $db = $this->db_connect($data);
+        $data = $db->query('select version()');
+        var_dump($data);
+    }
+    private function db_connect($data){
+        $config =  [
+            'default'         => 'mysql',
+            'connections'     => [
+                'mysql' => [
+                    'type'            => 'mysql',
+                    // 服务器地址
+                    'hostname'        => $data['hostname'],
+                    // 用户名
+                    'username'        => $data['username'],
+                    // 密码
+                    'password'        => $data['password'],
+                    // 端口
+                    'hostport'        => $data['hostport'],
+                    'params'          => [],
+                    'charset'         => 'utf8',
+                    'prefix'          => $data['prefix'],
+                    'deploy'          => 0,
+                    'rw_separate'     => false,
+                    'master_num'      => 1,
+                    'slave_no'        => '',
+                    'fields_strict'   => true,
+                    'break_reconnect' => false,
+                    'trigger_sql'     => false,
+                    'fields_cache'    => false,
+                ],
+            ]
+        ];
+
+        $db_mgr = new DbManager();
+        $db_mgr->setConfig($config);
+        $db = $db_mgr->connect('mysql');
+        return $db;
+
     }
     
     /**
@@ -270,22 +326,12 @@ class Index extends BaseController
     {
         $items = [
             'os'      => [lang('install/os'), lang('install/not_limited'), 'Windows/Unix', PHP_OS, 'ok'],
-            'php'     => [lang('install/php'), '5.5', '5.5及以上', PHP_VERSION, 'ok'],
+            'php'     => [lang('install/php'), '8.0', '8.0及以上', PHP_VERSION, 'ok'],
         ];
         if ($items['php'][3] < $items['php'][1]) {
             $items['php'][4] = 'no';
             session('install_error', true);
         }
-        /*
-        $tmp = function_exists('gd_info') ? gd_info() : [];
-        if (empty($tmp['GD Version'])) {
-            $items['gd'][3] = lang('install/not_installed');
-            $items['gd'][4] = 'no';
-            session('install_error', true);
-        } else {
-            $items['gd'][3] = $tmp['GD Version'];
-        }
-        */
         return $items;
     }
     
@@ -296,11 +342,10 @@ class Index extends BaseController
     private function checkDir()
     {
         $items = [
-            ['file', './application/database.php', lang('install/read_and_write'), lang('install/read_and_write'), 'ok'],
-            ['file', './application/route.php', lang('install/read_and_write'), lang('install/read_and_write'), 'ok'],
-            ['dir', './application/extra', lang('install/read_and_write'), lang('install/read_and_write'), 'ok'],
-            ['dir', './application/data/backup', lang('install/read_and_write'), lang('install/read_and_write'), 'ok'],
-            ['dir', './application/data/update', lang('install/read_and_write'), lang('install/read_and_write'), 'ok'],
+            ['file', './config/database.php', lang('install/read_and_write'), lang('install/read_and_write'), 'ok'],
+            ['file', './config/route.php', lang('install/read_and_write'), lang('install/read_and_write'), 'ok'],
+            ['dir', './app/data/backup', lang('install/read_and_write'), lang('install/read_and_write'), 'ok'],
+            ['dir', './app/data/update', lang('install/read_and_write'), lang('install/read_and_write'), 'ok'],
             ['dir', './runtime', lang('install/read_and_write'), lang('install/read_and_write'), 'ok'],
             ['dir', './upload', lang('install/read_and_write'), lang('install/read_and_write'), 'ok'],
         ];

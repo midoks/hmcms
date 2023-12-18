@@ -15,6 +15,7 @@ namespace think;
 require __DIR__ . '/vendor/autoload.php';
 
 // 执行HTTP应用并响应
+// 
 $http = (new App())->debug()->http;
 $response = $http->name('install')->run();
 $response->send();

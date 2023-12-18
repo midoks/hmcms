@@ -4,6 +4,7 @@
 */
 return [
     'hello'  => '欢迎使用',
+    'wait_submit'=>'数据提交中...',
 
     'install/title'=>'鸿蒙CMS系统安装',
     'install/header'=>'感谢您选择【鸿蒙CMS】系统搭建网站',

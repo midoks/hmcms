@@ -4,6 +4,7 @@
 */
 return [
     'hello'  => '歡迎使用',
+    'wait_submit'=>'數據提交中...',
 
     'install/title'=>'鴻蒙CMS系統安裝',
     'install/header'=>'感謝您選擇【鴻蒙CMS】系統搭建網站',
