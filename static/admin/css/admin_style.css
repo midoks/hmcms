@@ -53,6 +53,10 @@ body{background-color:#fff; font-family:"微软雅黑"; }
     line-height: 40px;
 }
 
+.layui-nav {
+    padding: 0 0 20px;
+}
+
 .layui-nav .layui-nav-item{
     line-height: 40px;
 }
