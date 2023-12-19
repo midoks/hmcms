@@ -12,6 +12,7 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="icon" href="/static/admin/images/logo.png"/>
     <link rel="stylesheet" href="{__STATIC__}/admin/layui/css/layui.css?v={$version}">
+    <!-- <link rel="stylesheet" href="{__STATIC__}/admin/css/admin.css?v={$version}"> -->
     <link rel="stylesheet" href="{__STATIC__}/admin/css/admin_style.css?v={$version}">
     <style>
     /* 移动端 */
@@ -70,7 +71,7 @@
                         <cite>首页</cite>
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a href="/admin.php/index/index">首页</a></dd>
+                        <dd><a href="{:url('index/index')}">首页</a></dd>
                         <dd><a href="{:url('index/welcome')}" class="layui-this">欢迎页面</a></dd>
                         <dd><a href="{:url('index/welcome')}">退出</a></dd>
 

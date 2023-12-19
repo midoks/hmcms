@@ -80,7 +80,7 @@ layui.define(['element', 'form'], function(exports) {
         layer.config({offset:LAYUI_OFFSET+'px'});
     }
     /* 打开/关闭左侧导航 */
-    $('#foldSwitch').click(function(){
+    $('#hmcms_flexible').click(function(){
         var that = $(this);
         if (!that.hasClass('close')) {
             that.addClass('close');
