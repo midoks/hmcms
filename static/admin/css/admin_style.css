@@ -61,6 +61,10 @@ body{background-color:#fff; font-family:"微软雅黑"; }
     line-height: 40px;
 }
 
+.layui-nav-child{
+    top:45px;
+}
+
 .layui-layout-admin .layui-side{
     top:40px;
 }
