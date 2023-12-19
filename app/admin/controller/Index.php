@@ -28,4 +28,9 @@ class Index extends Admin
     {
         return $this->fetch('index/welcome');
     }
+
+    public function test()
+    {
+        return $this->fetch('index/test');
+    }
 }
