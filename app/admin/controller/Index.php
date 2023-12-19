@@ -33,4 +33,9 @@ class Index extends Admin
     {
         return $this->fetch('index/test');
     }
+
+    public function test2()
+    {
+        return $this->fetch('index/test2');
+    }
 }
