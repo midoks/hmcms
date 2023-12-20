@@ -65,7 +65,6 @@ class Index extends Base
                 break;
         }
 
-
         return $this->fetch('index/index');
     }
 
@@ -258,14 +257,6 @@ class Index extends Base
             $install_dir='/';
         }
         $config_new = config('hmcms');
-        $cofnig_new['app']['cache_flag'] = substr(md5(time()),0,10);
-        $cofnig_new['app']['lang'] = session('lang');
-
-        $config_new['api']['vod']['status'] = 0;
-        $config_new['api']['art']['status'] = 0;
-
-        $config_new['interface']['status'] = 0;
-        $config_new['interface']['pass'] = hm_get_rndstr(16);
         $config_new['site']['install_dir'] = $install_dir;
         
         // 更新程序配置文件

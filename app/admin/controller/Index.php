@@ -7,6 +7,8 @@ use app\common\controller\Admin;
 use think\facade\View;
 use think\facade\Db;
 
+use app\common\model\Comic;
+
 
 class Index extends Admin
 {
@@ -37,5 +39,17 @@ class Index extends Admin
     public function test2()
     {
         return $this->fetch('index/test2');
+    }
+
+
+    public function test3()
+    {
+
+        $comic_model = new Comic();
+
+        $data = $comic_model->getDataByIds(['2','1']);
+
+        var_dump($data);
+    
     }
 }
