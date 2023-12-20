@@ -18,10 +18,17 @@ class Admin extends Base
     	View::assign("version", time());
     }
 
+    protected function makeUrl($s = 'index/index'){
+        return \think\facade\Route::buildUrl($s);;
+    }
+
     protected function auth()
     {
-        
-        
+        $login_id = session('login_id');
+        if (!$login_id){
+            $url = $this->makeUrl('login/index');
+            return redirect($url)->send();
+        }
     }
 
     protected function fetch($tpl='index/index')

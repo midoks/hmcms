@@ -8,6 +8,7 @@ use think\exception\ValidateException;
 use think\exception\HttpResponseException;
 use think\Validate;
 use think\response\Json;
+use think\response\Redirect;
 use think\facade\Config;
 use think\facade\View;
 use think\Response;
@@ -178,29 +179,6 @@ abstract class Base
         ];
 
         return Json()->data($result);
-    }
-
-    /**
-     * URL 重定向
-     * @access protected
-     * @param string    $url    跳转的 URL 表达式
-     * @param array|int $params 其它 URL 参数
-     * @param int       $code   http code
-     * @param array     $with   隐式传参
-     * @return void
-     * @throws HttpResponseException
-     */
-    protected function redirect($url, $params = [], $code = 302, $with = [])
-    {
-        if (is_integer($params)) {
-            $code   = $params;
-            $params = [];
-        }
-
-        $response = new Redirect($url);
-        $response->code($code)->params($params)->with($with);
-
-        throw new HttpResponseException($response);
     }
 
     /**
