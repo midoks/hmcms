@@ -3,16 +3,12 @@
 namespace app\admin\controller;
 
 use app\BaseController;
-use app\common\controller\Admin;
+use app\common\controller\Admin as AdminBase;
 use think\facade\View;
 use think\facade\Db;
 
-use app\common\model\Comic;
-
-
-class Index extends Admin
+class Admin extends AdminBase
 {
-
 
     public function index()
     {
@@ -20,19 +16,9 @@ class Index extends Admin
     }
 
 
-    public function welcome()
+    public function login()
     {
-        return $this->fetch('index/welcome');
-    }
-
-    public function test()
-    {
-        return $this->fetch('index/test');
-    }
-
-    public function test2()
-    {
-        return $this->fetch('index/test2');
+        return $this->fetch('index/login');
     }
 
 
