@@ -24,5 +24,13 @@ class Comic extends Base {
 		return [];
 	}
 
+	public function getDataByID($id){
+		$data = $this->field(true)->where('id', $id)->find();
+		if ($data){
+			return $data->toArray();
+		}
+		return [];
+	}
+
 
 }

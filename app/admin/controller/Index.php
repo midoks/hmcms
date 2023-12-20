@@ -47,7 +47,7 @@ class Index extends Admin
 
         $comic_model = new Comic();
 
-        $data = $comic_model->getDataByIds(['2','1']);
+        $data = $comic_model->getDataByID('1');
 
         var_dump($data);
     
