@@ -9,13 +9,22 @@ use think\facade\Db;
 class Admin extends Base
 {
 
-	 // 初始化
+	// 初始化
     protected function initialize()
     {
+        //权限验证
+        $this->auth();
+
     	View::assign("version", time());
     }
 
-    public function fetch($tpl='index/index')
+    protected function auth()
+    {
+        
+        
+    }
+
+    protected function fetch($tpl='index/index')
     {
         $root_path = $this->app->getRootPath();
         $install_path = $root_path.'/app/admin/view';

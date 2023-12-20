@@ -7,6 +7,8 @@ use app\common\controller\Admin as AdminBase;
 use think\facade\View;
 use think\facade\Db;
 
+use think\captcha\facade\Captcha;
+
 class Login extends AdminBase
 {
 
@@ -15,6 +17,15 @@ class Login extends AdminBase
         return $this->fetch('login/index');
     }
 
+    public function code()
+    {
+        return Captcha::create();
+    }
+
+    // 登录
+    public function in(){
+        return $this->success("ok");
+    }
 
 
     public function test3()
