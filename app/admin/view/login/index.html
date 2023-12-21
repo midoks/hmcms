@@ -88,6 +88,7 @@ console.log(setter.tableName);
 form.on('submit(LAY-user-login-submit)', function(d){
     //请求登入接口
     admin.req({
+        method:'POST',
         url: "{:url('login/in')}",
         data: d.field,
         done: function(res){

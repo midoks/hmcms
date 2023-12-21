@@ -8,123 +8,121 @@
  */
  
 layui.define('view', function(exports){
-  var $ = layui.jquery
-  ,laytpl = layui.laytpl
-  ,element = layui.element
-  ,setter = layui.setter
-  ,view = layui.view
-  ,device = layui.device()
+    var $ = layui.jquery
+    ,laytpl = layui.laytpl
+    ,element = layui.element
+    ,setter = layui.setter
+    ,view = layui.view
+    ,device = layui.device()
   
-  ,$win = $(window), $body = $('body')
-  ,container = $('#'+ setter.container)
+    ,$win = $(window), $body = $('body')
+    ,container = $('#'+ setter.container)
   
-  ,SHOW = 'layui-show', HIDE = 'layui-hide', THIS = 'layui-this', DISABLED = 'layui-disabled', TEMP = 'template'
-  ,APP_BODY = '#LAY_app_body', APP_FLEXIBLE = 'LAY_app_flexible'
-  ,FILTER_TAB_TBAS = 'layadmin-layout-tabs'
-  ,APP_SPREAD_SM = 'layadmin-side-spread-sm', TABS_BODY = 'layadmin-tabsbody-item'
-  ,ICON_SHRINK = 'layui-icon-shrink-right', ICON_SPREAD = 'layui-icon-spread-left'
-  ,SIDE_SHRINK = 'layadmin-side-shrink', SIDE_MENU = 'LAY-system-side-menu'
+    ,SHOW = 'layui-show', HIDE = 'layui-hide', THIS = 'layui-this', DISABLED = 'layui-disabled', TEMP = 'template'
+    ,APP_BODY = '#LAY_app_body', APP_FLEXIBLE = 'LAY_app_flexible'
+    ,FILTER_TAB_TBAS = 'layadmin-layout-tabs'
+    ,APP_SPREAD_SM = 'layadmin-side-spread-sm', TABS_BODY = 'layadmin-tabsbody-item'
+    ,ICON_SHRINK = 'layui-icon-shrink-right', ICON_SPREAD = 'layui-icon-spread-left'
+    ,SIDE_SHRINK = 'layadmin-side-shrink', SIDE_MENU = 'LAY-system-side-menu'
 
-  //通用方法
-  ,admin = {
-    v: '1.2.1 std'
+    //通用方法
+    ,admin = {
+        v: '1.2.1 std'
     
-    //数据的异步请求
-    ,req: view.req
+        //数据的异步请求
+        ,req: view.req
     
-    //清除本地 token，并跳转到登入页
-    ,exit: view.exit
+        //清除本地 token，并跳转到登入页
+        ,exit: view.exit
     
-    //xss 转义
-    ,escape: function(html){
-      return String(html || '').replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
-      .replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/'/g, '&#39;').replace(/"/g, '&quot;');
-    }
-    
-    //事件监听
-    ,on: function(events, callback){
-      return layui.onevent.call(this, setter.MOD_NAME, events, callback);
-    }
-    
-    //发送验证码
-    ,sendAuthCode: function(options){
-      options = $.extend({
-        seconds: 60
-        ,elemPhone: '#LAY_phone'
-        ,elemVercode: '#LAY_vercode'
-      }, options);
-
-      var seconds = options.seconds
-      ,btn = $(options.elem)
-      ,token = null
-      ,timer, countDown = function(loop){
-        seconds--;
-        if(seconds < 0){
-          btn.removeClass(DISABLED).html('获取验证码');
-          seconds = options.seconds;
-          clearInterval(timer);
-        } else {
-          btn.addClass(DISABLED).html(seconds + '秒后重获');
+        //xss 转义
+        ,escape: function(html){
+            return String(html || '').replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+            .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/'/g, '&#39;').replace(/"/g, '&quot;');
         }
-
-        if(!loop){
-          timer = setInterval(function(){
-            countDown(true);
-          }, 1000);
+    
+        //事件监听
+        ,on: function(events, callback){
+            return layui.onevent.call(this, setter.MOD_NAME, events, callback);
         }
-      };
-      
-      options.elemPhone = $(options.elemPhone);
-      options.elemVercode = $(options.elemVercode);
+    
+        //发送验证码
+        ,sendAuthCode: function(options){
+            options = $.extend({
+            seconds: 60
+            ,elemPhone: '#LAY_phone'
+            ,elemVercode: '#LAY_vercode'
+        }, options);
 
-      btn.on('click', function(){
-        var elemPhone = options.elemPhone
-        ,value = elemPhone.val();
+        var seconds = options.seconds
+        ,btn = $(options.elem)
+        ,token = null
+        ,timer, countDown = function(loop){
+            seconds--;
+            if(seconds < 0){
+                btn.removeClass(DISABLED).html('获取验证码');
+                seconds = options.seconds;
+                clearInterval(timer);
+            } else {
+                btn.addClass(DISABLED).html(seconds + '秒后重获');
+            }
 
-        if(seconds !== options.seconds || $(this).hasClass(DISABLED)) return;
-
-        if(!/^1\d{10}$/.test(value)){
-          elemPhone.focus();
-          return layer.msg('请输入正确的手机号')
+            if(!loop){
+                timer = setInterval(function(){
+                    countDown(true);
+                }, 1000);
+            }
         };
+      
+        options.elemPhone = $(options.elemPhone);
+        options.elemVercode = $(options.elemVercode);
+
+        btn.on('click', function(){
+            var elemPhone = options.elemPhone
+            ,value = elemPhone.val();
+
+            if(seconds !== options.seconds || $(this).hasClass(DISABLED)) return;
+
+            if(!/^1\d{10}$/.test(value)){
+                elemPhone.focus();
+                return layer.msg('请输入正确的手机号')
+            };
         
-        if(typeof options.ajax === 'object'){
-          var success = options.ajax.success;
-          delete options.ajax.success;
-        }
+            if(typeof options.ajax === 'object'){
+                var success = options.ajax.success;
+                delete options.ajax.success;
+            }
         
-        admin.req($.extend(true, {
-          url: '/auth/code'
-          ,type: 'get'
-          ,data: {
-            phone: value
-          }
-          ,success: function(res){
-            layer.msg('验证码已发送至你的手机，请注意查收', {
-              icon: 1
-              ,shade: 0
-            });
-            options.elemVercode.focus();
-            countDown();
-            success && success(res);
-          }
-        }, options.ajax));
-      });
+            admin.req($.extend(true, {
+                url: '/auth/code'
+                ,type: 'get'
+                ,data: { phone: value }
+            ,success: function(res){
+                layer.msg('验证码已发送至你的手机，请注意查收', {
+                    icon: 1
+                    ,shade: 0
+                });
+                options.elemVercode.focus();
+                countDown();
+                success && success(res);
+            }
+            }, options.ajax));
+        });
     }
     
     //屏幕类型
     ,screen: function(){
-      var width = $win.width()
-      if(width > 1200){
-        return 3; //大屏幕
-      } else if(width > 992){
-        return 2; //中屏幕
-      } else if(width > 768){
-        return 1; //小屏幕
-      } else {
-        return 0; //超小屏幕
-      }
+        var width = $win.width()
+        if(width > 1200){
+            return 3; //大屏幕
+        } else if(width > 992){
+            return 2; //中屏幕
+        } else if(width > 768){
+            return 1; //小屏幕
+        } else {
+            return 0; //超小屏幕
+        }
     }
     
     //侧边伸缩
@@ -815,22 +813,21 @@ layui.define('view', function(exports){
     layer.close($(this).data('index'));
   });
   
-  //窗口resize事件
-  var resizeSystem = layui.data.resizeSystem = function(){
-    //layer.close(events.note.index);
-    layer.closeAll('tips');
+    //窗口resize事件
+    var resizeSystem = layui.data.resizeSystem = function(){
+        //layer.close(events.note.index);
+        layer.closeAll('tips');
     
-    if(!resizeSystem.lock){
-      setTimeout(function(){
-        admin.sideFlexible(admin.screen() < 2 ? '' : 'spread');
-        delete resizeSystem.lock;
-      }, 100);
+        if(!resizeSystem.lock){
+            setTimeout(function(){
+                admin.sideFlexible(admin.screen() < 2 ? '' : 'spread');
+                delete resizeSystem.lock;
+            }, 100);
+        }
+        resizeSystem.lock = true;
     }
-    
-    resizeSystem.lock = true;
-  }
-  $win.on('resize', layui.data.resizeSystem);
+    $win.on('resize', layui.data.resizeSystem);
   
-  //接口输出
-  exports('admin', admin);
+    //接口输出
+    exports('admin', admin);
 });
