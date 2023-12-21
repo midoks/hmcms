@@ -5,8 +5,8 @@
 DROP TABLE IF EXISTS `hm_admin`;
 CREATE TABLE `hm_admin` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) NOT NULL DEFAULT '',
-  `pwd` char(32) NOT NULL DEFAULT '',
+  `username` varchar(30) NOT NULL DEFAULT '',
+  `password` char(32) NOT NULL DEFAULT '',
   `random` char(32) NOT NULL DEFAULT '',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `auth` text NOT NULL,
@@ -15,8 +15,11 @@ CREATE TABLE `hm_admin` (
   `login_num` int(10) unsigned NOT NULL DEFAULT '0',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0',
   `last_login_ip` int(10) unsigned NOT NULL DEFAULT '0',
+  `create_time` datetime NOT NULL,
+  `update_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `name` (`name`)
+  UNIQUE KEY `username_uniq` (`username`),
+  KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 

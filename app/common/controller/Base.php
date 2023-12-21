@@ -12,6 +12,8 @@ use think\response\Redirect;
 use think\facade\Config;
 use think\facade\View;
 use think\Response;
+
+
 /**
  * 控制器基础类
  */
@@ -96,6 +98,15 @@ abstract class Base
         return $v->failException(true)->check($data);
     }
 
+    public function returnJson($code,$data, $msg){
+         $result = [
+            'code' => $code,
+            'msg'  => $msg,
+            'data' => $data,
+        ];
+        return Json()->data($result);
+    }
+
     /**
      * 操作成功跳转的快捷方法
      * @access protected
@@ -111,7 +122,7 @@ abstract class Base
     {
         $type = $this->getResponseType();
         $result = [
-            'code' => 1,
+            'code' => 0,
             'msg'  => $msg,
             'data' => $data,
             'url'  => $url,
@@ -142,7 +153,7 @@ abstract class Base
     {
         $type = $this->getResponseType();
         $result = [
-            'code' => 0,
+            'code' => -1,
             'msg'  => $msg,
             'data' => $data,
             'url'  => $url,
@@ -189,6 +200,38 @@ abstract class Base
     protected function getResponseType()
     {
         return $this->request->isAjax() ? 'json' : 'html';
+    }
+
+    // composer require firebase/php-jwt
+    /**
+     *  jwt解码
+     */
+    protected function checkJWT($token)
+    {
+        if(empty($token)){
+            return [false,[]];
+        }
+        try{
+            $jwt_key = 'sdadsfasdfa';
+            $data = new \Firebase\JWT\Key($jwt_key, 'HS256');
+            $jwt = \Firebase\JWT\JWT::decode($token, $data);
+            return [true,$jwt->data];
+        }catch (\Exception $e){
+            return [false,[]];
+        }
+    }
+    
+    /**
+     * 创建jwt
+     */
+    protected function createJWT($data)
+    {
+        if(empty($data)){
+            return false;
+        }
+        $jwt_key = 'sdadsfasdfa';
+        $jwt = \Firebase\JWT\JWT::encode($data, $jwt_key, 'HS256');
+        return $jwt;
     }
 
 }

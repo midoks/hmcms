@@ -37,7 +37,14 @@ class Login extends Base
 
     // 登录
     public function in(){
-        return $this->success("ok");
+
+        $username = $this->request->param('username');
+        $password = $this->request->param('password');
+
+        var_dump($username,$password);
+
+
+        return $this->returnJson(0,'',"ok");
     }
 
 

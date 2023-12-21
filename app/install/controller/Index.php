@@ -6,6 +6,7 @@ use app\common\controller\Base;
 use think\facade\View;
 use think\facade\Db;
 use think\DbManager;
+use app\common\model\Admin;
 
 
 class Index extends Base
@@ -302,14 +303,8 @@ class Index extends Base
         }
 
         // 注册管理员账号
-        $data = [
-            'admin_name' => $account,
-            'admin_pwd' => $password,
-            'admin_status' =>1,
-            'admin_auth' => '',
-        ];
-        $res = Db::name('admin')->save($data);
-        if ($res>1) {
+        $res = (new Admin())->setRootData($account, $password);
+        if (!$res) {
             return $this->error(lang('install/admin_name_err').'：'.$res['msg']);
         }
         file_put_contents($root_path.'app/data/install/install.lock', date('Y-m-d H:i:s'));
