@@ -55,6 +55,7 @@ class Login extends Base
                 'exp' => $time + 7*24*60*60,
                 'data' => [
                     'uid' => $data['data']['id'],
+                    'username' => $data['data']['username'],
                 ]
             ];
             
