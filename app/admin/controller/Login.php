@@ -9,6 +9,8 @@ use think\facade\Db;
 
 use think\captcha\facade\Captcha;
 
+use app\common\model\Admin;
+
 class Login extends Base
 {
     // 初始化
@@ -36,15 +38,33 @@ class Login extends Base
     }
 
     // 登录
-    public function in(){
-
+    public function in()
+    {
         $username = $this->request->param('username');
         $password = $this->request->param('password');
 
-        var_dump($username,$password);
+        $admin_model = new Admin();
+        $data = $admin_model->verifyLogin($username,$password);
 
 
-        return $this->returnJson(0,'',"ok");
+        if ($data['status']){
+            $time = time();
+            $make_token_args = [
+                'iat' => $time,
+                'nbf' => $time,
+                'exp' => $time + 7*24*60*60,
+                'data' => [
+                    'uid' => $data['data']['id'],
+                ]
+            ];
+            
+            $access_token = $this->createJWT($make_token_args);
+            $retdata =  $this->returnJson(0,'登录成功',['access_token'=>$access_token]);
+            // var_dump($retdata);
+            return $retdata;
+        } else{
+            return $this->returnJson(0,'登录失败');
+        }
     }
 
 

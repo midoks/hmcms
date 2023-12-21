@@ -83,6 +83,7 @@ $('#captcha').click(function(){
 });
 
 console.log(setter.tableName);
+console.log(setter.request.tokenName);
 
 //提交
 form.on('submit(LAY-user-login-submit)', function(d){
@@ -92,14 +93,12 @@ form.on('submit(LAY-user-login-submit)', function(d){
         url: "{:url('login/in')}",
         data: d.field,
         done: function(res){
+            console.log(res);
             //请求成功后，写入 access_token
-            layui.data(setter.tableName, {
-                key: setter.request.tokenName,
-                value: res.data.access_token
-            });
+            layui.data(setter.tableName, { key: 'access_token', value: res.data.access_token });
           
             //登入成功的提示与跳转
-            layer.msg('登入成功', { offset: '15px' ,icon: 1 ,time: 1000 }, function(){
+            layer.msg('登入成功', {icon: 1 ,time: 1000 }, function(){
                 location.href = "{:url('index/index')}";
             });
         }

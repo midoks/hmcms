@@ -61,6 +61,9 @@ abstract class Base
     protected function initialize()
     {}
 
+    public function loadModel($model = ''){
+    }
+
     /**
      * 验证数据
      * @access protected
@@ -98,7 +101,7 @@ abstract class Base
         return $v->failException(true)->check($data);
     }
 
-    public function returnJson($code,$data, $msg){
+    public function returnJson($code = 0, $msg = '', $data = []){
          $result = [
             'code' => $code,
             'msg'  => $msg,

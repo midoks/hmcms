@@ -20,7 +20,16 @@ class Admin extends Base {
 		
 	}
 
-	public function userLog(){
+	public function verifyLogin($username, $password){
+		$udata = $this->where('username', $username)->find();
+		if ($udata){
+			$data = $udata->toArray();
+			$verfiy_pwd = md5($password.'|'.$data['random']);
+			if ($verfiy_pwd == $data['password']){
+				return ['status' => true, 'data'=>$udata];
+			}
+		}
+		return ['status' => false, 'data'=>[]];
 		
 	}
 
