@@ -58,10 +58,11 @@ class Login extends Base
                     'username' => $data['data']['username'],
                 ]
             ];
-            
+            session('login_id', $data['data']['id']);
+            session('login_timeout', $time + 7*24*60*60);
             $access_token = $this->createJWT($make_token_args);
             $retdata =  $this->returnJson(0,'登录成功',['access_token'=>$access_token]);
-            // var_dump($retdata);
+            
             return $retdata;
         } else{
             return $this->returnJson(0,'登录失败');
