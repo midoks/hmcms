@@ -691,9 +691,9 @@ layui.define('view', function(exports){
             });
             
             if(matched1){
-              var selected = data1.list[0] ? SIDE_NAV_ITEMD : THIS;
-              othis1.addClass(selected).siblings().removeClass(selected); //标记选择器
-              return false;
+                var selected = data1.list[0] ? SIDE_NAV_ITEMD : THIS;
+                othis1.addClass(selected).siblings().removeClass(selected); //标记选择器
+                return false;
             }
         });
     }
@@ -704,8 +704,8 @@ layui.define('view', function(exports){
     //移动端点击菜单时自动收缩
     if(admin.screen() < 2) admin.sideFlexible();
 
-        //开始捕获
-        matchMenu(sideMenu.children('li'));
+    //开始捕获
+    matchMenu(sideMenu.children('li'));
     });
   
     //监听侧边导航点击事件
@@ -799,7 +799,7 @@ layui.define('view', function(exports){
         });
         othis.data('index', index);
     }).on('mouseleave', '*[lay-tips]', function(){
-            layer.close($(this).data('index'));
+        layer.close($(this).data('index'));
     });
   
     //窗口resize事件
