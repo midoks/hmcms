@@ -420,7 +420,7 @@ layui.define('view', function(exports){
                     ,value = note === undefined ? '便签中的内容会存储在本地，这样即便你关掉了浏览器，在下次打开时，依然会读取到上一次的记录。是个非常小巧实用的本地备忘录' : note;
           
                     textarea.val(value).focus().on('keyup', function(){
-                        layui.data(setter.tableName, { key: 'note', value: this.value å});
+                        layui.data(setter.tableName, { key: 'note', value: this.value});
                     });
                 }
             })
@@ -609,95 +609,93 @@ layui.define('view', function(exports){
         }
     };
   
-  //初始
-  !function(){
-    //主题初始化，本地主题记录优先，其次为 initColorIndex
-    var local = layui.data(setter.tableName);
-    if(local.theme){
-      admin.theme(local.theme);
-    } else if(setter.theme){
-      admin.initTheme(setter.theme.initColorIndex);
-    }
+    //初始
+    !function(){
+        //主题初始化，本地主题记录优先，其次为 initColorIndex
+        var local = layui.data(setter.tableName);
+        if(local.theme){
+            admin.theme(local.theme);
+        } else if(setter.theme){
+            admin.initTheme(setter.theme.initColorIndex);
+        }
     
-    //常规版默认开启多标签页
-    if(!('pageTabs' in layui.setter)) layui.setter.pageTabs = true;
+        //常规版默认开启多标签页
+        if(!('pageTabs' in layui.setter)) layui.setter.pageTabs = true;
     
-    //不开启页面标签时
-    if(!setter.pageTabs){
-      $('#LAY_app_tabs').addClass(HIDE);
-      container.addClass('layadmin-tabspage-none');
-    }
+        //不开启页面标签时
+        if(!setter.pageTabs){
+            $('#LAY_app_tabs').addClass(HIDE);
+            container.addClass('layadmin-tabspage-none');
+        }
 
-    //低版本IE提示
-    if(device.ie && device.ie < 10){
-      view.error('IE'+ device.ie + '下访问可能不佳，推荐使用：Chrome / Firefox / Edge 等高级浏览器', {
-        offset: 'auto'
-        ,id: 'LAY_errorIE'
-      });
-    }
-    
-  }();
+        //低版本IE提示
+        if(device.ie && device.ie < 10){
+            view.error('IE'+ device.ie + '下访问可能不佳，推荐使用：Chrome / Firefox / Edge 等高级浏览器', {
+                offset: 'auto'
+                ,id: 'LAY_errorIE'
+            });
+        }
+    }();
   
-  //admin.prevRouter = {}; //上一个路由
+    //admin.prevRouter = {}; //上一个路由
   
-  //监听 tab 组件切换，同步 index
-  element.on('tab('+ FILTER_TAB_TBAS +')', function(data){
-    admin.tabsPage.index = data.index;
-  });
+    //监听 tab 组件切换，同步 index
+    element.on('tab('+ FILTER_TAB_TBAS +')', function(data){
+        admin.tabsPage.index = data.index;
+    });
   
-  //监听选项卡切换，改变菜单状态
-  admin.on('tabsPage(setMenustatus)', function(router){
-    var pathURL = router.url, getData = function(item){
-      return {
-        list: item.children('.layui-nav-child')
-        ,a: item.children('*[lay-href]')
-      }
+    //监听选项卡切换，改变菜单状态
+    admin.on('tabsPage(setMenustatus)', function(router){
+        var pathURL = router.url, getData = function(item){
+        return {
+            list: item.children('.layui-nav-child')
+            ,a: item.children('*[lay-href]')
+        }
     }
     ,sideMenu = $('#'+ SIDE_MENU)
     ,SIDE_NAV_ITEMD = 'layui-nav-itemed'
     
     //捕获对应菜单
     ,matchMenu = function(list){
-      list.each(function(index1, item1){
-        var othis1 = $(item1)
-        ,data1 = getData(othis1)
-        ,listChildren1 = data1.list.children('dd')
-        ,matched1 = pathURL === data1.a.attr('lay-href');
-        
-        listChildren1.each(function(index2, item2){
-          var othis2 = $(item2)
-          ,data2 = getData(othis2)
-          ,listChildren2 = data2.list.children('dd')
-          ,matched2 = pathURL === data2.a.attr('lay-href');
-          
-          listChildren2.each(function(index3, item3){
-            var othis3 = $(item3)
-            ,data3 = getData(othis3)
-            ,matched3 = pathURL === data3.a.attr('lay-href');
+        list.each(function(index1, item1){
+            var othis1 = $(item1)
+            ,data1 = getData(othis1)
+            ,listChildren1 = data1.list.children('dd')
+            ,matched1 = pathURL === data1.a.attr('lay-href');
             
-            if(matched3){
-              var selected = data3.list[0] ? SIDE_NAV_ITEMD : THIS;
-              othis3.addClass(selected).siblings().removeClass(selected); //标记选择器
+            listChildren1.each(function(index2, item2){
+                var othis2 = $(item2)
+                ,data2 = getData(othis2)
+                ,listChildren2 = data2.list.children('dd')
+                ,matched2 = pathURL === data2.a.attr('lay-href');
+              
+                listChildren2.each(function(index3, item3){
+                    var othis3 = $(item3)
+                    ,data3 = getData(othis3)
+                    ,matched3 = pathURL === data3.a.attr('lay-href');
+                
+                    if(matched3){
+                        var selected = data3.list[0] ? SIDE_NAV_ITEMD : THIS;
+                        othis3.addClass(selected).siblings().removeClass(selected); //标记选择器
+                        return false;
+                    }
+                
+                });
+
+                if(matched2){
+                    var selected = data2.list[0] ? SIDE_NAV_ITEMD : THIS;
+                    othis2.addClass(selected).siblings().removeClass(selected); //标记选择器
+                    return false
+                }
+              
+            });
+            
+            if(matched1){
+              var selected = data1.list[0] ? SIDE_NAV_ITEMD : THIS;
+              othis1.addClass(selected).siblings().removeClass(selected); //标记选择器
               return false;
             }
-            
-          });
-
-          if(matched2){
-            var selected = data2.list[0] ? SIDE_NAV_ITEMD : THIS;
-            othis2.addClass(selected).siblings().removeClass(selected); //标记选择器
-            return false
-          }
-          
         });
-        
-        if(matched1){
-          var selected = data1.list[0] ? SIDE_NAV_ITEMD : THIS;
-          othis1.addClass(selected).siblings().removeClass(selected); //标记选择器
-          return false;
-        }
-        
-      });
     }
     
     //重置状态
@@ -705,10 +703,10 @@ layui.define('view', function(exports){
     
     //移动端点击菜单时自动收缩
     if(admin.screen() < 2) admin.sideFlexible();
-    
-    //开始捕获
-    matchMenu(sideMenu.children('li'));
-  });
+
+        //开始捕获
+        matchMenu(sideMenu.children('li'));
+    });
   
     //监听侧边导航点击事件
     element.on('nav(layadmin-system-side-menu)', function(elem){
