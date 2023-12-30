@@ -5,23 +5,71 @@
 DROP TABLE IF EXISTS `hm_admin`;
 CREATE TABLE `hm_admin` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(30) NOT NULL DEFAULT '',
-  `password` char(32) NOT NULL DEFAULT '',
-  `random` char(32) NOT NULL DEFAULT '',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `username` varchar(30) NOT NULL DEFAULT '' COMMENT '用户名',
+  `password` char(32) NOT NULL DEFAULT '' COMMENT '秘密',
+  `random` char(32) NOT NULL DEFAULT '' COMMENT '随机',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   `auth` text NOT NULL,
+  `rule_id` bigint(20) NOT NULL DEFAULT '0',
   `login_time` int(10) unsigned NOT NULL DEFAULT '0',
   `login_ip` int(10) unsigned NOT NULL DEFAULT '0',
   `login_num` int(10) unsigned NOT NULL DEFAULT '0',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0',
   `last_login_ip` int(10) unsigned NOT NULL DEFAULT '0',
-  `create_time` datetime NOT NULL,
-  `update_time` datetime NOT NULL,
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_uniq` (`username`),
   KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
+-- ----------------------------
+-- Table structure for hm_admin_acl_node
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_admin_acl_node`;
+CREATE TABLE IF NOT EXISTS `hm_admin_acl_node` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `title` varchar(50) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT '0',
+  `remark` varchar(255) DEFAULT NULL,
+  `sort` smallint(6) unsigned DEFAULT NULL,
+  `pid` smallint(6) unsigned NOT NULL,
+  `level` tinyint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `level` (`level`),
+  KEY `pid` (`pid`),
+  KEY `status` (`status`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
+
+
+-- ----------------------------
+-- Table structure for hm_admin_acl_access
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_admin_acl_access`;
+CREATE TABLE IF NOT EXISTS `hm_admin_acl_access` (
+  `role_id` smallint(6) unsigned NOT NULL,
+  `node_id` smallint(6) unsigned NOT NULL,
+  `level` tinyint(1) NOT NULL,
+  `module` varchar(50) DEFAULT NULL,
+  KEY `groupId` (`role_id`),
+  KEY `nodeId` (`node_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='权限角色关联表';
+
+-- ----------------------------
+-- Table structure for hm_admin_acl_rule
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `hm_admin_acl_rule` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `pid` smallint(6) DEFAULT NULL,
+  `status` tinyint(1) unsigned DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pid` (`pid`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='权限角色表';
 
 -- ----------------------------
 -- Table structure for hm_comic

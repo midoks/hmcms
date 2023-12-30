@@ -11,7 +11,7 @@
     <!-- <link rel="stylesheet" href="{__STATIC__}/admin/css/admin_style.css?v={$version}"> -->
       
 </head>
-<body class="layui-layout-body" layadmin-themealias="classic-black-header">
+<body class="layui-layout-body">
 <!-- start -->
 <div id="LAY_app">
     <div class="layui-layout layui-layout-admin">
@@ -24,11 +24,14 @@
                     </a>
                 </li>
 
-                <li class="layui-nav-item layui-hide-xs"><a href="#">首页</a></li>
-                <li class="layui-nav-item layui-hide-xs"><a href="#">系统</a></li>
-                <li class="layui-nav-item layui-hide-xs"><a href="#">小说</a></li>
-                <li class="layui-nav-item layui-hide-xs"><a href="#">漫画</a></li>
-                <li class="layui-nav-item layui-hide-xs"><a href="#">视频</a></li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">首页</a></li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">系统</a></li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">小说</a></li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">漫画</a></li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">视频</a></li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">文章</a></li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">用户</a></li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">运营</a></li>
 
                 <li class="layui-nav-item layui-hide-xs" lay-unselect>
                     <a href="/" target="_blank" title="前台">
@@ -51,12 +54,6 @@
                     <i class="layui-icon layui-icon-notice"></i>
                         <!-- 如果有新消息，则显示小圆点 -->
                         <span class="layui-badge-dot"></span>
-                    </a>
-                </li>
-
-                <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                    <a href="javascript:;" layadmin-event="theme">
-                        <i class="layui-icon layui-icon-theme"></i>
                     </a>
                 </li>
 
@@ -85,10 +82,10 @@
                 </li>
               
                 <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                    <a href="javascript:;" layadmin-event="about"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                    <a href="javascript:;" layadmin-event="theme"><i class="layui-icon layui-icon-more-vertical"></i></a>
                 </li>
                 <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
-                    <a href="javascript:;" layadmin-event="more"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                    <a href="javascript:;" layadmin-event="theme"><i class="layui-icon layui-icon-more-vertical"></i></a>
                 </li>
             </ul>
         </div>
