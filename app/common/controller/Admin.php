@@ -4,7 +4,7 @@ namespace app\common\controller;
 
 use think\facade\View;
 use think\facade\Db;
-
+use app\common\model\AdminMenu;
 
 class Admin extends Base
 {
@@ -16,7 +16,19 @@ class Admin extends Base
         $this->auth();
 
     	View::assign("version", time());
+
+
+        $ammodel = new AdminMenu();
+
+        $list = $ammodel->list();
+        var_dump($list);
+
+
+        // var_dump($this->request->controller());
+        // var_dump($this->request->action());
     }
+
+
 
     protected function makeUrl($s = 'index/index'){
         return \think\facade\Route::buildUrl($s);;

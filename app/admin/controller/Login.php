@@ -2,7 +2,6 @@
 
 namespace app\admin\controller;
 
-use app\BaseController;
 use app\common\controller\Base;
 use think\facade\View;
 use think\facade\Db;
