@@ -25,8 +25,8 @@
                 </li>
 
                 {if empty($hm_nav_list)}
-                    <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#" >首页</a></li>
-                    <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">系统</a></li>
+                    <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="{:url('index/index')}">首页</a></li>
+                    <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="{:url('index/sys')}">系统</a></li>
                 {else}
                     {volist name="hm_nav_list" id="v" key="k"}
                     <li class="layui-nav-item layui-hide-xs {if $hm_nav_cur == $v['alias']}layui-this{/if}" lay-unselect ><a href="{:url('index/nav',['view'=>$v['alias']])}">{$v["name"]}</a></li>
@@ -101,12 +101,6 @@
                         <dl class="layui-nav-child">
                             <dd data-name="console" class="layui-this">
                                 <a lay-href="home/console.html">控制台</a>
-                            </dd>
-                            <dd data-name="console">
-                                <a lay-href="home/homepage1.html">主页一</a>
-                            </dd>
-                            <dd data-name="console">
-                                <a lay-href="home/homepage2.html">主页二</a>
                             </dd>
                         </dl>
                     </li>
