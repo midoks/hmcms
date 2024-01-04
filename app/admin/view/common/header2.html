@@ -24,22 +24,23 @@
                     </a>
                 </li>
 
-                <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">首页</a></li>
-                <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">系统</a></li>
-                <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">小说</a></li>
+                {if empty($hm_nav_list)}
+                    <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#" >首页</a></li>
+                    <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">系统</a></li>
+                {else}
+                    {volist name="hm_nav_list" id="v" key="k"}
+                    <li class="layui-nav-item layui-hide-xs {if $hm_nav_cur == $v['alias']}layui-this{/if}" lay-unselect ><a href="{:url('index/nav',['view'=>$v['alias']])}">{$v["name"]}</a></li>
+                    {/volist}
+                {/if}
+
+                
                 <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">漫画</a></li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">视频</a></li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">文章</a></li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">用户</a></li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="#">运营</a></li>
 
-                <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                    <a href="/" target="_blank" title="前台">
-                        <i class="layui-icon layui-icon-website"></i>
-                    </a>
-                </li>
-
-
+            
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;" layadmin-event="refresh" title="刷新">
                         <i class="layui-icon layui-icon-refresh-3"></i>
@@ -48,7 +49,13 @@
             </ul>
 
             <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
-          
+            
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="/" target="_blank" title="前台">
+                        <i class="layui-icon layui-icon-website"></i>
+                    </a>
+                </li>
+
                 <li class="layui-nav-item" lay-unselect>
                     <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心">
                     <i class="layui-icon layui-icon-notice"></i>

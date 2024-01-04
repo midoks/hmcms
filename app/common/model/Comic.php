@@ -12,6 +12,14 @@ class Comic extends Base {
 	protected $pk = 'id';
 
 
+	private static $instance = NULL;
+    public static function getInstance() {
+        if (!self::$instance) {
+            self::$instance = new self;
+        }
+        return self::$instance;
+    }
+    
 	public function list(){
 	}
 

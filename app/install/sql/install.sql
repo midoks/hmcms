@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `hm_admin_menu` (
   `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL COMMENT '名称',
   `title` varchar(50) DEFAULT NULL COMMENT '内容',
+  `alias` varchar(50) DEFAULT '' COMMENT '别名',
   `status` tinyint(1) DEFAULT '0' COMMENT '状态',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `sort` smallint(6) unsigned DEFAULT NULL COMMENT '排序',

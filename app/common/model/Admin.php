@@ -15,6 +15,14 @@ class Admin extends Base {
 	// 开启自动写入时间戳字段
 	protected $autoWriteTimestamp = true;
 
+	private static $instance = NULL;
+    public static function getInstance() {
+        if (!self::$instance) {
+            self::$instance = new self;
+        }
+        return self::$instance;
+    }
+    
 
 	public function getRootData($id){
 		

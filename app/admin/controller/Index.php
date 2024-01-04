@@ -25,8 +25,11 @@ class Index extends Admin
         return $this->fetch('index/welcome');
     }
 
-    public function nav($page){
-        var_dump($page);
+    public function nav($view = 'index'){
+        // var_dump($view);
+
+        View::assign('hm_nav_cur',$view);
+        return $this->fetch('index/index');
     }
 
     public function test()
