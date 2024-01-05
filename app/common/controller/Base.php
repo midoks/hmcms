@@ -110,6 +110,16 @@ abstract class Base
         return Json()->data($result);
     }
 
+    public function layuiJson($code = 0, $msg = '', $data = [], $count = 1){
+         $result = [
+            'code' => $code,
+            'msg'  => $msg,
+            'data' => $data,
+            'count'=> $count
+        ];
+        return Json()->data($result);
+    }
+
     /**
      * 操作成功跳转的快捷方法
      * @access protected

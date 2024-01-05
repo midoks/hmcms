@@ -1,9 +1,74 @@
 {include file="app/admin/view/common/header2.html" /}
 
+<div class="layui-fluid">
 
-{$Request.session.hm_nav_cur}
+	<div class="layui-col-md3" style="padding: 5px;">
+		<div class="layui-card">
+		  	<div class="layui-card-header">导航</div>
+		  	<div class="layui-card-body">
+			    <div id="nav_list"></div>
+		  	</div>
+		</div>
+	</div>
+	
+
+	<div class="layui-col-md3" style="padding: 5px;">
+		<div class="layui-card">
+		  	<div class="layui-card-header">菜单</div>
+		  	<div class="layui-card-body">
+		    卡片式面板面板通常用于非白色背景色的主体内<br>
+		    从而映衬出边框投影
+		  	</div>
+		</div>
+	</div>
+
+	<div class="layui-col-md3" style="padding: 5px;">
+		<div class="layui-card">
+		  	<div class="layui-card-header">子菜单</div>
+		  	<div class="layui-card-body">
+		    卡片式面板面板通常用于非白色背景色的主体内<br>
+		    从而映衬出边框投影
+		  	</div>
+		</div>
+	</div>
+
+	<div class="layui-col-md3" style="padding: 5px;">
+		<div class="layui-card">
+		  	<div class="layui-card-header">权限</div>
+		  	<div class="layui-card-body">
+		    卡片式面板面板通常用于非白色背景色的主体内<br>
+		    从而映衬出边框投影
+		  	</div>
+		</div>
+	</div>
+
+</div>
 
 
+<script type="text/javascript">
+
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+table.render({
+    elem: '#nav_list',
+    url: '{:url("auth/list")}',
+    title: '数据表',
+    cols: [[
+    	{field:'id', title:'ID', width:30},
+       	{field:'name', title:'名称',},
+       	{title:'操作', toolbar: '#list-right-btn', width:100, fixed: 'right',}
+     ]],
+    page: false
+});
+
+///
+});
+</script>
 
 
 {include file="app/admin/view/common/footer2.html" /}
