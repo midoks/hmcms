@@ -28,7 +28,7 @@
                     <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="{:url('index/sys')}">系统</a></li>
                 {else}
                     {volist name="hm_nav_list" id="v" key="k"}
-                    <li class="layui-nav-item layui-hide-xs {if $hm_nav_cur == $v['alias']}layui-this{/if}" lay-unselect ><a href="{:url('index/index',['view'=>$v['alias']])}">{$v["name"]}</a></li>
+                    <li class="layui-nav-item layui-hide-xs {if $Request.session.hm_nav_cur == $v['alias']}layui-this{/if}" lay-unselect ><a href="{:url('index/index',['view'=>$v['alias']])}">{$v["name"]}</a></li>
                     {/volist}
                 {/if}
 
@@ -107,7 +107,7 @@
                     </li>
                     {else}
                         {volist name="hm_nav_list" id="v" key="k"}
-                        {if $hm_nav_cur == $v['alias'] && !empty($v['submenu'])}
+                        {if $Request.session.hm_nav_cur == $v['alias'] && !empty($v['submenu'])}
 
                         {volist name="$v['submenu']" id="menu_v" key="k1"}
                         <li data-name="home" class="layui-nav-item layui-nav-itemed">
