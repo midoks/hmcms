@@ -14,8 +14,9 @@ class Index extends Admin
 {
 
 
-    public function index()
+    public function index($view = 'index')
     {
+        View::assign('hm_nav_cur',$view);
         return $this->fetch('index/index');
     }
 
@@ -25,10 +26,8 @@ class Index extends Admin
         return $this->fetch('index/welcome');
     }
 
-    public function nav($view = 'index'){
+    public function nav(){
         // var_dump($view);
-
-        View::assign('hm_nav_cur',$view);
         return $this->fetch('index/index');
     }
 

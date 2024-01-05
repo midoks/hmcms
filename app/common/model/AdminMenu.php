@@ -20,12 +20,30 @@ class AdminMenu extends Base {
         return self::$instance;
     }
 
+   	public function submenu($pid){
+   		$list = $this->where('pid', $pid)->select();
+   		if ($list){
+			$list = $list->toArray();
+		}
+
+		if (!empty($list)){
+			foreach ($list as $key => $value) {
+				$list[$key]['submenu'] = $this->submenu($value['id']);
+			}
+		}
+		return $list;
+   	}
 
 	public function list() {
-		$list = $this->where('level', '1')->select();
+		$list = $this->where('pid', '0')->select();
 		if ($list){
 			$list = $list->toArray();
 		}
+
+		foreach ($list as $key => $value) {
+			$list[$key]['submenu'] = $this->submenu($value['id']);
+		}
+		// var_dump($list);
 		return $list;
 	}
 

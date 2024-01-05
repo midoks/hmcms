@@ -22,6 +22,7 @@ class Admin extends Base
         $list = $ammodel->list();
         // var_dump($list);
         View::assign("hm_nav_list", $list);
+        View::assign("hm_nav_cur", '');
 
 
 

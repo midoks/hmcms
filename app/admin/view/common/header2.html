@@ -25,11 +25,10 @@
                 </li>
 
                 {if empty($hm_nav_list)}
-                    <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="{:url('index/index')}">首页</a></li>
                     <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="{:url('index/sys')}">系统</a></li>
                 {else}
                     {volist name="hm_nav_list" id="v" key="k"}
-                    <li class="layui-nav-item layui-hide-xs {if $hm_nav_cur == $v['alias']}layui-this{/if}" lay-unselect ><a href="{:url('index/nav',['view'=>$v['alias']])}">{$v["name"]}</a></li>
+                    <li class="layui-nav-item layui-hide-xs {if $hm_nav_cur == $v['alias']}layui-this{/if}" lay-unselect ><a href="{:url('index/index',['view'=>$v['alias']])}">{$v["name"]}</a></li>
                     {/volist}
                 {/if}
 
@@ -93,6 +92,8 @@
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+
+                    {if empty($hm_nav_list)}
                     <li data-name="home" class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:;" lay-tips="主页" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
@@ -104,6 +105,35 @@
                             </dd>
                         </dl>
                     </li>
+                    {else}
+                        {volist name="hm_nav_list" id="v" key="k"}
+                        {if $hm_nav_cur == $v['alias'] && !empty($v['submenu'])}
+
+                        {volist name="$v['submenu']" id="menu_v" key="k1"}
+                        <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                            <a href="javascript:;" lay-tips="{$menu_v['name']}" lay-direction="2">
+                                <i class="layui-icon layui-icon-home"></i>
+                                <cite>{$menu_v["name"]}</cite>
+                            </a>
+                            <dl class="layui-nav-child">
+
+                                {if !empty($menu_v['submenu'])}
+
+                                {volist name="$menu_v['submenu']" id="menu_vv" key="k2"}
+                                <dd data-name="console">
+                                    <a href="{:url($menu_vv['route'])}">{$menu_vv["name"]}</a>
+                                </dd>
+                                {/volist}
+
+                                {/if}
+                            </dl>
+                        </li>
+                        {/volist}
+
+                        {/if}
+                        {/volist}
+                    {/if}
+
                 </ul>
             </div>
         </div>
