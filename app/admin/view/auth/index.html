@@ -2,37 +2,44 @@
 
 <div class="layui-fluid">
 
-	<div class="layui-col-md3" style="padding: 5px;">
+	<div class="layui-col-md4" style="padding: 5px;">
 		<div class="layui-card">
 		  	<div class="layui-card-header">导航</div>
 		  	<div class="layui-card-body">
+		  		<script type="text/html" id="toolbar_navlist">
+				 	<div class="layui-btn-container">
+				    	<button class="layui-btn layui-btn-sm" lay-event="add_nav"><i class="layui-icon"></i>添加</button>
+				  	</div>
+				</script>
 			    <div id="nav_list"></div>
 		  	</div>
 		</div>
 	</div>
-	
 
-	<div class="layui-col-md3" style="padding: 5px;">
+	<div class="layui-col-md4" style="padding: 5px;">
 		<div class="layui-card">
 		  	<div class="layui-card-header">菜单</div>
 		  	<div class="layui-card-body">
-		    卡片式面板面板通常用于非白色背景色的主体内<br>
-		    从而映衬出边框投影
+		  		<script type="text/html" id="toolbar_navlist">
+				 	<div class="layui-btn-container">
+				    	<button class="layui-btn layui-btn-sm" lay-event="add_menu"><i class="layui-icon"></i>添加</button>
+				  	</div>
+				</script>
+		  		<div id="menu_list"></div>
 		  	</div>
 		</div>
 	</div>
 
-	<div class="layui-col-md3" style="padding: 5px;">
+	<div class="layui-col-md4" style="padding: 5px;">
 		<div class="layui-card">
 		  	<div class="layui-card-header">子菜单</div>
 		  	<div class="layui-card-body">
-		    卡片式面板面板通常用于非白色背景色的主体内<br>
-		    从而映衬出边框投影
+			    <div id="submenu_list"></div>
 		  	</div>
 		</div>
 	</div>
 
-	<div class="layui-col-md3" style="padding: 5px;">
+<!-- 	<div class="layui-col-md4" style="padding: 5px;">
 		<div class="layui-card">
 		  	<div class="layui-card-header">权限</div>
 		  	<div class="layui-card-body">
@@ -40,7 +47,7 @@
 		    从而映衬出边框投影
 		  	</div>
 		</div>
-	</div>
+	</div> -->
 
 </div>
 
@@ -57,17 +64,81 @@ var admin = layui.admin
 table.render({
     elem: '#nav_list',
     url: '{:url("auth/list")}',
+    toolbar: '#toolbar_navlist',
+    defaultToolbar: [],
     title: '数据表',
     cols: [[
-    	{field:'id', title:'ID', width:30},
+    	{field:'id', title:'ID', width:30, templet:function(data){
+    		if (data.LAY_INDEX == 0){
+    			renderMenuTable(data.id);
+    		}
+    		return data.id;
+    	}},
        	{field:'name', title:'名称',},
-       	{title:'操作', toolbar: '#list-right-btn', width:100, fixed: 'right',}
+       	{title:'操作', toolbar: '#nav-list-right-btn', width:120, fixed: 'right',}
      ]],
     page: false
 });
 
+//点击行
+table.on('row(nav_list)', function(obj){
+	var data = obj.data;
+	renderMenuTable(data.id);
+});
+
+//点击行
+table.on('row(menu_list)', function(obj){
+	var data = obj.data;
+	renderSubMenuTable(data.id);
+});
+
+function renderMenuTable(pid){
+	table.render({
+	    elem: '#menu_list',
+	    toolbar: '#toolbar_navlist',
+	    defaultToolbar: [],
+	    url: '{:url("auth/listpid")}?pid='+pid,
+	    title: '数据表',
+	    cols: [[
+	    	{field:'id', title:'ID', width:30, templet:function(data){
+	    		if (data.LAY_INDEX == 0){
+	    			renderSubMenuTable(data.id);
+	    		}
+	    		return data.id;
+    		}},
+	       	{field:'name', title:'名称',},
+	       	{title:'操作', toolbar: '#nav-list-right-btn', width:120, fixed: 'right'}
+	     ]],
+	    page: false
+	});
+}
+
+function renderSubMenuTable(pid){
+	table.render({
+	    elem: '#submenu_list',
+	    toolbar: '#toolbar_navlist',
+	    defaultToolbar: [],
+	    url: '{:url("auth/listpid")}?pid='+pid,
+	    title: '数据表',
+	    cols: [[
+	    	{field:'id', title:'ID', width:30},
+	       	{field:'name', title:'名称',},
+	       	{title:'操作', toolbar: '#nav-list-right-btn', width:120, fixed: 'right'}
+	     ]],
+	    page: false
+	});
+}
+
+
+
 ///
 });
+</script>
+
+
+<script type="text/html" id="nav-list-right-btn">
+    <a class="layui-btn layui-btn-xs" lay-event="look">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="push_image">删除</a>
 </script>
 
 
