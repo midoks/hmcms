@@ -54,11 +54,12 @@
 
 <script type="text/javascript">
 
-layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery','dropdown'], function(){
 ///
 var admin = layui.admin
 ,$ = layui.$
 ,form = layui.form
+,dropdown = layui.dropdown
 ,table = layui.table;
 
 table.render({
@@ -92,6 +93,181 @@ table.on('row(menu_list)', function(obj){
 	renderSubMenuTable(data.id);
 });
 
+
+//头工具栏事件
+table.on('toolbar(nav_list)', function(obj){
+    switch(obj.event){
+        case 'add_nav':menuAdd(obj);break;
+    };
+});
+
+
+function makeMenuList(data){
+    var ndata = [];
+    for (var i = 0; i < data.length; i++) {
+        var t = {
+            'id': data[i]['id'],
+            'title': data[i]['name'],
+            'type': 'normal'
+        };
+
+        if ('submenu' in data[i]){
+            t['child'] = makeMenuList(data[i]['submenu']);
+        }
+        ndata.push(t);
+    }
+    return ndata;
+}
+
+// add
+function menuAdd(obj){
+
+    var name = '';
+    var alias = ''
+    var remark = '';
+    var type_select = 0;
+    var type_spider_select = 0;
+
+    if (obj.event == 'edit'){
+        name = obj.data.name;
+        alias = obj.data.alias;
+        remark = obj.data.remark;
+        type_select = obj.data.type;
+        type_spider_select = obj.data.spider_type;
+    }
+
+    var type_select_option = [
+        {"index":0, 'value':'小说'},
+        {"index":1, 'value':'漫画'},
+        {"index":2, 'value':'其他'}
+    ];
+
+    var type_select_html = '';
+    for (var i = 0; i < type_select_option.length; i++) {
+        // console.log(type_select_option[i]['index'] , type_select);
+        if (type_select_option[i]['index'] == type_select){
+            type_select_html += '<option value="'+type_select_option[i]['index']+'" selected="selected">'+type_select_option[i]['value']+'</option>';
+        } else{
+            type_select_html += '<option value="'+type_select_option[i]['index']+'">'+type_select_option[i]['value']+'</option>';
+        }
+    }
+
+    var type_menu_option = [
+        {"index":0, 'value':'导航'},
+        {"index":1, 'value':'菜单'},
+        {"index":2, 'value':'子菜单'},
+        {"index":3, 'value':'API'},
+    ];
+
+    var type_menu_option_html = '';
+
+    for (var i = 0; i < type_menu_option.length; i++) {
+        if (type_menu_option[i]['index'] == type_select){
+            type_menu_option_html += '<option value="'+type_menu_option[i]['index']+'" selected="selected">'+type_menu_option[i]['value']+'</option>';
+        } else{
+            type_menu_option_html += '<option value="'+type_menu_option[i]['index']+'">'+type_menu_option[i]['value']+'</option>';
+        }
+    }
+
+    var btn_action = ['添加','取消'];
+    var layer_title = '添加';
+    if (obj.event == 'edit'){
+        btn_action = ['更新','取消'];
+        layer_title = '编辑';
+    }
+
+    layer.open({
+        area: ['400px','500px'],
+        title:layer_title,
+        content: '<form id="add_menu_form" class="layui-form layui-form-pane" style="padding:5px;">\
+        	<div class="layui-form-item">\
+              <label class="layui-form-label">父级</label>\
+              <div class="layui-input-block">\
+                <button class="layui-btn" id="pid" style="width:100%;">\
+                    <span id="pid_name">无</span>\
+                    <i class="layui-icon layui-icon-down layui-font-18"></i>\
+                </button>\
+                <input type="hidden" name="pid" value=""/>\
+              </div>\
+            </div>\
+	        <div class="layui-form-item">\
+	            <label class="layui-form-label">类型</label>\
+	            <div class="layui-input-block">\
+	                <select name="type" lay-verify="required">'+type_menu_option_html+'</select>\
+	            </div>\
+	        </div>\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">名称</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="name" value="'+name+'" autocomplete="off" placeholder="请输入名称" class="layui-input">\
+              </div>\
+            </div>\
+            <div class="layui-form-item">\
+             	<label class="layui-form-label">别名</label>\
+              	<div class="layui-input-block">\
+                	<input type="text" name="alias" value="'+alias+'" autocomplete="off" placeholder="请输入名称" class="layui-input">\
+              	</div>\
+            </div>\
+            <div class="layui-form-item">\
+             	<label class="layui-form-label">路由</label>\
+              	<div class="layui-input-block">\
+                	<input type="text" name="route" value="" autocomplete="off" placeholder="请输入路由地址" class="layui-input">\
+              	</div>\
+            </div>\
+            <div class="layui-form-item">\
+             	<label class="layui-form-label">图标</label>\
+              	<div class="layui-input-block">\
+                	<input type="text" name="icon" value="" autocomplete="off" placeholder="请输入图标标识" class="layui-input">\
+              	</div>\
+            </div>\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">备注</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="remark" value="'+remark+'" autocomplete="off" placeholder="请输入备注" class="layui-input">\
+              </div>\
+            </div>\
+            <input type="hidden" name="id" value="">\
+        </form>',
+        btn: btn_action,
+        type: 1,
+        shadeClose: false,
+        success:function(){
+            form.render();
+            if (obj.event == 'edit'){
+                $('input[name="id"]').val(obj.data.id);
+            }
+
+            $.post('{:url("auth/menu_plist")}', {}, function(data) {
+                var menu_list_a = makeMenuList(data.data);
+                var menu_list = [{"id":0,"title":"无"}];
+                menu_list.push.apply(menu_list,menu_list_a);
+                dropdown.render({
+                    elem: '#pid',
+                    data:menu_list,
+                    click: function(obj){
+                        $('#pid_name').text(obj.title);
+                        $('input[name="pid"]').val(obj.id);
+                    }
+                });
+            },'json');
+           
+        },
+        yes: function(index, layero){
+            var data = $("#add_menu_form").serialize();
+            console.log(data);
+            $.post('{:url("auth/add")}', data, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+            return;
+        }
+    });
+}
+
+// 渲染table
 function renderMenuTable(pid){
 	table.render({
 	    elem: '#menu_list',
@@ -128,8 +304,6 @@ function renderSubMenuTable(pid){
 	    page: false
 	});
 }
-
-
 
 ///
 });

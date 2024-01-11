@@ -17,7 +17,6 @@ class Auth extends Admin
         return $this->fetch('auth/index');
     }
 
-
     //获取列表
     public function list(){
         $ammodel = AdminMenu::getInstance();
@@ -33,5 +32,19 @@ class Auth extends Admin
         $list = $ammodel->submenu($pid);
         return $this->layuiJson(0,'ok',  $list, );
     }
+
+    public function menu_plist(){
+        $ammodel = AdminMenu::getInstance();
+        $list = $ammodel->submenu(0,true);
+        return $this->layuiJson(0,'ok',  $list, );
+    }
+
+    public function add(){
+        $name = $this->request->param('name');
+
+        var_dump($name);
+    }
+
+
 
 }

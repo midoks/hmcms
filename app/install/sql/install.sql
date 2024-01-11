@@ -43,7 +43,7 @@ DROP TABLE IF EXISTS `hm_admin_menu`;
 CREATE TABLE IF NOT EXISTS `hm_admin_menu` (
   `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL COMMENT '名称',
-  `title` varchar(50) DEFAULT NULL COMMENT '内容',
+  `icon` varchar(50) DEFAULT NULL COMMENT '图片',
   `alias` varchar(50) DEFAULT '' COMMENT '别名',
   `status` tinyint(1) DEFAULT '0' COMMENT '状态',
   `route` varchar(255) DEFAULT NULL COMMENT '路由',

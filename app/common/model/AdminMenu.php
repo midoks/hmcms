@@ -26,10 +26,9 @@ class AdminMenu extends Base {
 			$list = $list->toArray();
 		}
 
-
 		if (!empty($list) && $recursion){
 			foreach ($list as $key => $value) {
-				$list[$key]['submenu'] = $this->submenu($value['id']);
+				$list[$key]['submenu'] = $this->submenu($value['id'], $recursion);
 			}
 		}
 		return $list;
@@ -44,8 +43,11 @@ class AdminMenu extends Base {
 		foreach ($list as $key => $value) {
 			$list[$key]['submenu'] = $this->submenu($value['id'], true);
 		}
-		// var_dump($list);
 		return $list;
+	}
+
+	public function add(){
+		
 	}
 
 
