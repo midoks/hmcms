@@ -97,10 +97,29 @@ table.on('row(menu_list)', function(obj){
 //头工具栏事件
 table.on('toolbar(nav_list)', function(obj){
     switch(obj.event){
-        case 'add_nav':menuAdd(obj);break;
+        case 'add_nav':menuAdd(obj, 'nav');break;
     };
 });
 
+
+table.on('tool(nav_list)', function(obj){
+    switch(obj.event){
+        case 'delete':menuDelete(obj);break;
+    };
+});
+
+function menuDelete(obj){
+
+    layer.confirm('你真的要删除吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('{:url("auth/delete")}', {'id':obj.data.id}, function(data) {
+            showMsg(data.msg,function(){
+                if (data.code>-1){
+                    location.reload();
+                }
+            },{icon:data.code>-1?1:2});
+        },'json');
+    });
+}
 
 function makeMenuList(data){
     var ndata = [];
@@ -120,7 +139,7 @@ function makeMenuList(data){
 }
 
 // add
-function menuAdd(obj){
+function menuAdd(obj,mtype){
 
     var name = '';
     var alias = ''
@@ -177,7 +196,7 @@ function menuAdd(obj){
     }
 
     layer.open({
-        area: ['400px','500px'],
+        area: ['400px',"400px"],
         title:layer_title,
         content: '<form id="add_menu_form" class="layui-form layui-form-pane" style="padding:5px;">\
         	<div class="layui-form-item">\
@@ -208,13 +227,13 @@ function menuAdd(obj){
                 	<input type="text" name="alias" value="'+alias+'" autocomplete="off" placeholder="请输入名称" class="layui-input">\
               	</div>\
             </div>\
-            <div class="layui-form-item">\
+            <div class="layui-form-item" id="div_route">\
              	<label class="layui-form-label">路由</label>\
               	<div class="layui-input-block">\
                 	<input type="text" name="route" value="" autocomplete="off" placeholder="请输入路由地址" class="layui-input">\
               	</div>\
             </div>\
-            <div class="layui-form-item">\
+            <div class="layui-form-item" id="div_icon">\
              	<label class="layui-form-label">图标</label>\
               	<div class="layui-input-block">\
                 	<input type="text" name="icon" value="" autocomplete="off" placeholder="请输入图标标识" class="layui-input">\
@@ -227,6 +246,7 @@ function menuAdd(obj){
               </div>\
             </div>\
             <input type="hidden" name="id" value="">\
+            <input type="hidden" name="pid" value="0">\
         </form>',
         btn: btn_action,
         type: 1,
@@ -245,12 +265,18 @@ function menuAdd(obj){
                     elem: '#pid',
                     data:menu_list,
                     click: function(obj){
+
+                        console.log(obj);
                         $('#pid_name').text(obj.title);
                         $('input[name="pid"]').val(obj.id);
                     }
                 });
             },'json');
-           
+
+            if (mtype == 'nav'){
+                $('#div_route').css('display','none');
+                $('#div_icon').css('display','none');
+            }
         },
         yes: function(index, layero){
             var data = $("#add_menu_form").serialize();
@@ -312,7 +338,7 @@ function renderSubMenuTable(pid){
 
 <script type="text/html" id="nav-list-right-btn">
     <a class="layui-btn layui-btn-xs" lay-event="look">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="push_image">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
 </script>
 
 

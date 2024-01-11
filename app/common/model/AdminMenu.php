@@ -34,6 +34,40 @@ class AdminMenu extends Base {
 		return $list;
    	}
 
+   	// 只递归一次
+   	public function submenu2($pid, $recursion = false){
+   		$list = $this->where('pid', $pid)->select();
+   		if ($list){
+			$list = $list->toArray();
+		}
+
+		if (!empty($list) && $recursion){
+			foreach ($list as $key => $value) {
+				$list[$key]['submenu'] = $this->submenu($value['id']);
+			}
+		}
+		return $list;
+   	}
+
+   	//递归删除菜单及下级
+   	public function recursionDelete($id){
+   		$list = $this->where('pid', $id)->select();
+   		if ($list){
+			$list = $list->toArray();
+		}
+
+		if (!empty($list)){
+			foreach ($list as $k => $v) {
+				$this->recursionDelete($v['id']);
+			}
+			return $this->where('id', $id)->delete($id);
+		} else{
+			return $this->where('id', $id)->delete();
+		}
+		return true;
+   		
+   	}
+
 	public function list() {
 		$list = $this->where('pid', '0')->select();
 		if ($list){
@@ -44,10 +78,6 @@ class AdminMenu extends Base {
 			$list[$key]['submenu'] = $this->submenu($value['id'], true);
 		}
 		return $list;
-	}
-
-	public function add(){
-		
 	}
 
 
