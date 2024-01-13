@@ -12,3 +12,4 @@ Thumbs.db
 
 app/data/install/install.lock
 runtime/admin/temp/*
+runtime/session/*

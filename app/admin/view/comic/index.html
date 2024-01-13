@@ -1,6 +1,154 @@
-{include file="app/admin/view/common/header2.html" /}
+{include file="app/admin/view/common/header.html" /}
+
+<div class="layui-fluid">
+	<div class="layui-col-md12" style="padding: 5px;">
+		<div class="layui-card">
+		  	
+		  	<div class="layui-card-body">
+		  		<script type="text/html" id="toolbar_list">
+				 	<div class="layui-btn-container">
+				    	<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon"></i>添加</button>
+				  	</div>
+				</script>
+			    <div id="list"></div>
+		  	</div>
+		</div>
+	</div>
+</div>
 
 
+<script type="text/javascript">
+
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery','dropdown'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,dropdown = layui.dropdown
+,table = layui.table;
+
+table.render({
+    elem: '#list',
+    url: '{:url("auth/roleList")}',
+    toolbar: '#toolbar_list',
+    defaultToolbar: [],
+    title: '数据表',
+    cols: [[
+    	{field:'id', title:'ID', width:30, templet:function(data){
+    		return data.id;
+    	}},
+       	{field:'name', title:'名称',},
+       	{title:'操作', toolbar: '#nav-list-right-btn', width:180, fixed: 'right',}
+     ]],
+    page: true
+});
+
+table.on('tool(list)', function(obj){
+    switch(obj.event){
+        case 'delete':opDelete(obj);break;
+        case 'edit':opAdd(obj);break;
+    };
+});
+
+//头工具栏事件
+table.on('toolbar(list)', function(obj){
+    switch(obj.event){
+        case 'add':opAdd(obj);break;
+    };
+});
+// add
+function opAdd(obj){
+
+    console.log(obj);
+
+    var name = '';
+    var remark = '';
+
+    if (obj.event == 'edit'){
+        name = obj.data.name;
+        remark = obj.data.remark;
+    }
 
 
-{include file="app/admin/view/common/footer2.html" /}
+    var type_option_html = '';
+    var title_nav = '';
+
+    var btn_action = ['添加','取消'];
+    var layer_title = '添加';
+    if (obj.event == 'edit'){
+        btn_action = ['更新','取消'];
+        layer_title = '编辑';
+    }
+
+    layer.open({
+        area: ['400px',"220px"],
+        title:layer_title,
+        content: '<form id="add_menu_form" class="layui-form layui-form-pane" style="padding:5px;">\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">名称</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="name" value="'+name+'" autocomplete="off" placeholder="请输入名称" class="layui-input">\
+              </div>\
+            </div>\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">备注</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="remark" value="'+remark+'" autocomplete="off" placeholder="请输入备注" class="layui-input">\
+              </div>\
+            </div>\
+            <input type="hidden" name="id" value="">\
+        </form>',
+        btn: btn_action,
+        type: 1,
+        shadeClose: false,
+        success:function(){
+            form.render();
+            if (obj.event == 'edit'){
+                $('input[name="id"]').val(obj.data.id);
+            }
+
+            $('input[name="name"]').change(function(){
+                $('input[name="remark"]').val($(this).val());
+            });
+
+        },
+        yes: function(index, layero){
+            var data = $("#add_menu_form").serialize();
+            $.post('{:url("auth/roleAdd")}', data, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.code>-1){
+                        layer.close(index);
+                        location.reload();
+                    }
+                },{icon:data.code>-1?1:2});
+            },'json');
+            return;
+        }
+    });
+}
+
+function opDelete(obj){
+    layer.confirm('你真的要删除吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('{:url("auth/roleDelete")}', {'id':obj.data.id}, function(data) {
+            showMsg(data.msg,function(){
+                if (data.code>-1){
+                    location.reload();
+                }
+            },{icon:data.code>-1?1:2});
+        },'json');
+    });
+}
+
+///
+});
+</script>
+
+
+<script type="text/html" id="nav-list-right-btn">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="role">权限</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}

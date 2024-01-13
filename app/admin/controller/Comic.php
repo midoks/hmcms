@@ -12,7 +12,7 @@ class Comic extends AdminBase
 
     public function index()
     {
-        return $this->fetch('index/index');
+        return $this->fetch('comic/index');
     }
 
 
