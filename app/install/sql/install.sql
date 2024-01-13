@@ -84,6 +84,43 @@ CREATE TABLE IF NOT EXISTS `hm_admin_role` (
   KEY `status` (`status`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='权限角色表';
 
+
+-- ----------------------------
+-- Table structure for hm_user
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_user`;
+CREATE TABLE `hm_user` (
+  `id` int NOT NULL,
+  `signing` tinyint(1) DEFAULT '0' COMMENT '是否签约|0:未,1:已',
+  `name` varchar(64) DEFAULT '' COMMENT '用户名',
+  `pass` varchar(64) DEFAULT '' COMMENT '密码',
+  `nick` varchar(64) DEFAULT '' COMMENT '昵称',
+  `tel` varchar(15) DEFAULT '' COMMENT '手机',
+  `pic` varchar(255) DEFAULT '' COMMENT '头像地址',
+  `qq` varchar(20) DEFAULT '' COMMENT 'QQ',
+  `email` varchar(128) DEFAULT '' COMMENT '邮箱',
+  `city` varchar(128) DEFAULT '' COMMENT '地区',
+  `sex` varchar(5) DEFAULT '保密' COMMENT '性别',
+  `text` varchar(255) DEFAULT '' COMMENT '介绍',
+  `vip` tinyint(1) DEFAULT '0' COMMENT '是否VIP',
+  `rmb` decimal(6,2) DEFAULT '0.00' COMMENT '金额',
+  `cion` int DEFAULT '0' COMMENT '金币',
+  `ticket` int DEFAULT '0' COMMENT '月票',
+  `viptime` int DEFAULT '0' COMMENT 'vip到期时间',
+  `sid` tinyint(1) DEFAULT '0' COMMENT '状态｜1:锁定,0:正常',
+  `cid` tinyint(1) DEFAULT '0' COMMENT '认证状态',
+  `realname` varchar(128) DEFAULT '' COMMENT '真实名字',
+  `idcard` varchar(64) DEFAULT '' COMMENT '身份证号码',
+  `bank` varchar(128) DEFAULT '' COMMENT '收款银行',
+  `card` varchar(128) DEFAULT '' COMMENT '收款账号',
+  `bankcity` varchar(255) DEFAULT '' COMMENT '开户行地址',
+  `pass_err` int DEFAULT '0' COMMENT '密码错误次数',
+  `rz_type` tinyint(1) DEFAULT '1' COMMENT '认证方式，1个人，2企业',
+  `rz_msg` varchar(128) DEFAULT '' COMMENT '认证失败原因',
+  `create_time` datetime NOT NULL COMMENT '注册时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='用户';
+
 -- ----------------------------
 -- Table structure for hm_comic
 -- ----------------------------
@@ -95,7 +132,7 @@ CREATE TABLE `hm_comic` (
   `pic` varchar(255) DEFAULT '' COMMENT '竖版封面',
   `picx` varchar(255) DEFAULT '' COMMENT '横版封面',
   `cid` bigint DEFAULT '0' COMMENT '分类ID',
-  `tid` tinyint(1) DEFAULT '0' COMMENT '1推荐，0未推',
+  `tid` tinyint(1) DEFAULT '0' COMMENT '1:推荐，0:未推',
   `serialize` varchar(20) DEFAULT '' COMMENT '状态',
   `author` varchar(64) DEFAULT '' COMMENT '漫画作者',
   `uid` bigint DEFAULT '0' COMMENT '用户ID',
@@ -118,12 +155,9 @@ CREATE TABLE `hm_comic` (
   `latest_chapter_id` int NOT NULL DEFAULT '0' COMMENT '最新章节ID',
   `latest_chapter_name` varchar(255) NOT NULL DEFAULT '' COMMENT '最新章节名称',
   `score` decimal(2,1) DEFAULT '9.8' COMMENT '总得分',
-  `did` int DEFAULT '0' COMMENT '采集资源ID',
-  `ly` varchar(64) DEFAULT '' COMMENT '采集来源标识',
-  `yid` tinyint(1) DEFAULT '0' COMMENT '0正常，1待审核',
+  `yid` tinyint(1) DEFAULT '0' COMMENT '0:正常,1:待审核',
   `msg` varchar(128) DEFAULT '' COMMENT '未审核原因',
-  `addtime` int DEFAULT '0' COMMENT '入库时间',
-  `uptime` int NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` tinyint(1) unsigned DEFAULT NULL COMMENT "状态|0:正常,1:禁止显示",
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),

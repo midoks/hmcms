@@ -20,9 +20,13 @@ class Comic extends Base {
         return self::$instance;
     }
     
-	public function list(){
+	 public function list($page=1, $size=10) {
+		$list = $this->field('id')->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
+		if ($list){
+			$list = $list->toArray();
+		}
+		return $list;
 	}
-
 
 	public function getDataByIds($ids = []){
 		$data = $this->field(true)->whereIn('id', $ids)->select();
