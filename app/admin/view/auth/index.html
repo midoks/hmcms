@@ -20,7 +20,7 @@
 		<div class="layui-card">
 		  	<div class="layui-card-header">菜单</div>
 		  	<div class="layui-card-body">
-		  		<script type="text/html" id="toolbar_navlist">
+		  		<script type="text/html" id="toolbar_menulist">
 				 	<div class="layui-btn-container">
 				    	<button class="layui-btn layui-btn-sm" lay-event="add_menu"><i class="layui-icon"></i>添加</button>
 				  	</div>
@@ -34,6 +34,11 @@
 		<div class="layui-card">
 		  	<div class="layui-card-header">子菜单</div>
 		  	<div class="layui-card-body">
+                <script type="text/html" id="toolbar_submenulist">
+                    <div class="layui-btn-container">
+                        <button class="layui-btn layui-btn-sm" lay-event="add_submenu"><i class="layui-icon"></i>添加</button>
+                    </div>
+                </script>
 			    <div id="submenu_list"></div>
 		  	</div>
 		</div>
@@ -71,7 +76,7 @@ table.render({
     cols: [[
     	{field:'id', title:'ID', width:30, templet:function(data){
     		if (data.LAY_INDEX == 0){
-    			renderMenuTable(data.id);
+    			renderMenuTable(data);
     		}
     		return data.id;
     	}},
@@ -84,13 +89,13 @@ table.render({
 //点击行
 table.on('row(nav_list)', function(obj){
 	var data = obj.data;
-	renderMenuTable(data.id);
+	renderMenuTable(data);
 });
 
 //点击行
 table.on('row(menu_list)', function(obj){
 	var data = obj.data;
-	renderSubMenuTable(data.id);
+	renderSubMenuTable(data);
 });
 
 
@@ -101,15 +106,41 @@ table.on('toolbar(nav_list)', function(obj){
     };
 });
 
+table.on('toolbar(menu_list)', function(obj){
+    switch(obj.event){
+        case 'add_menu':menuAdd(obj, 'menu');break;
+    };
+});
+
+table.on('toolbar(submenu_list)', function(obj){
+    switch(obj.event){
+        case 'add_submenu':menuAdd(obj, 'submenu');break;
+    };
+});
+
 
 table.on('tool(nav_list)', function(obj){
     switch(obj.event){
         case 'delete':menuDelete(obj);break;
+        case 'edit':menuAdd(obj, 'nav');break;
+    };
+});
+
+table.on('tool(menu_list)', function(obj){
+    switch(obj.event){
+        case 'delete':menuDelete(obj);break;
+        case 'edit':menuAdd(obj, 'menu');break;
+    };
+});
+
+table.on('tool(submenu_list)', function(obj){
+    switch(obj.event){
+        case 'delete':menuDelete(obj);break;
+        case 'edit':menuAdd(obj, 'submenu');break;
     };
 });
 
 function menuDelete(obj){
-
     layer.confirm('你真的要删除吗?', { closeBtn: 2, icon: 3 }, function() {
         $.post('{:url("auth/delete")}', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
@@ -138,61 +169,90 @@ function makeMenuList(data){
     return ndata;
 }
 
+
+function makeIconList(){
+    var icon_list = [
+        'layui-icon-heart-fill','layui-icon-heart','layui-icon-light','layui-icon-time','layui-icon-bluetooth','layui-icon-at',
+        'layui-icon-mute','layui-icon-mike','layui-icon-key','layui-icon-gift','layui-icon-email','layui-icon-rss',
+        'layui-icon-wifi','layui-icon-logout','layui-icon-android','layui-icon-ios','layui-icon-windows','layui-icon-transfer',
+        'layui-icon-service','layui-icon-subtraction','layui-icon-addition','layui-icon-slider','layui-icon-print','layui-icon-export',
+        'layui-icon-cols','layui-icon-screen-restore','layui-icon-screen-full','ayui-icon-rate-half','layui-icon-rate','layui-icon-rate-solid',
+        'layui-icon-cellphone','layui-icon-vercode','layui-icon-login-wechat','layui-icon-login-qq','layui-icon-login-weibo','layui-icon-password',
+        'layui-icon-username','layui-icon-refresh-3','layui-icon-auz','layui-icon-spread-left','layui-icon-shrink-right','layui-icon-snowflake',
+        'layui-icon-tips','layui-icon-note','layui-icon-home','layui-icon-senior','layui-icon-refresh','layui-icon-refresh-1',
+        'layui-icon-flag','layui-icon-theme','layui-icon-notice','layui-icon-website','layui-icon-console','layui-icon-face-surprised',
+        'layui-icon-set','layui-icon-template-1','layui-icon-app','layui-icon-template','layui-icon-praise','layui-icon-tread',
+        'layui-icon-male','layui-icon-female','layui-icon-camera','layui-icon-camera-fill','layui-icon-more','layui-icon-more-vertical',
+        'layui-icon-rmb','layui-icon-dollar','layui-icon-diamond','layui-icon-fire','layui-icon-return','layui-icon-location',
+        'layui-icon-read','layui-icon-survey','layui-icon-face-smile','layui-icon-face-cry','layui-icon-cart-simple','layui-icon-cart',
+        'layui-icon-next','layui-icon-prev','layui-icon-upload-drag','layui-icon-upload','layui-icon-download-circle','ayui-icon-component',
+        'layui-icon-file-b','layui-icon-user','layui-icon-find-fill','layui-icon-add-1','layui-icon-play','layui-icon-pause',
+        'layui-icon-headset','layui-icon-video','layui-icon-voice','layui-icon-speaker','layui-icon-fonts-del',
+        'layui-icon-fonts-code','layui-icon-fonts-html','layui-icon-fonts-strong','layui-icon-unlink','layui-icon-picture',
+        'layui-icon-link','layui-icon-face-smile-b','layui-icon-fonts-u','layui-icon-fonts-i','layui-icon-tabs','layui-icon-radio',
+        'layui-icon-circle','layui-icon-edit','layui-icon-share','layui-icon-delete','layui-icon-form','layui-icon-cellphone-fine',
+        'layui-icon-dialogue','layui-icon-fonts-clear','layui-icon-layer','layui-icon-date','layui-icon-water','layui-icon-code-circle',
+        'layui-icon-carousel','layui-icon-prev-circle','layui-icon-layouts','layui-icon-util','layui-icon-templeate-1',
+        'layui-icon-upload-circle','layui-icon-tree','layui-icon-table','layui-icon-chart',
+        'layui-icon-chart-screen','layui-icon-engine','layui-icon-file','layui-icon-reduce-circle','layui-icon-add-circle','layui-icon-404',
+        'layui-icon-about','layui-icon-search','layui-icon-set-fill','layui-icon-group','layui-icon-reply-fill','layui-icon-release',
+        'layui-icon-help','layui-icon-top','layui-icon-star-fill','layui-icon-close-fill'
+    ];
+
+    var ndata = [];
+    for (var i = 0; i < icon_list.length; i++) {
+        var t = {
+            'id': icon_list[i],
+            'templet': '<i class="layui-icon '+icon_list[i]+'"></i> '+icon_list[i],
+            'href': '#'
+        };
+        ndata.push(t);
+    }
+
+    return ndata;
+}
+
+
 // add
 function menuAdd(obj,mtype){
 
     var name = '';
     var alias = ''
     var remark = '';
-    var type_select = 0;
-    var type_spider_select = 0;
+    var route = '';
+    var icon = '';
 
     if (obj.event == 'edit'){
         name = obj.data.name;
         alias = obj.data.alias;
         remark = obj.data.remark;
-        type_select = obj.data.type;
-        type_spider_select = obj.data.spider_type;
+        route = obj.data.route;
+        icon = obj.data.icon;
     }
 
-    var type_select_option = [
-        {"index":0, 'value':'小说'},
-        {"index":1, 'value':'漫画'},
-        {"index":2, 'value':'其他'}
-    ];
 
-    var type_select_html = '';
-    for (var i = 0; i < type_select_option.length; i++) {
-        // console.log(type_select_option[i]['index'] , type_select);
-        if (type_select_option[i]['index'] == type_select){
-            type_select_html += '<option value="'+type_select_option[i]['index']+'" selected="selected">'+type_select_option[i]['value']+'</option>';
-        } else{
-            type_select_html += '<option value="'+type_select_option[i]['index']+'">'+type_select_option[i]['value']+'</option>';
-        }
-    }
+    var type_option_html = '';
+    var title_nav = '';
 
-    var type_menu_option = [
-        {"index":0, 'value':'导航'},
-        {"index":1, 'value':'菜单'},
-        {"index":2, 'value':'子菜单'},
-        {"index":3, 'value':'API'},
-    ];
-
-    var type_menu_option_html = '';
-
-    for (var i = 0; i < type_menu_option.length; i++) {
-        if (type_menu_option[i]['index'] == type_select){
-            type_menu_option_html += '<option value="'+type_menu_option[i]['index']+'" selected="selected">'+type_menu_option[i]['value']+'</option>';
-        } else{
-            type_menu_option_html += '<option value="'+type_menu_option[i]['index']+'">'+type_menu_option[i]['value']+'</option>';
-        }
+    if (mtype == 'nav'){
+        title_nav = '导航';
+        type_option_html = '<option value="nav">导航</option>';
+    } else if (mtype == 'menu'){
+        title_nav = '菜单';
+        type_option_html = '<option value="menu">菜单</option>';
+    }else if (mtype == 'submenu'){
+        title_nav = '子菜单';
+        type_option_html = '<option value="submenu">子菜单</option>';
+    } else if (mtype == 'api'){
+        title_nav = 'API';
+        type_option_html = '<option value="api">API</option>';
     }
 
     var btn_action = ['添加','取消'];
-    var layer_title = '添加';
+    var layer_title = '添加【'+title_nav+'】';
     if (obj.event == 'edit'){
         btn_action = ['更新','取消'];
-        layer_title = '编辑';
+        layer_title = '编辑【'+title_nav+'】';
     }
 
     layer.open({
@@ -202,17 +262,13 @@ function menuAdd(obj,mtype){
         	<div class="layui-form-item">\
               <label class="layui-form-label">父级</label>\
               <div class="layui-input-block">\
-                <button class="layui-btn" id="pid" style="width:100%;">\
-                    <span id="pid_name">无</span>\
-                    <i class="layui-icon layui-icon-down layui-font-18"></i>\
-                </button>\
-                <input type="hidden" name="pid" value=""/>\
+                <button id="pid_txt" type="button" class="layui-btn" style="width:100%;">无</button>\
               </div>\
             </div>\
 	        <div class="layui-form-item">\
 	            <label class="layui-form-label">类型</label>\
 	            <div class="layui-input-block">\
-	                <select name="type" lay-verify="required">'+type_menu_option_html+'</select>\
+	                <select name="type" lay-verify="required">'+type_option_html+'</select>\
 	            </div>\
 	        </div>\
             <div class="layui-form-item">\
@@ -221,7 +277,7 @@ function menuAdd(obj,mtype){
                 <input type="text" name="name" value="'+name+'" autocomplete="off" placeholder="请输入名称" class="layui-input">\
               </div>\
             </div>\
-            <div class="layui-form-item">\
+            <div class="layui-form-item" id="div_alias">\
              	<label class="layui-form-label">别名</label>\
               	<div class="layui-input-block">\
                 	<input type="text" name="alias" value="'+alias+'" autocomplete="off" placeholder="请输入名称" class="layui-input">\
@@ -230,13 +286,13 @@ function menuAdd(obj,mtype){
             <div class="layui-form-item" id="div_route">\
              	<label class="layui-form-label">路由</label>\
               	<div class="layui-input-block">\
-                	<input type="text" name="route" value="" autocomplete="off" placeholder="请输入路由地址" class="layui-input">\
+                	<input type="text" name="route" value="'+route+'" autocomplete="off" placeholder="请输入路由地址" class="layui-input">\
               	</div>\
             </div>\
             <div class="layui-form-item" id="div_icon">\
              	<label class="layui-form-label">图标</label>\
               	<div class="layui-input-block">\
-                	<input type="text" name="icon" value="" autocomplete="off" placeholder="请输入图标标识" class="layui-input">\
+                	<input type="text" name="icon" value="'+icon+'" autocomplete="off" placeholder="请输入图标标识" class="layui-input">\
               	</div>\
             </div>\
             <div class="layui-form-item">\
@@ -257,36 +313,54 @@ function menuAdd(obj,mtype){
                 $('input[name="id"]').val(obj.data.id);
             }
 
-            $.post('{:url("auth/menu_plist")}', {}, function(data) {
-                var menu_list_a = makeMenuList(data.data);
-                var menu_list = [{"id":0,"title":"无"}];
-                menu_list.push.apply(menu_list,menu_list_a);
-                dropdown.render({
-                    elem: '#pid',
-                    data:menu_list,
-                    click: function(obj){
-
-                        console.log(obj);
-                        $('#pid_name').text(obj.title);
-                        $('input[name="pid"]').val(obj.id);
-                    }
-                });
-            },'json');
-
             if (mtype == 'nav'){
                 $('#div_route').css('display','none');
                 $('#div_icon').css('display','none');
+            } else if (mtype == 'menu'){
+                $('#div_route').css('display','none');
+                $('#div_alias').css('display','none');
+
+                var pdata = $('#toolbar_menulist').data('pdata');
+                $('input[name="pid"]').val(pdata.id);
+                $('#pid_txt').text(pdata.name);
+            } else if (mtype == 'submenu'){
+
+                $('#div_icon').css('display','none');
+                $('#div_alias').css('display','none');
+
+                var pdata = $('#toolbar_submenulist').data('pdata');
+                $('input[name="pid"]').val(pdata.id);
+                $('#pid_txt').text(pdata.name);
             }
+
+            $('input[name="name"]').change(function(){
+                $('input[name="remark"]').val($(this).val());
+            });
+
+            var ico_list = makeIconList();
+            dropdown.render({
+                elem: 'input[name="icon"]',
+                data: ico_list,
+                click: function(item){
+                    $('input[name="icon"]').val(item['id']);
+                }
+            });
+
+
         },
         yes: function(index, layero){
             var data = $("#add_menu_form").serialize();
-            console.log(data);
             $.post('{:url("auth/add")}', data, function(data) {
                 showMsg(data.msg,function(){
-                    if (data.status){
+                    if (data.code>-1){
                         layer.close(index);
+
+                        if (mtype == 'nav'){
+
+                        }
+
                     }
-                },{icon:data.status?1:2});
+                },{icon:data.code>-1?1:2});
             },'json');
             return;
         }
@@ -294,17 +368,18 @@ function menuAdd(obj,mtype){
 }
 
 // 渲染table
-function renderMenuTable(pid){
+function renderMenuTable(data){
+    $('#toolbar_menulist').data('pdata', data);
 	table.render({
 	    elem: '#menu_list',
-	    toolbar: '#toolbar_navlist',
+	    toolbar: '#toolbar_menulist',
 	    defaultToolbar: [],
-	    url: '{:url("auth/listpid")}?pid='+pid,
+	    url: '{:url("auth/listpid")}?pid='+data.id,
 	    title: '数据表',
 	    cols: [[
 	    	{field:'id', title:'ID', width:30, templet:function(data){
 	    		if (data.LAY_INDEX == 0){
-	    			renderSubMenuTable(data.id);
+	    			renderSubMenuTable(data);
 	    		}
 	    		return data.id;
     		}},
@@ -315,12 +390,13 @@ function renderMenuTable(pid){
 	});
 }
 
-function renderSubMenuTable(pid){
+function renderSubMenuTable(data){
+    $('#toolbar_submenulist').data('pdata', data);
 	table.render({
 	    elem: '#submenu_list',
-	    toolbar: '#toolbar_navlist',
+	    toolbar: '#toolbar_submenulist',
 	    defaultToolbar: [],
-	    url: '{:url("auth/listpid")}?pid='+pid,
+	    url: '{:url("auth/listpid")}?pid='+data.id,
 	    title: '数据表',
 	    cols: [[
 	    	{field:'id', title:'ID', width:30},
@@ -337,7 +413,7 @@ function renderSubMenuTable(pid){
 
 
 <script type="text/html" id="nav-list-right-btn">
-    <a class="layui-btn layui-btn-xs" lay-event="look">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
 </script>
 

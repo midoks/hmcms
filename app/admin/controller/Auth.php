@@ -40,7 +40,7 @@ class Auth extends Admin
     }
 
     public function delete(){
-        $id = $this->request->param('id');
+        $id = $this->request->post('id');
         if (empty($id)){
             return $this->returnJson(-1, '删除ID不能空!');
         }
@@ -52,23 +52,30 @@ class Auth extends Admin
     }
 
     public function add(){
-        $name = $this->request->param('name');
+        $name = $this->request->post('name');
+        $alias = $this->request->post('alias');
+        $remark = $this->request->post('remark');
+        $pid = $this->request->post('pid');
+
 
         if (empty($name)){
             return $this->layuiJson(-1, '名称不能为空');
         }
 
 
-
-        var_dump($name);
-
-        $ammodel = AdminMenu::getInstance();
-
         $data = [
             'name' => $name,
+            'alias' => $alias,
+            'remark' => $remark,
         ];
+
+        if ($pid){
+            $data['pid'] = $pid;
+        }
+
+        $ammodel = AdminMenu::getInstance();
         $id = $ammodel->insert($data);
-        var_dump($id);
+        return $this->returnJson(0, '添加成功!');
     }
 
 
