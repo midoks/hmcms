@@ -20,8 +20,8 @@ class AdminRole extends Base {
         return self::$instance;
     }
 
-	public function list() {
-		$list = $this->where('status', '1')->order('id', 'desc')->paginate(['page'=>1,'list_rows'=>10]);
+	public function list($page=1, $size=10) {
+		$list = $this->where('status', '1')->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
 		if ($list){
 			$list = $list->toArray();
 		}

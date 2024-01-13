@@ -23,6 +23,14 @@ class Admin extends Base {
         return self::$instance;
     }
     
+    public function list($page=1, $size=10) {
+		$list = $this->where('status', '1')->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
+		if ($list){
+			$list = $list->toArray();
+		}
+		return $list;
+	}
+	
 
 	public function getRootData($id){
 		

@@ -8,6 +8,7 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 (6, '用户', '', 'user', 0, '','用户', 6, 'nav', 0),
 (7, '运营', '', 'bus', 0, '','运营', 7, 'nav', 0),
 (8, '权限管理', 'layui-icon-senior',  '', 0, '','权限管理', 1, 'menu', 1),
-(9, '菜单管理', '',  '', 0, 'auth/index','菜单管理', 1, 'submenu', 8)
-(9, '角色管理', '',  '', 0, 'auth/role','角色管理', 1, 'submenu', 8);
+(9, '菜单管理', '',  '', 0, 'auth/index','菜单管理', 1, 'submenu', 8),
+(10, '角色管理', '',  '', 0, 'auth/role','角色管理', 1, 'submenu', 8),
+(11, '管理员', '',  '', 0, 'auth/admin','管理员', 1, 'submenu', 8);
 

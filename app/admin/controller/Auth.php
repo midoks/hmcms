@@ -9,6 +9,7 @@ use app\BaseController;
 use app\common\controller\Admin;
 use app\common\model\AdminMenu;
 use app\common\model\AdminRole;
+use app\common\model\Admin as AdminModel;
 
 
 class Auth extends Admin
@@ -89,7 +90,15 @@ class Auth extends Admin
     // ************ admin ************* //
 
     public function adminList(){
+        $page = $this->request->param('page');
+        $limit = $this->request->param('limit');
 
+        $admin = AdminModel::getInstance();
+        $data = $admin->list();
+        $count = $data['total'];
+        $list = $data['data'];
+
+        return $this->layuiJson(0, 'ok', $list, $count);
     }
 
 
