@@ -77,7 +77,6 @@ CREATE TABLE IF NOT EXISTS `hm_admin_access` (
 CREATE TABLE IF NOT EXISTS `hm_admin_role` (
   `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
-  `pid` smallint(6) DEFAULT NULL,
   `status` tinyint(1) unsigned DEFAULT NULL,
   `remark` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),

@@ -9,4 +9,6 @@ Thumbs.db
 /.settings
 /.buildpath
 /.project
+
 app/data/install/install.lock
+runtime/admin/temp/*
