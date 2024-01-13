@@ -17,6 +17,11 @@ class Auth extends Admin
         return $this->fetch('auth/index');
     }
 
+    public function role()
+    {
+        return $this->fetch('auth/role');
+    }
+
     //获取列表
     public function list(){
         $ammodel = AdminMenu::getInstance();
@@ -55,18 +60,21 @@ class Auth extends Admin
         $name = $this->request->post('name');
         $alias = $this->request->post('alias');
         $remark = $this->request->post('remark');
+        $icon = $this->request->post('icon');
+        $route = $this->request->post('route');
         $pid = $this->request->post('pid');
-
+        $id = $this->request->post('id');
 
         if (empty($name)){
             return $this->layuiJson(-1, '名称不能为空');
         }
 
-
         $data = [
             'name' => $name,
             'alias' => $alias,
             'remark' => $remark,
+            'icon' => $icon,
+            'route' => $route,
         ];
 
         if ($pid){
@@ -74,7 +82,15 @@ class Auth extends Admin
         }
 
         $ammodel = AdminMenu::getInstance();
-        $id = $ammodel->insert($data);
+
+        if ($id>0){
+            $ammodel->where('id',$id)->save($data);
+            return $this->returnJson(0, '更新成功!');
+        } else{
+            $ammodel->insert($data);
+            return $this->returnJson(0, '添加成功!');
+        }
+        
         return $this->returnJson(0, '添加成功!');
     }
 

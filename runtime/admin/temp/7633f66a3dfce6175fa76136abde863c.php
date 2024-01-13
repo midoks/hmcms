@@ -1,4 +1,159 @@
-{include file="app/admin/view/common/header.html" /}
+<?php /*a:3:{s:66:"/Users/midoks/Desktop/www/tp/hmcms//app/admin/view/auth/index.html";i:1705159494;s:33:"app/admin/view/common/header.html";i:1704905364;s:33:"app/admin/view/common/footer.html";i:1704569025;}*/ ?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <title>鸿蒙CMS</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/admin/layuiadmin/layui/css/layui.css?v=<?php echo htmlentities($version); ?>" media="all">
+    <link rel="stylesheet" href="/static/admin/layuiadmin/style/admin.css?v=<?php echo htmlentities($version); ?>" media="all">
+    <!-- <link rel="stylesheet" href="/static/admin/css/admin_style.css?v=<?php echo htmlentities($version); ?>"> -->
+    <script src="/static/admin/layuiadmin/layui/layui.js?v=<?php echo htmlentities($version); ?>"></script>
+    <script src="/static/admin/js/main.js?v=<?php echo htmlentities($version); ?>"></script>
+      
+</head>
+<body class="layui-layout-body">
+<!-- start -->
+<div id="LAY_app">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <!-- 头部区域 -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item layadmin-flexible" lay-unselect>
+                    <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                        <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                    </a>
+                </li>
+
+                <?php if(empty($hm_nav_list)): ?>
+                    <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="<?php echo url('index/sys'); ?>">系统</a></li>
+                <?php else: if(is_array($hm_nav_list) || $hm_nav_list instanceof \think\Collection || $hm_nav_list instanceof \think\Paginator): $k = 0; $__LIST__ = $hm_nav_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($k % 2 );++$k;?>
+                    <li class="layui-nav-item layui-hide-xs <?php if(app('request')->session('hm_nav_cur') == $v['alias']): ?>layui-this<?php endif; ?>" lay-unselect ><a href="<?php echo url('index/index',['view'=>$v['alias']]); ?>"><?php echo htmlentities($v["name"]); ?></a></li>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
+                <?php endif; ?>
+
+            </ul>
+
+            <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+            
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="/" target="_blank" title="前台">
+                        <i class="layui-icon layui-icon-website"></i>
+                    </a>
+                </li>
+
+                <!-- <li class="layui-nav-item" lay-unselect>
+                    <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心">
+                    <i class="layui-icon layui-icon-notice"></i>
+                        <span class="layui-badge-dot"></span>
+                    </a>
+                </li> -->
+
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="note">
+                        <i class="layui-icon layui-icon-note"></i>
+                    </a>
+                </li>
+
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="fullscreen">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </li>
+
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;">
+                        <cite>admin</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="set/user/info.html">基本资料</a></dd>
+                        <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+                        <hr>
+                        <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
+                    </dl>
+                </li>
+              
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="theme"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>
+                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
+                    <a href="javascript:;" layadmin-event="theme"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>
+            </ul>
+        </div>
+      
+        <!-- 侧边菜单 -->
+        <div class="layui-side layui-side-menu">
+            <div class="layui-side-scroll">
+                <div class="layui-logo layui-hide-xs layui-bg-black">
+                    <img style="height: 24px;vertical-align: text-bottom;" src="/static/admin/images/logo.png"/>
+                    <span>&nbsp;鸿蒙CMS</span>
+                </div>
+
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+
+                    <?php if(empty($hm_nav_list)): ?>
+                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;" lay-tips="主页" lay-direction="2">
+                            <i class="layui-icon layui-icon-home"></i>
+                            <cite>主页</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="console" class="layui-this">
+                                <a lay-href="home/console.html">控制台</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <?php else: if(is_array($hm_nav_list) || $hm_nav_list instanceof \think\Collection || $hm_nav_list instanceof \think\Paginator): $k = 0; $__LIST__ = $hm_nav_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($k % 2 );++$k;if(app('request')->session('hm_nav_cur') == $v['alias'] && !empty($v['submenu'])): if(is_array($v['submenu']) || $v['submenu'] instanceof \think\Collection || $v['submenu'] instanceof \think\Paginator): $k1 = 0; $__LIST__ = $v['submenu'];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$menu_v): $mod = ($k1 % 2 );++$k1;?>
+                        <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                            <a href="javascript:;" lay-tips="<?php echo htmlentities($menu_v['name']); ?>" lay-direction="2">
+                                <i class="layui-icon layui-icon-home"></i>
+                                <cite><?php echo htmlentities($menu_v["name"]); ?></cite>
+                            </a>
+                            <dl class="layui-nav-child">
+
+                                <?php if(!empty($menu_v['submenu'])): if(is_array($menu_v['submenu']) || $menu_v['submenu'] instanceof \think\Collection || $menu_v['submenu'] instanceof \think\Paginator): $k2 = 0; $__LIST__ = $menu_v['submenu'];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$menu_vv): $mod = ($k2 % 2 );++$k2;?>
+                                <dd>
+                                    <a href="<?php echo url($menu_vv['route']); ?>"><?php echo htmlentities($menu_vv["name"]); ?></a>
+                                </dd>
+                                <?php endforeach; endif; else: echo "" ;endif; ?>
+
+                                <?php endif; ?>
+                            </dl>
+                        </li>
+                        <?php endforeach; endif; else: echo "" ;endif; ?>
+
+                        <?php endif; ?>
+                        <?php endforeach; endif; else: echo "" ;endif; ?>
+                    <?php endif; ?>
+
+                </ul>
+            </div>
+        </div>
+
+        <!-- 页面标签 -->
+        <div class="layadmin-pagetabs" id="LAY_app_tabs">
+            <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+
+            <div class="layui-card layadmin-header" style="display: block; line-height: 40px;height: 40px;">
+                <div class="layui-breadcrumb" lay-filter="breadcrumb" >
+                    <a lay-href="">主页</a>
+                    <a><cite>主页一</cite></a>
+                </div>
+            </div>
+        </div>
+      
+        <!-- 主体内容 -->
+        <div class="layui-body" id="LAY_app_body">
+            <div class="layadmin-tabsbody-item layui-show" style="overflow-y: auto;margin-bottom: 40px;">
+<!--     
+        </div>
+</div> 
+-->
+
 
 <div class="layui-fluid">
 
@@ -59,7 +214,7 @@
 
 <script type="text/javascript">
 
-layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery','dropdown'], function(){
+layui.config({base: '/static/admin/layuiadmin/'}).use(['table','jquery','dropdown'], function(){
 ///
 var admin = layui.admin
 ,$ = layui.$
@@ -69,7 +224,7 @@ var admin = layui.admin
 
 table.render({
     elem: '#nav_list',
-    url: '{:url("auth/list")}',
+    url: '<?php echo url("auth/list"); ?>',
     toolbar: '#toolbar_navlist',
     defaultToolbar: [],
     title: '数据表',
@@ -142,7 +297,7 @@ table.on('tool(submenu_list)', function(obj){
 
 function menuDelete(obj){
     layer.confirm('你真的要删除吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("auth/delete")}', {'id':obj.data.id}, function(data) {
+        $.post('<?php echo url("auth/delete"); ?>', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
                 if (data.code>-1){
                     location.reload();
@@ -350,7 +505,7 @@ function menuAdd(obj,mtype){
         },
         yes: function(index, layero){
             var data = $("#add_menu_form").serialize();
-            $.post('{:url("auth/add")}', data, function(data) {
+            $.post('<?php echo url("auth/add"); ?>', data, function(data) {
                 showMsg(data.msg,function(){
                     if (data.code>-1){
                         layer.close(index);
@@ -374,7 +529,7 @@ function renderMenuTable(data){
 	    elem: '#menu_list',
 	    toolbar: '#toolbar_menulist',
 	    defaultToolbar: [],
-	    url: '{:url("auth/listpid")}?pid='+data.id,
+	    url: '<?php echo url("auth/listpid"); ?>?pid='+data.id,
 	    title: '数据表',
 	    cols: [[
 	    	{field:'id', title:'ID', width:30, templet:function(data){
@@ -396,7 +551,7 @@ function renderSubMenuTable(data){
 	    elem: '#submenu_list',
 	    toolbar: '#toolbar_submenulist',
 	    defaultToolbar: [],
-	    url: '{:url("auth/listpid")}?pid='+data.id,
+	    url: '<?php echo url("auth/listpid"); ?>?pid='+data.id,
 	    title: '数据表',
 	    cols: [[
 	    	{field:'id', title:'ID', width:30},
@@ -418,4 +573,28 @@ function renderSubMenuTable(data){
 </script>
 
 
-{include file="app/admin/view/common/footer.html" /}
+            </div>
+        </div>
+
+        <div class="layui-footer" style="height: 20px;line-height: 20px; text-align: center;">
+            鸿蒙CMS © <a href="#" target="_blank">HMCMS</a> All Rights Reserved.
+        </div>
+      
+    </div>
+</div>
+<!-- end -->
+
+<!-- 辅助元素，一般用于移动设备下遮罩 -->
+<div class="layadmin-body-shade" layadmin-event="shade"></div>
+
+
+<script>
+layui.config({
+    base: '/static/admin/layuiadmin/'
+}).extend({
+    index: 'lib/index'
+}).use('index');
+</script>
+  
+</body>
+</html>

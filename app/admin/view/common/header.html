@@ -1,101 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta charset="utf-8">
     <title>鸿蒙CMS</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="icon" href="/static/admin/images/logo.png"/>
-    <link rel="stylesheet" href="{__STATIC__}/admin/layui/css/layui.css?v={$version}">
-    <!-- <link rel="stylesheet" href="{__STATIC__}/admin/css/admin.css?v={$version}"> -->
-    <link rel="stylesheet" href="{__STATIC__}/admin/css/admin_style.css?v={$version}">
-    <style>
-    /* 移动端 */
-    @media screen and (max-width: 768px) {
-      .layui-layout-admin .layui-layout-left,
-      .layui-layout-admin .layui-body,
-      .layui-layout-admin .layui-footer{left: 0;}
-      .layui-layout-admin .layui-side{left: -300px;}
-    }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="{__STATIC__}/admin/layuiadmin/layui/css/layui.css?v={$version}" media="all">
+    <link rel="stylesheet" href="{__STATIC__}/admin/layuiadmin/style/admin.css?v={$version}" media="all">
+    <!-- <link rel="stylesheet" href="{__STATIC__}/admin/css/admin_style.css?v={$version}"> -->
+    <script src="{__STATIC__}/admin/layuiadmin/layui/layui.js?v={$version}"></script>
+    <script src="{__STATIC__}/admin/js/main.js?v={$version}"></script>
+      
 </head>
-<body>
+<body class="layui-layout-body">
+<!-- start -->
+<div id="LAY_app">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <!-- 头部区域 -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item layadmin-flexible" lay-unselect>
+                    <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                        <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                    </a>
+                </li>
 
-<div class="layui-layout layui-layout-admin">
-    <div class="layui-header">
-        <!-- <div class="layui-logo layui-hide-xs layui-bg-black">鸿蒙CMS</div> -->
-        <div class="layui-logo layui-hide-xs layui-bg-black"><img src="/static/admin/images/logo.png"/><span>&nbsp;鸿蒙CMS</span></div>
-        <!-- 头部区域（可配合layui 已有的水平导航） -->
-        <ul class="layui-nav layui-layout-left">
-          <!-- 移动端显示 -->
-            <li class="layui-nav-item layadmin-flexible" lay-unselect="" lay-header-event="menuLeft">
-                <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
-                    <!-- layui-icon-shrink-right|layui-icon-spread-left -->
-                    <i class="layui-icon layui-icon-shrink-right" id="hmcms_flexible"></i>
-                </a>
-            </li>
-            <li class="layui-nav-item layui-hide-xs"><a href="#">首页</a></li>
-            <li class="layui-nav-item layui-hide-xs"><a href="#">系统</a></li>
-            <li class="layui-nav-item layui-hide-xs"><a href="#">小说</a></li>
-            <li class="layui-nav-item layui-hide-xs"><a href="#">漫画</a></li>
-            <li class="layui-nav-item layui-hide-xs"><a href="#">视频</a></li>
-        </ul>
+                {if empty($hm_nav_list)}
+                    <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="{:url('index/sys')}">系统</a></li>
+                {else}
+                    {volist name="hm_nav_list" id="v" key="k"}
+                    <li class="layui-nav-item layui-hide-xs {if $Request.session.hm_nav_cur == $v['alias']}layui-this{/if}" lay-unselect ><a href="{:url('index/index',['view'=>$v['alias']])}">{$v["name"]}</a></li>
+                    {/volist}
+                {/if}
 
-        <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item layui-hide layui-show-md-inline-block">
-                <a href="javascript:;">admin</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">个人信息</a></dd>
-                    <dd><a href="">设置</a></dd>
-                    <dd><a href="">退出</a></dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
-                <a href="javascript:;">
-                    <i class="layui-icon layui-icon-more-vertical"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
-  
-    <div class="layui-side layui-bg-black">
-        <div class="layui-side-scroll">
-            <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">
-                        <i class="layui-icon layui-icon-home"></i>
-                        <cite>首页</cite>
+            </ul>
+
+            <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+            
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="/" target="_blank" title="前台">
+                        <i class="layui-icon layui-icon-website"></i>
+                    </a>
+                </li>
+
+                <!-- <li class="layui-nav-item" lay-unselect>
+                    <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心">
+                    <i class="layui-icon layui-icon-notice"></i>
+                        <span class="layui-badge-dot"></span>
+                    </a>
+                </li> -->
+
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="note">
+                        <i class="layui-icon layui-icon-note"></i>
+                    </a>
+                </li>
+
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="fullscreen">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </li>
+
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;">
+                        <cite>admin</cite>
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a href="{:url('index/index')}">首页</a></dd>
-                        <dd><a href="{:url('index/welcome')}" class="layui-this">欢迎页面</a></dd>
-                        <dd><a href="{:url('index/welcome')}">退出</a></dd>
-
-                        
+                        <dd><a lay-href="set/user/info.html">基本资料</a></dd>
+                        <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+                        <hr>
+                        <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">menu group 2</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">list 1</a></dd>
-                        <dd><a href="javascript:;">list 2</a></dd>
-                        <dd><a href="">超链接</a></dd>
-                    </dl>
+              
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="theme"><i class="layui-icon layui-icon-more-vertical"></i></a>
                 </li>
-                <li class="layui-nav-item"><a href="javascript:;">click menu item</a></li>
-                <li class="layui-nav-item"><a href="">the links</a></li>
+                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
+                    <a href="javascript:;" layadmin-event="theme"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>
             </ul>
         </div>
-    </div>
+      
+        <!-- 侧边菜单 -->
+        <div class="layui-side layui-side-menu">
+            <div class="layui-side-scroll">
+                <div class="layui-logo layui-hide-xs layui-bg-black">
+                    <img style="height: 24px;vertical-align: text-bottom;" src="/static/admin/images/logo.png"/>
+                    <span>&nbsp;鸿蒙CMS</span>
+                </div>
 
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
 
+                    {if empty($hm_nav_list)}
+                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;" lay-tips="主页" lay-direction="2">
+                            <i class="layui-icon layui-icon-home"></i>
+                            <cite>主页</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="console" class="layui-this">
+                                <a lay-href="home/console.html">控制台</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    {else}
+                        {volist name="hm_nav_list" id="v" key="k"}
+                        {if $Request.session.hm_nav_cur == $v['alias'] && !empty($v['submenu'])}
+
+                        {volist name="$v['submenu']" id="menu_v" key="k1"}
+                        <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                            <a href="javascript:;" lay-tips="{$menu_v['name']}" lay-direction="2">
+                                <i class="layui-icon layui-icon-home"></i>
+                                <cite>{$menu_v["name"]}</cite>
+                            </a>
+                            <dl class="layui-nav-child">
+
+                                {if !empty($menu_v['submenu'])}
+
+                                {volist name="$menu_v['submenu']" id="menu_vv" key="k2"}
+                                <dd>
+                                    <a href="{:url($menu_vv['route'])}">{$menu_vv["name"]}</a>
+                                </dd>
+                                {/volist}
+
+                                {/if}
+                            </dl>
+                        </li>
+                        {/volist}
+
+                        {/if}
+                        {/volist}
+                    {/if}
+
+                </ul>
+            </div>
+        </div>
+
+        <!-- 页面标签 -->
+        <div class="layadmin-pagetabs" id="LAY_app_tabs">
+            <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+
+            <div class="layui-card layadmin-header" style="display: block; line-height: 40px;height: 40px;">
+                <div class="layui-breadcrumb" lay-filter="breadcrumb" >
+                    <a lay-href="">主页</a>
+                    <a><cite>主页一</cite></a>
+                </div>
+            </div>
+        </div>
+      
+        <!-- 主体内容 -->
+        <div class="layui-body" id="LAY_app_body">
+            <div class="layadmin-tabsbody-item layui-show" style="overflow-y: auto;margin-bottom: 40px;">
 <!--     
-    </div>
+        </div>
 </div> 
 -->
-
