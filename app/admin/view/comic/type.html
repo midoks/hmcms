@@ -1,0 +1,164 @@
+{include file="app/admin/view/common/header.html" /}
+
+<div class="layui-fluid">
+	<div class="layui-col-md12" style="padding: 5px;">
+		<div class="layui-card">
+		  	
+		  	<div class="layui-card-body">
+		  		<script type="text/html" id="toolbar_list">
+				 	<div class="layui-btn-container">
+				    	<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon"></i>添加</button>
+				  	</div>
+				</script>
+			    <div id="list"></div>
+		  	</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery','dropdown'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,dropdown = layui.dropdown
+,table = layui.table;
+
+table.render({
+    elem: '#list',
+    url: '{:url("comic/classList")}',
+    toolbar: '#toolbar_list',
+    defaultToolbar: [],
+    title: '数据表',
+    cols: [[
+    	{field:'id', title:'ID', width:30},
+       	{field:'name', title:'分类名称',},
+        {field:'yname', title:'英文别名',},
+        {field:'sort', title:'排序',},
+       	{title:'操作', toolbar: '#nav-list-right-btn', width:180, fixed: 'right',}
+     ]],
+    page: true
+});
+
+table.on('tool(list)', function(obj){
+    switch(obj.event){
+        case 'delete':opDelete(obj);break;
+        case 'edit':opAdd(obj);break;
+    };
+});
+
+//头工具栏事件
+table.on('toolbar(list)', function(obj){
+    switch(obj.event){
+        case 'add':opAdd(obj);break;
+    };
+});
+// add
+function opAdd(obj){
+
+    var name = '';
+    var remark = '';
+    var yname = '';
+    var sort = 0;
+
+    if (obj.event == 'edit'){
+        name = obj.data.name;
+        remark = obj.data.remark;
+        yname = obj.data.yname;
+        sort = obj.data.sort;
+    }
+
+
+    var type_option_html = '';
+    var title_nav = '';
+
+    var btn_action = ['添加','取消'];
+    var layer_title = '添加';
+    if (obj.event == 'edit'){
+        btn_action = ['更新','取消'];
+        layer_title = '编辑';
+    }
+
+    // <div class="layui-form-item">\
+    //     <label class="layui-form-label">父级</label>\
+    //     <div class="layui-input-block">\
+    //         <select name="pid">\
+    //             <option value="0">无</option>\
+    //         </select>\
+    //     </div>\
+    // </div>\
+    layer.open({
+        area: ['400px',"300px"],
+        title:layer_title,
+        content: '<form id="form" class="layui-form layui-form-pane" style="padding:5px;">\
+            <div class="layui-form-item">\
+                <label class="layui-form-label">名称</label>\
+                <div class="layui-input-block">\
+                    <input type="text" name="name" value="'+name+'" autocomplete="off" placeholder="请输入名称" class="layui-input">\
+                </div>\
+            </div>\
+            <div class="layui-form-item">\
+                <label class="layui-form-label">英文</label>\
+                <div class="layui-input-block">\
+                    <input type="text" name="yname" value="'+yname+'" autocomplete="off" placeholder="请输入英文" class="layui-input">\
+                </div>\
+            </div>\
+            <div class="layui-form-item">\
+                <label class="layui-form-label">排序</label>\
+                <div class="layui-input-block">\
+                    <input type="number" name="sort" value="'+sort+'" autocomplete="off" class="layui-input">\
+                </div>\
+            </div>\
+            <input type="hidden" name="id" value="">\
+            <input type="hidden" name="pid" value="0">\
+        </form>',
+        btn: btn_action,
+        type: 1,
+        shadeClose: false,
+        success:function(){
+            form.render();
+            if (obj.event == 'edit'){
+                $('input[name="id"]').val(obj.data.id);
+            }
+        },
+        yes: function(index, layero){
+            var data = $("#form").serialize();
+            $.post('{:url("comic/classAdd")}', data, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.code>-1){
+                        layer.close(index);
+                        location.reload();
+                    }
+                },{icon:data.code>-1?1:2});
+            },'json');
+            return;
+        }
+    });
+}
+
+function opDelete(obj){
+    layer.confirm('你真的要删除吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('{:url("comic/classDelete")}', {'id':obj.data.id}, function(data) {
+            showMsg(data.msg,function(){
+                if (data.code>-1){
+                    location.reload();
+                }
+            },{icon:data.code>-1?1:2});
+        },'json');
+    });
+}
+
+///
+});
+</script>
+
+
+<script type="text/html" id="nav-list-right-btn">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}

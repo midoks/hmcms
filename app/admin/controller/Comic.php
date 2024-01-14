@@ -22,6 +22,11 @@ class Comic extends AdminBase
         return $this->fetch('comic/class');
     }
 
+    public function type()
+    {
+        return $this->fetch('comic/class');
+    }
+
 
     public function list(){
         $page = $this->request->param('page');
