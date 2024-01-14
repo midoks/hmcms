@@ -80,6 +80,7 @@ table.render({
     		}
     		return data.id;
     	}},
+        {field:'sort',title:'排序',width:20},
        	{field:'name', title:'名称',},
        	{title:'操作', toolbar: '#nav-list-right-btn', width:120, fixed: 'right',}
      ]],
@@ -221,6 +222,7 @@ function menuAdd(obj,mtype){
     var remark = '';
     var route = '';
     var icon = '';
+    var sort = 0;
 
     if (obj.event == 'edit'){
         name = obj.data.name;
@@ -228,6 +230,7 @@ function menuAdd(obj,mtype){
         remark = obj.data.remark;
         route = obj.data.route;
         icon = obj.data.icon;
+        sort = obj.data.sort;
     }
 
 
@@ -256,7 +259,7 @@ function menuAdd(obj,mtype){
     }
 
     layer.open({
-        area: ['400px',"400px"],
+        area: ['400px',"442px"],
         title:layer_title,
         content: '<form id="add_menu_form" class="layui-form layui-form-pane" style="padding:5px;">\
         	<div class="layui-form-item">\
@@ -299,6 +302,12 @@ function menuAdd(obj,mtype){
               <label class="layui-form-label">备注</label>\
               <div class="layui-input-block">\
                 <input type="text" name="remark" value="'+remark+'" autocomplete="off" placeholder="请输入备注" class="layui-input">\
+              </div>\
+            </div>\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">排序</label>\
+              <div class="layui-input-block">\
+                <input type="number" name="sort" value="'+sort+'" autocomplete="off" class="layui-input">\
               </div>\
             </div>\
             <input type="hidden" name="id" value="">\
@@ -383,6 +392,7 @@ function renderMenuTable(data){
 	    		}
 	    		return data.id;
     		}},
+            {field:'sort',title:'排序',width:20},
 	       	{field:'name', title:'名称',},
 	       	{title:'操作', toolbar: '#nav-list-right-btn', width:120, fixed: 'right'}
 	     ]],
@@ -401,6 +411,7 @@ function renderSubMenuTable(data){
 	    cols: [[
 	    	{field:'id', title:'ID', width:30},
 	       	{field:'name', title:'名称',},
+            {field:'sort',title:'排序',width:20},
 	       	{title:'操作', toolbar: '#nav-list-right-btn', width:120, fixed: 'right'}
 	     ]],
 	    page: false

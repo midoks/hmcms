@@ -21,7 +21,7 @@ class AdminMenu extends Base {
     }
 
    	public function submenu($pid, $recursion = false){
-   		$list = $this->where('pid', $pid)->select();
+   		$list = $this->where('pid', $pid)->order('sort')->select();
    		if ($list){
 			$list = $list->toArray();
 		}
@@ -65,11 +65,10 @@ class AdminMenu extends Base {
 			return $this->where('id', $id)->delete();
 		}
 		return true;
-   		
    	}
 
 	public function list() {
-		$list = $this->where('pid', '0')->select();
+		$list = $this->where('pid', '0')->order('sort')->select();
 		if ($list){
 			$list = $list->toArray();
 		}

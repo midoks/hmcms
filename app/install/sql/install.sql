@@ -174,7 +174,21 @@ CREATE TABLE `hm_comic` (
   KEY `addtime` (`addtime`) USING BTREE,
   KEY `pay` (`pay`) USING BTREE,
   KEY `ticket` (`ticket`) USING BTREE,
-  KEY `score` (`score`) USING BTREE,
-  KEY `uptime` (`uptime`)
+  KEY `score` (`score`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画列表';
+
+-- ----------------------------
+-- Table structure for hm_comic_class
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_comic_class`;
+CREATE TABLE `hm_comic_class` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) DEFAULT '' COMMENT '名称',
+  `yname` varchar(255) DEFAULT '' COMMENT '英文名称',
+  `sort` int DEFAULT '0' COMMENT '排序ID',
+  `pid` int DEFAULT '0' COMMENT '上级ID',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画分类';
 

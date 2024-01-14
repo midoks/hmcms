@@ -18,8 +18,8 @@ class Admin extends Base
     	View::assign("version", time());
 
         //菜单
-        $ammodel = AdminMenu::getInstance();
-        $list = $ammodel->list();
+        $menu = AdminMenu::getInstance();
+        $list = $menu->list();
         // var_dump($list);
         View::assign("hm_nav_list", $list);
         View::assign("hm_nav_cur", '');

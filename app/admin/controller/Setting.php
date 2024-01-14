@@ -12,9 +12,9 @@ use app\common\model\AdminRole;
 use app\common\model\Admin as AdminModel;
 
 
-class Auth extends Admin
+class Setting extends Admin
 {
-    public function index()
+    public function web()
     {
         return $this->fetch('auth/index');
     }
@@ -139,7 +139,6 @@ class Auth extends Admin
         $icon = $this->request->post('icon');
         $route = $this->request->post('route');
         $pid = $this->request->post('pid');
-        $sort = $this->request->post('sort');
         $id = $this->request->post('id');
 
         if (empty($name)){
@@ -152,7 +151,6 @@ class Auth extends Admin
             'remark' => $remark,
             'icon' => $icon,
             'route' => $route,
-            'sort' => $sort,
         ];
 
         if ($pid){

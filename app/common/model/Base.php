@@ -25,4 +25,20 @@ class Base extends Model {
         }
         return $field_list;
     }
+
+    public function getDataByIds($ids = []){
+        $data = $this->field(true)->whereIn('id', $ids)->select();
+        if ($data){
+            return $data->toArray();
+        }
+        return [];
+    }
+
+    public function getDataByID($id){
+        $data = $this->field(true)->where('id', $id)->find();
+        if ($data){
+            return $data->toArray();
+        }
+        return [];
+    }
 }

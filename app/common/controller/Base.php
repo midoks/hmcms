@@ -44,6 +44,11 @@ abstract class Base
     protected $middleware = [];
 
     /**
+     * 缓存model
+     */
+    public $__cacheModel = [];
+
+    /**
      * 构造方法
      * @access public
      * @param  App  $app  应用对象
@@ -57,12 +62,21 @@ abstract class Base
         $this->initialize();
     }
 
+    public  function model($name)
+    {   
+        if (isset($__cacheModel[$name])){
+            return $__cacheModel[$name];
+        } else{
+            $className = "app\common\model\\".$name;
+            $instance = $className::getInstance();
+            $__cacheModel[$name] = $instance;
+            return $instance;
+        }
+    }
+
     // 初始化
     protected function initialize()
     {}
-
-    public function loadModel($model = ''){
-    }
 
     /**
      * 验证数据
