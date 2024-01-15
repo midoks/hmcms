@@ -192,3 +192,19 @@ CREATE TABLE `hm_comic_class` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画分类';
 
+-- ----------------------------
+-- Table structure for hm_comic_type
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_comic_type`;
+CREATE TABLE `hm_comic_type` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) DEFAULT '' COMMENT '名称',
+  `pid` int DEFAULT '0' COMMENT '上级ID',
+  `field` varchar(64) DEFAULT '' COMMENT '字段',
+  `sort` int DEFAULT '0' COMMENT '排序ID',
+  `mode` tinyint(1) DEFAULT '0' COMMENT '0多选,1单选',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画类型';
+

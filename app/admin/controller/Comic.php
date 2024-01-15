@@ -97,5 +97,20 @@ class Comic extends AdminBase
     }
 
     // ************ class ************* //
+    // ************ type ************* //
+    public function typeList(){
+        $page = $this->request->param('page');
+        $limit = $this->request->param('limit');
+
+        $comic_type = $this->model('ComicType');
+        
+        $data = $comic_type->list($page, $limit);
+        $count = $data['total'];
+        $list = $data['data'];
+
+        return $this->layuiJson(0, 'ok', $list, $count);
+    }
+
+    // ************ type ************* //
 
 }
