@@ -145,9 +145,30 @@
             <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
 
             <div class="layui-card layadmin-header" style="display: block; line-height: 40px;height: 40px;">
-                <div class="layui-breadcrumb" lay-filter="breadcrumb" >
-                    <a lay-href="">主页</a>
-                    <a><cite>主页一</cite></a>
+                <div class="layui-breadcrumb" lay-filter="breadcrumb">
+                    {volist name="hm_nav_list" id="v" key="k"}
+                        {if $Request.session.hm_nav_cur == $v['alias'] && !empty($v['submenu'])}
+
+                        <a lay-href="">{$v["name"]}</a>
+                        {volist name="$v['submenu']" id="menu_v" key="k1"}
+                        <a><cite>{$menu_v["name"]}</cite></a>
+
+                                {if !empty($menu_v['submenu'])}
+                                {volist name="$menu_v['submenu']" id="menu_vv" key="k2"}
+                                <a><cite>{$menu_vv["name"]}</cite></a>
+                                {/volist}
+                                {/if}
+                         
+                        {/volist}
+
+                        {/if}
+                    {/volist}
+
+
+                    {{/* 
+                        <a lay-href="">主页</a><a><cite>主页一</cite></a>
+                    */}}
+       
                 </div>
             </div>
         </div>

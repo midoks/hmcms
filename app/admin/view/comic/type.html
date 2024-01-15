@@ -151,6 +151,15 @@ function opDelete(obj){
     });
 }
 
+var tps = '';
+$('.layui-input,.layui-textarea').click(function(){
+    console.log(this);
+    if($(this).attr('placeholder') != tps){
+        tps = $(this).attr('placeholder');
+        layer.tips(tps, $(this),{tips:1});
+    }
+});
+
 ///
 });
 </script>

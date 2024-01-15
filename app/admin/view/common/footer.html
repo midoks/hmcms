@@ -18,7 +18,16 @@ layui.config({
     base: '{__STATIC__}/admin/layuiadmin/'
 }).extend({
     index: 'lib/index'
-}).use('index');
+}).use(['index','table','jquery','dropdown'], function(){
+///
+
+var $ = layui.$
+,form = layui.form
+,dropdown = layui.dropdown;
+
+
+/// 
+});
 </script>
   
 </body>
