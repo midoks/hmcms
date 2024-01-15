@@ -24,7 +24,7 @@ class Comic extends AdminBase
 
     public function type()
     {
-        return $this->fetch('comic/class');
+        return $this->fetch('comic/type');
     }
 
 
@@ -103,7 +103,7 @@ class Comic extends AdminBase
         $limit = $this->request->param('limit');
 
         $comic_type = $this->model('ComicType');
-        
+
         $data = $comic_type->list($page, $limit);
         $count = $data['total'];
         $list = $data['data'];

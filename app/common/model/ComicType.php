@@ -40,7 +40,7 @@ class ComicType extends Base {
    	}
     
 	public function list($page=1, $size=10) {
-		$list = $this->field('id')->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
+		$list = $this->field('id')->where('pid',0)->order('sort')->paginate(['page'=>$page,'list_rows'=>$size]);
 		if ($list){
 			$list = $list->toArray();
 		}

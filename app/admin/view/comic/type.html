@@ -35,8 +35,9 @@ table.render({
     cols: [[
     	{field:'id', title:'ID', width:30},
        	{field:'name', title:'分类名称',},
-        {field:'yname', title:'英文别名',},
+        {field:'field', title:'字段',},
         {field:'sort', title:'排序',},
+        {field:'mode', title:'模式', templet:'#modeTpl'},
        	{title:'操作', toolbar: '#nav-list-right-btn', width:180, fixed: 'right',}
      ]],
     page: true
@@ -158,6 +159,14 @@ function opDelete(obj){
 <script type="text/html" id="nav-list-right-btn">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+</script>
+
+<script type="text/html" id="modeTpl">
+    {{# if (d.mode == 0){ }}
+    <a class="layui-btn layui-btn-xs">单选</a>
+    {{# } else if (d.mode == 1) { }}
+    <a class="layui-btn layui-btn-xs">多选</a>
+    {{# } }}
 </script>
 
 
