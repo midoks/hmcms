@@ -15,22 +15,49 @@ class Admin extends Base
         //权限验证
         $this->auth();
 
-    	View::assign("version", time());
-
         //菜单
-        $menu = AdminMenu::getInstance();
-        $list = $menu->list();
-        // var_dump($list);
+        $list = AdminMenu::getInstance()->list();
+        // var_dump($list);  
+
+        $controller = $this->request->controller();
+        $action = $this->request->action();
+        $list = $this->selectdMenu($list, $controller, $action);
+
+        // echo json_encode($list);
+        // exit;
+
+        // 全局变量
+        View::assign("version", time());
         View::assign("hm_nav_list", $list);
         View::assign("hm_nav_cur", '');
-
-
-
-        // var_dump($this->request->controller());
-        // var_dump($this->request->action());
     }
 
 
+    public function selectdMenu($list, $controller, $action){
+        $route_url = strtolower($controller).'/'.strtolower($action);
+        // var_dump($route_url);
+        // 一级栏目
+        foreach ($list as $k => $v) {
+            // 二级菜单
+            foreach ($v['submenu'] as $k1 => $v1) {
+                // 三级菜单
+                foreach ($v1['submenu'] as $k2 => $v2) {
+
+                    if ($route_url == 'index/index' && $k2 == 0 && $k1==0){
+                        $list[$k]['submenu'][$k1]['submenu'][$k2]['selected'] = true;
+                        $list[$k]['submenu'][$k1]['selected'] = true;
+                    }
+
+                    if (strtolower($v2['route']) == $route_url){
+                        $list[$k]['submenu'][$k1]['submenu'][$k2]['selected'] = true;
+                        $list[$k]['submenu'][$k1]['selected'] = true;
+                    }
+                }
+
+            }  
+        }
+        return $list;
+    }
 
     protected function makeUrl($s = 'index/index'){
         return \think\facade\Route::buildUrl($s);;

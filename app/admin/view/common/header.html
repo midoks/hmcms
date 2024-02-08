@@ -111,7 +111,8 @@
                         {if $Request.session.hm_nav_cur == $v['alias'] && !empty($v['submenu'])}
 
                         {volist name="$v['submenu']" id="menu_v" key="k1"}
-                        <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                        <!-- {$k1} {$menu_v['name']} {if isset($menu_v['selected']) && $menu_v['selected'] == true }layui-nav-itemed{/if} -->
+                        <li data-name="{$menu_v['name']}" class="layui-nav-item {if isset($menu_v['selected']) && $menu_v['selected'] == true }layui-nav-itemed{/if}">
                             <a href="javascript:;" lay-tips="{$menu_v['name']}" lay-direction="2">
                                 <i class="layui-icon {$menu_v['icon']}"></i>
                                 <cite>{$menu_v["name"]}</cite>
@@ -121,7 +122,7 @@
                                 {if !empty($menu_v['submenu'])}
 
                                 {volist name="$menu_v['submenu']" id="menu_vv" key="k2"}
-                                <dd>
+                                <dd class="{if isset($menu_vv['selected']) && $menu_vv['selected'] == true }layui-this{/if}">
                                     <a href="{:url($menu_vv['route'])}">{$menu_vv["name"]}</a>
                                 </dd>
                                 {/volist}
@@ -151,24 +152,21 @@
 
                         <a lay-href="">{$v["name"]}</a>
                         {volist name="$v['submenu']" id="menu_v" key="k1"}
-                        <a><cite>{$menu_v["name"]}</cite></a>
 
-                                {if !empty($menu_v['submenu'])}
-                                {volist name="$menu_v['submenu']" id="menu_vv" key="k2"}
+                            {if !empty($menu_v['submenu'])}
+                            {volist name="$menu_v['submenu']" id="menu_vv" key="k2"}
+
+                            {if isset($menu_vv['selected']) && $menu_vv['selected'] == true }
                                 <a><cite>{$menu_vv["name"]}</cite></a>
-                                {/volist}
-                                {/if}
+                            {/if}
+                            
+                            {/volist}
+                            {/if}
                          
                         {/volist}
 
                         {/if}
                     {/volist}
-
-
-                    {{/* 
-                        <a lay-href="">主页</a><a><cite>主页一</cite></a>
-                    */}}
-       
                 </div>
             </div>
         </div>
