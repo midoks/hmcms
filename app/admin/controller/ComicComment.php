@@ -9,12 +9,12 @@ use app\common\model\Comic as ComicModel;
 use think\facade\View;
 use think\facade\Db;
 
-class Comic extends AdminBase
+class ComicComment extends AdminBase
 {
 
     public function index()
     {
-        return $this->fetch('comic/index');
+        return $this->fetch('comic_comment/index');
     }
 
     public function class()
@@ -36,7 +36,7 @@ class Comic extends AdminBase
         $page = $this->request->param('page');
         $limit = $this->request->param('limit');
 
-        $comic = $this->model('Comic');
+        $comic = $this->model('ComicComment');
         $data = $comic->list();
         $count = $data['total'];
         $list = $data['data'];

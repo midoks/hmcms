@@ -12,18 +12,25 @@
 <!-- 辅助元素，一般用于移动设备下遮罩 -->
 <div class="layadmin-body-shade" layadmin-event="shade"></div>
 
-
+<script src="{__STATIC__}/admin/js/main.js?v={$version}"></script>
 <script>
 layui.config({
     base: '{__STATIC__}/admin/layuiadmin/'
 }).extend({
     index: 'lib/index'
-}).use(['index','table','jquery','dropdown'], function(){
+}).use(['layer','form','element','table','laydate','util','index','table','jquery','dropdown'], function(){
 ///
+var layer = layui.layer;
+var form = layui.form;
+var element = layui.element;
+var table = layui.table;
+var laydate = layui.laydate;
+var util = layui.util;
 
 var $ = layui.$
 ,form = layui.form
 ,dropdown = layui.dropdown;
+
 
 
 /// 

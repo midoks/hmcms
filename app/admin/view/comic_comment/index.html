@@ -1,0 +1,105 @@
+{include file="app/admin/view/common/header.html" /}
+
+<div class="layui-fluid">
+    <div class="layui-col-md12" style="padding: 5px;">
+        <div class="layui-card">
+            
+            <div class="layui-card-body">
+                <script type="text/html" id="toolbar_list">
+                    <div class="layui-inline mr0">
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"><i class="layui-icon"></i>删除</button>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <input name="times" class="layui-input date-icon h30" type="text" placeholder="请选择日期范围" autocomplete="off" lay-key="1">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline select100 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="zd" class="h30">
+                                <option value="text">评论内容</option>
+                                <option value="mid">漫画ID</option>
+                                <option value="uid">会员ID</option>
+                                <option value="ip">评论IP</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <input type="text" name="key" placeholder="请输入关键字" autocomplete="off" class="layui-input h30" value="">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <button class="layui-btn layui-btn-sm" data-id="comment" lay-submit lay-filter="table-sreach">
+                            <i class="layui-icon">&#xe615;</i>搜索
+                        </button>
+                    </div>
+                </script>
+                <div id="list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery','dropdown'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,dropdown = layui.dropdown
+,table = layui.table;
+
+table.render({
+    elem: '#list',
+    url: '{:url("comiccomment/list")}',
+    toolbar: '#toolbar_list',
+    defaultToolbar: [],
+    title: '数据表',
+    cols: [[
+        {type: 'checkbox', fixed: 'left'},
+        {field:'id', title:'ID', width:30},
+        {field:'mid', title:'漫画ID'},
+        {field:'uid', title:'会员ID'},
+        {field:'reply_num', title:'回复总数'},
+        {field:'text', title:'内容'},
+        {field:'machine', title:'来源'},
+        {field:'ip', title:'IP'},
+        {field:'zan', title:'赞', width:20,},
+        {field:'create_time', title:'评论时间',width:170,},
+        {title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right'}
+     ]],
+    page: true
+});
+
+table.on('tool(list)', function(obj){
+    switch(obj.event){
+        case 'delete':opDelete(obj);break;
+        case 'edit':opAdd(obj);break;
+    };
+});
+
+//头工具栏事件
+table.on('toolbar(list)', function(obj){
+    switch(obj.event){
+        case 'add':opAdd(obj);break;
+    };
+});
+
+///
+});
+</script>
+
+
+<script type="text/html" id="cmdTpl">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}

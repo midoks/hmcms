@@ -26,15 +26,16 @@ class Admin extends Base
         // echo json_encode($list);
         // exit;
 
+        // var_dump($controller, $action);
+
         // 全局变量
         View::assign("version", time());
-        if(!empty($list)){
-            $alias = $list[0]['alias'];
-            View::assign("hm_nav_cur", $alias); 
-            session('hm_nav_cur', $alias);
-        }
         View::assign("hm_nav_list", $list);
-        
+        // if(!empty($list)){
+        //     $alias = $list[0]['alias'];
+        //     View::assign("hm_nav_cur", $alias); 
+        //     session('hm_nav_cur', $alias);
+        // }
     }
 
 
