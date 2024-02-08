@@ -28,8 +28,13 @@ class Admin extends Base
 
         // 全局变量
         View::assign("version", time());
+        if(!empty($list)){
+            $alias = $list[0]['alias'];
+            View::assign("hm_nav_cur", $alias); 
+            session('hm_nav_cur', $alias);
+        }
         View::assign("hm_nav_list", $list);
-        View::assign("hm_nav_cur", '');
+        
     }
 
 

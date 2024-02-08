@@ -208,3 +208,60 @@ CREATE TABLE `hm_comic_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画类型';
 
+-- ----------------------------
+-- Table structure for hm_comic_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_comic_comment`;
+CREATE TABLE `hm_comic_comment` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `mid` int DEFAULT '0' COMMENT '漫画ID',
+  `uid` int DEFAULT '0' COMMENT '用户ID',
+  `text` varchar(500) DEFAULT '' COMMENT '评论内容',
+  `reply_num` int DEFAULT '0' COMMENT '回复总数',
+  `machine` varchar(64) DEFAULT '' COMMENT 'pc/wap/app',
+  `ip` varchar(30) DEFAULT '' COMMENT 'IP',
+  `zan` int DEFAULT '0' COMMENT '被顶次数',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `mid` (`mid`) USING BTREE,
+  KEY `uid` (`uid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画评论记录';
+
+-- ----------------------------
+-- Table structure for hm_comic_comment_reply
+-- ----------------------------
+CREATE TABLE `hm_comic_comment_reply` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cid` int DEFAULT '0' COMMENT '评论ID',
+  `fid` int DEFAULT '0' COMMENT '上级ID',
+  `mid` int DEFAULT '0' COMMENT '漫画ID',
+  `bid` int DEFAULT '0' COMMENT '小说ID',
+  `uid` int DEFAULT '0' COMMENT '用户ID',
+  `text` varchar(500) DEFAULT '' COMMENT '评论内容',
+  `machine` varchar(64) DEFAULT '' COMMENT 'pc/wap/app',
+  `ip` varchar(30) DEFAULT '' COMMENT 'ip',
+  `zan` int DEFAULT '0' COMMENT '被顶次数',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `mid` (`mid`) USING BTREE,
+  KEY `uid` (`uid`) USING BTREE,
+  KEY `fid` (`fid`) USING BTREE,
+  KEY `cid` (`cid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画评论回复';
+
+-- ----------------------------
+-- Table structure for hm_comic_comment_zan
+-- ----------------------------
+CREATE TABLE `hm_comic_comment_zan` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cid` int DEFAULT '0' COMMENT '评论ID',
+  `fid` tinyint(1) DEFAULT '0' COMMENT '0评论，1回复',
+  `uid` int DEFAULT '0' COMMENT '用户ID',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid_cid_fid` (`cid`,`fid`,`uid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画评论顶记录';
+

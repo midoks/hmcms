@@ -14,10 +14,12 @@ class Index extends Admin
 {
 
 
-    public function index($view = 'index')
+    public function index($view = '')
     {
-        View::assign('hm_nav_cur',$view);
-        session('hm_nav_cur', $view);
+        if (!empty($view)){
+            View::assign('hm_nav_cur',$view);
+            session('hm_nav_cur', $view);
+        } 
         return $this->fetch('index/index');
     }
 
