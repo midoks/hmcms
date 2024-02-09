@@ -23,12 +23,16 @@ class ComicComment extends Base {
     
 	public function list($page=1, $size=10, $wh = []) {
 
-		// var_dump($wh);
-
 		$m = $this->field('id');
 
-		 if (!empty($wh['zd']) && !empty($wh['key'])) {
-            $m->where($wh['zd'], $wh['key']);
+		if (!empty($wh['zd']) && !empty($wh['key'])) {
+		 	$zd = $wh['zd'];
+		 	$key = $wh['key'];
+		 	if ($zd == 'text' || $zd == 'ip') {
+                $m->where($zd, 'like', $key);
+            } else if ($zd == 'mid' || $zd == 'uid') {
+                $m->where($zd, $key);
+            }
         }
 
 		if (!empty($wh['kstime'])) {
@@ -38,11 +42,7 @@ class ComicComment extends Base {
         	$m->whereTime('create_time', '<=', $wh['jstime']);
         }
 
-
 		$list = $m->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
-
-		// var_dump($list->toArray()->getLastSql());
-
 
 		if ($list){
 			$list = $list->toArray();

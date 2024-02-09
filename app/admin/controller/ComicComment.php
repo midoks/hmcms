@@ -51,7 +51,7 @@ class ComicComment extends AdminBase
             'zd' => $zd,
             'key' => $key,
             'kstime' => $kstime,
-            'jstime' => $kstime,
+            'jstime' => $jstime,
         ];
 
         $data = $comic->list($page, $limit, $wh);
