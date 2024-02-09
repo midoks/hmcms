@@ -38,9 +38,12 @@ class ComicComment extends Base {
         	$m->whereTime('create_time', '<=', $wh['jstime']);
         }
 
+
 		$list = $m->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
 
-		
+		// var_dump($list->toArray()->getLastSql());
+
+
 		if ($list){
 			$list = $list->toArray();
 		}

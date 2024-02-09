@@ -5,6 +5,7 @@
 
 return [
     'app_debug'        => true,
+    'app_trace'        => false,
     // 应用地址
     'app_host'         => env('APP_HOST', ''),
     // 应用的命名空间
