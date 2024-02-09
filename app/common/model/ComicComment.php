@@ -21,8 +21,26 @@ class ComicComment extends Base {
         return self::$instance;
     }
     
-	public function list($page=1, $size=10) {
-		$list = $this->field('id')->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
+	public function list($page=1, $size=10, $wh = []) {
+
+		// var_dump($wh);
+
+		$m = $this->field('id');
+
+		 if (!empty($wh['zd']) && !empty($wh['key'])) {
+            $m->where($wh['zd'], $wh['key']);
+        }
+
+		if (!empty($wh['kstime'])) {
+            $m->whereTime('create_time', '>=', $wh['kstime']);
+        }
+        if (!empty($wh['jstime'])) {
+        	$m->whereTime('create_time', '<=', $wh['jstime']);
+        }
+
+		$list = $m->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
+
+		
 		if ($list){
 			$list = $list->toArray();
 		}
@@ -33,7 +51,7 @@ class ComicComment extends Base {
 	}
 
 	public function dataSave($data, $id=null){
-		if ($id>0){
+		if ( $id > 0 ){
             return $this->where('id',$id)->save($data);
         } else{
             return $this->save($data);

@@ -36,8 +36,25 @@ class ComicComment extends AdminBase
         $page = $this->request->param('page');
         $limit = $this->request->param('limit');
 
+        $zd = $this->request->param('zd');
+        $key = $this->request->param('key','');
+        $kstime = $this->request->param('kstime');
+        $jstime = $this->request->param('jstime');
+
+        if( $page == 0 ) {
+            $page=1;
+        }
+
         $comic = $this->model('ComicComment');
-        $data = $comic->list();
+
+        $wh = [
+            'zd' => $zd,
+            'key' => $key,
+            'kstime' => $kstime,
+            'jstime' => $kstime,
+        ];
+
+        $data = $comic->list($page, $limit, $wh);
         $count = $data['total'];
         $list = $data['data'];
 
