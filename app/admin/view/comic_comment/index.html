@@ -48,7 +48,7 @@
 
 <script type="text/javascript">
 
-layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery','dropdown'], function(){
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
 ///
 var admin = layui.admin
 ,$ = layui.$
@@ -79,6 +79,7 @@ table.render({
 });
 
 table.on('tool(list)', function(obj){
+    console.log(obj);
     switch(obj.event){
         case 'delete':opDelete(obj);break;
         case 'edit':opAdd(obj);break;
@@ -87,6 +88,7 @@ table.on('tool(list)', function(obj){
 
 //头工具栏事件
 table.on('toolbar(list)', function(obj){
+    console.log(obj);
     switch(obj.event){
         case 'add':opAdd(obj);break;
     };
