@@ -9,12 +9,12 @@ use app\common\model\Comic as ComicModel;
 use think\facade\View;
 use think\facade\Db;
 
-class ComicComment extends AdminBase
+class User extends AdminBase
 {
 
     public function index()
     {
-        return $this->fetch('comic_comment/index');
+        return $this->fetch('user/index');
     }
 
 
@@ -31,7 +31,7 @@ class ComicComment extends AdminBase
             $page=1;
         }
 
-        $m = $this->model('ComicComment');
+        $m = $this->model('user');
 
         $wh = [
             'zd' => $zd,
@@ -54,7 +54,7 @@ class ComicComment extends AdminBase
             return $this->returnJson(-1, '删除ID不能空!');
         }
 
-        $m = $this->model('ComicComment');
+        $m = $this->model('user');
         $res = $m->dataDelete($id);
         if (!$res){
             return $this->returnJson(-1, '删除失败!');
@@ -66,7 +66,7 @@ class ComicComment extends AdminBase
 
     public function batchDel(){
         $ids = $this->request->param('id');
-        $m = $this->model('ComicComment');
+        $m = $this->model('user');
 
         foreach ($ids as $k => $id) {
             $res = $m->dataDelete($id);

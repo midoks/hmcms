@@ -21,7 +21,9 @@ class Index extends Admin
                 // var_dump($v['submenu']);
                 $menu_num = count($v['submenu']);
                 if ($menu_num>0){
-                    $route_url = $v['submenu'][0]['submenu'][0]['route'];
+                    if (count($v['submenu'][0]['submenu'])>0){
+                        $route_url = $v['submenu'][0]['submenu'][0]['route'];
+                    }
                 }
             }
         }

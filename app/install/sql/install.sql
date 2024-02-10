@@ -91,35 +91,53 @@ CREATE TABLE IF NOT EXISTS `hm_admin_role` (
 DROP TABLE IF EXISTS `hm_user`;
 CREATE TABLE `hm_user` (
   `id` int NOT NULL,
-  `signing` tinyint(1) DEFAULT '0' COMMENT '是否签约|0:未,1:已',
   `name` varchar(64) DEFAULT '' COMMENT '用户名',
+  `tel` varchar(15) DEFAULT '' COMMENT '手机',
+  `email` varchar(128) DEFAULT '' COMMENT '邮箱',
   `pass` varchar(64) DEFAULT '' COMMENT '密码',
   `nick` varchar(64) DEFAULT '' COMMENT '昵称',
-  `tel` varchar(15) DEFAULT '' COMMENT '手机',
-  `pic` varchar(255) DEFAULT '' COMMENT '头像地址',
-  `qq` varchar(20) DEFAULT '' COMMENT 'QQ',
-  `email` varchar(128) DEFAULT '' COMMENT '邮箱',
-  `city` varchar(128) DEFAULT '' COMMENT '地区',
-  `sex` varchar(5) DEFAULT '保密' COMMENT '性别',
-  `text` varchar(255) DEFAULT '' COMMENT '介绍',
   `vip` tinyint(1) DEFAULT '0' COMMENT '是否VIP',
   `rmb` decimal(6,2) DEFAULT '0.00' COMMENT '金额',
   `cion` int DEFAULT '0' COMMENT '金币',
   `ticket` int DEFAULT '0' COMMENT '月票',
   `viptime` int DEFAULT '0' COMMENT 'vip到期时间',
+  `pic` varchar(255) DEFAULT '' COMMENT '头像地址',
+  `qq` varchar(20) DEFAULT '' COMMENT 'QQ',
+  `city` varchar(128) DEFAULT '' COMMENT '地区',
+  `sex` varchar(5) DEFAULT '保密' COMMENT '性别',
+  `text` varchar(255) DEFAULT '' COMMENT '介绍',
   `sid` tinyint(1) DEFAULT '0' COMMENT '状态｜1:锁定,0:正常',
   `cid` tinyint(1) DEFAULT '0' COMMENT '认证状态',
+  `signing` tinyint(1) DEFAULT '0' COMMENT '是否签约|0:未,1:已',
   `realname` varchar(128) DEFAULT '' COMMENT '真实名字',
   `idcard` varchar(64) DEFAULT '' COMMENT '身份证号码',
   `bank` varchar(128) DEFAULT '' COMMENT '收款银行',
   `card` varchar(128) DEFAULT '' COMMENT '收款账号',
   `bankcity` varchar(255) DEFAULT '' COMMENT '开户行地址',
-  `pass_err` int DEFAULT '0' COMMENT '密码错误次数',
+  `pass_err_nums` int DEFAULT '0' COMMENT '密码错误次数',
   `rz_type` tinyint(1) DEFAULT '1' COMMENT '认证方式，1个人，2企业',
   `rz_msg` varchar(128) DEFAULT '' COMMENT '认证失败原因',
   `create_time` datetime NOT NULL COMMENT '注册时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`) USING BTREE,
+  KEY `email` (`email`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='用户';
+
+-- ----------------------------
+-- Table structure for hm_message
+-- ----------------------------
+CREATE TABLE `hm_message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0' COMMENT '用户ID',
+  `name` varchar(64) DEFAULT '' COMMENT '标题',
+  `text` varchar(255) DEFAULT '' COMMENT '内容',
+  `did` tinyint(1) DEFAULT '0' COMMENT '0:未读,1:已读',
+  `create_time` datetime NOT NULL COMMENT '添加时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='用户消息';
 
 -- ----------------------------
 -- Table structure for hm_comic
@@ -236,7 +254,6 @@ CREATE TABLE `hm_comic_comment_reply` (
   `cid` int DEFAULT '0' COMMENT '评论ID',
   `fid` int DEFAULT '0' COMMENT '上级ID',
   `mid` int DEFAULT '0' COMMENT '漫画ID',
-  `bid` int DEFAULT '0' COMMENT '小说ID',
   `uid` int DEFAULT '0' COMMENT '用户ID',
   `text` varchar(500) DEFAULT '' COMMENT '评论内容',
   `machine` varchar(64) DEFAULT '' COMMENT 'pc/wap/app',
@@ -262,6 +279,6 @@ CREATE TABLE `hm_comic_comment_zan` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uid_cid_fid` (`cid`,`fid`,`uid`) USING BTREE
+  UNIQUE KEY `ucf_id` (`cid`,`fid`,`uid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画评论顶记录';
 

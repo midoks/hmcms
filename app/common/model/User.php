@@ -6,11 +6,11 @@ use think\Db;
 
 class User extends Base {
 
-	// protected $table = 'hm_comic';
-
 	protected $name = 'user';
 	protected $pk = 'id';
 
+	// 开启自动写入时间戳字段
+	protected $autoWriteTimestamp = true;
 
 	private static $instance = NULL;
     public static function getInstance() {
@@ -20,28 +20,12 @@ class User extends Base {
         return self::$instance;
     }
     
-	 public function list($page=1, $size=10) {
+	 public function list($page=1, $size=10, $wh = []) {
 		$list = $this->field('id')->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
 		if ($list){
 			$list = $list->toArray();
 		}
 		return $list;
-	}
-
-	public function getDataByIds($ids = []){
-		$data = $this->field(true)->whereIn('id', $ids)->select();
-		if ($data){
-			return $data->toArray();
-		}
-		return [];
-	}
-
-	public function getDataByID($id){
-		$data = $this->field(true)->where('id', $id)->find();
-		if ($data){
-			return $data->toArray();
-		}
-		return [];
 	}
 
 

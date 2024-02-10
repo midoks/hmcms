@@ -4,9 +4,9 @@ namespace app\common\model;
 
 use think\Db;
 
-class ComicComment extends Base {
+class ComicCommentReply extends Base {
 
-	protected $name = 'comic_comment';
+	protected $name = 'comic_comment_reply';
 	protected $pk = 'id';
 
 	// 开启自动写入时间戳字段

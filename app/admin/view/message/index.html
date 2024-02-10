@@ -7,7 +7,7 @@
             <div class="layui-card-body">
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('comiccomment/batchDel')}','comic_comment')">批量删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('message/batchDel')}','message')">批量删除</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -16,14 +16,23 @@
                         </div>
                     </div>
 
+
                     <div class="layui-inline select100 mr0">
                         <div class="layui-input-inline h30">
-                            <select name="zd" class="h30">
-                                <option value="0">无</option>
+                            <select name="name">
+                                <option value="">全部</option>
+                                <option value="系统消息">系统消息</option>
+                                <option value="在线购买成功">在线购买成功</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline select100 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="zd">
+                                <option value="0">全部</option>
                                 <option value="text">评论内容</option>
-                                <option value="mid">漫画ID</option>
                                 <option value="uid">会员ID</option>
-                                <option value="ip">评论IP</option>
                             </select>
                         </div>
                     </div>
@@ -35,11 +44,11 @@
                     </div>
 
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm" data-id="comic_comment" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
+                        <button class="layui-btn layui-btn-sm" data-id="message" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
                         </button>
                     </div>
                 </div>
-                <div id="comic_comment"></div>
+                <div id="message"></div>
             </div>
         </div>
     </div>
@@ -56,42 +65,22 @@ var admin = layui.admin
 ,table = layui.table;
 
 table.render({
-    elem: '#comic_comment',
-    url: '{:url("comiccomment/list")}',
-    // toolbar: '#toolbar_list',
+    elem: '#message',
+    url: '{:url("message/list")}',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
         {type: 'checkbox', fixed: 'left'},
         {field:'id', title:'ID', width:30},
-        {field:'mid', title:'漫画ID'},
         {field:'uid', title:'会员ID'},
-        {field:'reply_num', title:'回复总数'},
+        {field:'name', title:'类型'},
         {field:'text', title:'内容'},
-        {field:'machine', title:'来源'},
-        {field:'ip', title:'IP'},
-        {field:'zan', title:'赞', width:20,},
+        {field:'did', title:'是否已读'},
         {field:'create_time', title:'评论时间',width:170,},
         {title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right'}
      ]],
     page: true
 });
-
-// table.on('tool(list)', function(obj){
-//     console.log(obj);
-//     switch(obj.event){
-//         case 'delete':opDelete(obj);break;
-//         case 'edit':opAdd(obj);break;
-//     };
-// });
-
-//头工具栏事件
-// table.on('toolbar(list)', function(obj){
-//     console.log(obj);
-//     switch(obj.event){
-//         case 'add':opAdd(obj);break;
-//     };
-// });
 
 ///
 });
@@ -99,7 +88,7 @@ table.render({
 
 
 <script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('comiccomment/del')}','{{d.id}}')">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('message/del')}','{{d.id}}')">删除</a>
 </script>
 
 

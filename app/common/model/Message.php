@@ -4,9 +4,9 @@ namespace app\common\model;
 
 use think\Db;
 
-class ComicComment extends Base {
+class Message extends Base {
 
-	protected $name = 'comic_comment';
+	protected $name = 'message';
 	protected $pk = 'id';
 
 	// 开启自动写入时间戳字段
@@ -21,14 +21,13 @@ class ComicComment extends Base {
         return self::$instance;
     }
     
-	public function list($page=1, $size=10, $wh = []) {
-
+	 public function list($page=1, $size=10, $wh = []) {
 		$m = $this->field('id');
 
 		if (!empty($wh['zd']) && !empty($wh['key'])) {
 		 	$zd = $wh['zd'];
 		 	$key = $wh['key'];
-		 	if ($zd == 'text' || $zd == 'ip') {
+		 	if ($zd == 'text') {
                 $m->where($zd, 'like', $key);
             } else if ($zd == 'mid' || $zd == 'uid') {
                 $m->where($zd, $key);

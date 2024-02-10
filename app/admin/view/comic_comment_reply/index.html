@@ -7,7 +7,7 @@
             <div class="layui-card-body">
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('comiccomment/batchDel')}','comic_comment')">批量删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('comiccommentreply/batchDel')}','comic_comment')">批量删除</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -23,6 +23,7 @@
                                 <option value="text">评论内容</option>
                                 <option value="mid">漫画ID</option>
                                 <option value="uid">会员ID</option>
+                                <option value="fid">上级ID</option>
                                 <option value="ip">评论IP</option>
                             </select>
                         </div>
@@ -57,16 +58,15 @@ var admin = layui.admin
 
 table.render({
     elem: '#comic_comment',
-    url: '{:url("comiccomment/list")}',
-    // toolbar: '#toolbar_list',
+    url: '{:url("comiccommentreply/list")}',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
         {type: 'checkbox', fixed: 'left'},
         {field:'id', title:'ID', width:30},
+        {field:'fid', title:'上级ID'},
         {field:'mid', title:'漫画ID'},
         {field:'uid', title:'会员ID'},
-        {field:'reply_num', title:'回复总数'},
         {field:'text', title:'内容'},
         {field:'machine', title:'来源'},
         {field:'ip', title:'IP'},
@@ -77,29 +77,12 @@ table.render({
     page: true
 });
 
-// table.on('tool(list)', function(obj){
-//     console.log(obj);
-//     switch(obj.event){
-//         case 'delete':opDelete(obj);break;
-//         case 'edit':opAdd(obj);break;
-//     };
-// });
-
-//头工具栏事件
-// table.on('toolbar(list)', function(obj){
-//     console.log(obj);
-//     switch(obj.event){
-//         case 'add':opAdd(obj);break;
-//     };
-// });
-
-///
 });
 </script>
 
 
 <script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('comiccomment/del')}','{{d.id}}')">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('comiccommentreply/del')}','{{d.id}}')">删除</a>
 </script>
 
 
