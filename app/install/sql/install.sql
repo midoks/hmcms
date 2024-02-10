@@ -139,6 +139,23 @@ CREATE TABLE `hm_message` (
   KEY `uid` (`uid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='用户消息';
 
+
+-- ----------------------------
+-- Table structure for hm_feedback
+-- ----------------------------
+CREATE TABLE `hm_feedback` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `uid` int(11) NOT NULL COMMENT '用户ID',
+  `name` varchar(100) NOT NULL COMMENT '类型名称',
+  `text` text NOT NULL COMMENT '内容',
+  `images` text NOT NULL COMMENT '图片列表',
+  `create_time` datetime NOT NULL COMMENT '添加时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`) USING BTREE,
+  KEY `name` (`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='意见反馈';
+
 -- ----------------------------
 -- Table structure for hm_comic
 -- ----------------------------

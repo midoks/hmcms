@@ -7,7 +7,7 @@
             <div class="layui-card-body">
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('message/batchDel')}','message')">批量删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('feedback/batchDel')}','feedback')">批量删除</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -21,8 +21,11 @@
                         <div class="layui-input-inline h30">
                             <select name="name">
                                 <option value="">全部</option>
-                                <option value="系统消息">系统消息</option>
-                                <option value="在线购买成功">在线购买成功</option>
+                                <option value="内容报错">内容报错</option>
+                                <option value="资源找片">资源找片</option>
+                                <option value="功能建议">功能建议</option>
+                                <option value="充值反馈">充值反馈</option>
+                                <option value="其他">其他</option>
                             </select>
                         </div>
                     </div>
@@ -31,7 +34,6 @@
                         <div class="layui-input-inline h30">
                             <select name="zd">
                                 <option value="0">全部</option>
-                                <option value="text">评论内容</option>
                                 <option value="uid">会员ID</option>
                             </select>
                         </div>
@@ -44,11 +46,11 @@
                     </div>
 
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm" data-id="message" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
+                        <button class="layui-btn layui-btn-sm" data-id="feedback" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
                         </button>
                     </div>
                 </div>
-                <div id="message"></div>
+                <div id="feedback"></div>
             </div>
         </div>
     </div>
@@ -65,8 +67,8 @@ var admin = layui.admin
 ,table = layui.table;
 
 table.render({
-    elem: '#message',
-    url: '{:url("message/list")}',
+    elem: '#feedback',
+    url: '{:url("feedback/list")}',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
@@ -75,7 +77,6 @@ table.render({
         {field:'uid', title:'会员ID'},
         {field:'name', title:'类型'},
         {field:'text', title:'内容'},
-        {field:'did', title:'是否已读',toolbar: '#didTpl'},
         {field:'create_time', title:'评论时间',width:170,},
         {title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right'}
      ]],
@@ -86,14 +87,6 @@ table.render({
 });
 </script>
 
-
-<script type="text/html" id="didTpl">
-    {{#  if(d.did == 1){ }}
-    <span class="layui-btn layui-btn-xs">已读</span>
-    {{#  } else { }}
-    <span class="layui-btn layui-btn-xs layui-btn-danger">未读</span>
-    {{#  } }}
-</script>
 
 <script type="text/html" id="cmdTpl">
     <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('message/del')}','{{d.id}}')">删除</a>

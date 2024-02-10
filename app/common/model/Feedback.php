@@ -4,9 +4,9 @@ namespace app\common\model;
 
 use think\Db;
 
-class Message extends Base {
+class Feedback extends Base {
 
-	protected $name = 'message';
+	protected $name = 'feedback';
 	protected $pk = 'id';
 
 	// 开启自动写入时间戳字段
@@ -29,7 +29,7 @@ class Message extends Base {
 		 	$key = $wh['key'];
 		 	if ($zd == 'text') {
                 $m->where($zd, 'like', $key);
-            } else if ( $zd == 'uid') {
+            } else if ($zd == 'uid') {
                 $m->where($zd, $key);
             }
         }

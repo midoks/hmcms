@@ -9,12 +9,12 @@ use app\common\model\Comic as ComicModel;
 use think\facade\View;
 use think\facade\Db;
 
-class Message extends AdminBase
+class Feedback extends AdminBase
 {
 
     public function index()
     {
-        return $this->fetch('message/index');
+        return $this->fetch('feedback/index');
     }
 
 
@@ -22,20 +22,18 @@ class Message extends AdminBase
         $page = $this->request->param('page');
         $limit = $this->request->param('limit');
 
-        $name = $this->request->param('name');
-        $kstime = $this->request->param('kstime');
-        $jstime = $this->request->param('jstime');
         $zd = $this->request->param('zd');
         $key = $this->request->param('key','');
+        $kstime = $this->request->param('kstime');
+        $jstime = $this->request->param('jstime');
 
         if( $page == 0 ) {
             $page=1;
         }
 
-        $m = $this->model('message');
+        $m = $this->model('feedback');
 
         $wh = [
-            'name' => $name,
             'zd' => $zd,
             'key' => $key,
             'kstime' => $kstime,
@@ -56,7 +54,7 @@ class Message extends AdminBase
             return $this->returnJson(-1, '删除ID不能空!');
         }
 
-        $m = $this->model('message');
+        $m = $this->model('feedback');
         $res = $m->dataDelete($id);
         if (!$res){
             return $this->returnJson(-1, '删除失败!');
@@ -68,7 +66,7 @@ class Message extends AdminBase
 
     public function batchDel(){
         $ids = $this->request->param('id');
-        $m = $this->model('message');
+        $m = $this->model('feedback');
 
         foreach ($ids as $k => $id) {
             $res = $m->dataDelete($id);
