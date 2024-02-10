@@ -124,6 +124,27 @@ CREATE TABLE `hm_user` (
   KEY `email` (`email`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='用户';
 
+
+-- ----------------------------
+-- Table structure for hm_order
+-- ----------------------------
+CREATE TABLE `hm_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0' COMMENT '用户ID',
+  `dd` varchar(64) DEFAULT '' COMMENT '订单号',
+  `rmb` decimal(6,2) DEFAULT '0.00' COMMENT '金额',
+  `pid` tinyint(1) DEFAULT '0' COMMENT '状态',
+  `text` varchar(255) DEFAULT '' COMMENT '备注',
+  `zd` varchar(255) DEFAULT '' COMMENT '预增加字段',
+  `type` varchar(20) DEFAULT '' COMMENT '支付方式',
+  `channel` varchar(200) NOT NULL COMMENT '渠道',
+  `create_time` datetime NOT NULL COMMENT '订单时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `dd` (`dd`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='订单记录';
+
+
 -- ----------------------------
 -- Table structure for hm_message
 -- ----------------------------
