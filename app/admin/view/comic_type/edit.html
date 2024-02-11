@@ -1,0 +1,38 @@
+{include file="app/admin/view/common/header_head.html" /}
+<!-- start -->
+
+<div class="layui-fluid">
+    <form class="layui-form" action="{:url('comictype/save')}">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">分类名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data.name|default=''}" placeholder="分类名称">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">字段</label>
+            <div class="layui-input-block">
+                <input type="text" name="text" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data.field|default=''}" placeholder="字段">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">排序</label>
+            <div class="layui-input-block">
+                <input type="number" name="sort" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data.sort|default=99}" placeholder="排序">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="text-align: center;">
+            <input type="hidden" name="id" value="{$data.id|default=0}">
+            <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+
+<!-- end -->
+</body>
+</html>
+
+

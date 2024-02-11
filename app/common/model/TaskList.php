@@ -36,10 +36,5 @@ class TaskList extends Base {
 		return $list;
 	}
 
-	public function dataById($id){
-		$data = $this->getDataByID($id);
-		return $data;
-	}
-
 
 }
