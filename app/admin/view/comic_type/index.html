@@ -1,0 +1,65 @@
+{include file="app/admin/view/common/header.html" /}
+
+<div class="layui-fluid">
+	<div class="layui-col-md12" style="padding: 5px;">
+		<div class="layui-card">
+		  	
+		  	<div class="layui-card-body">
+
+                <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm" onclick="Admin.batchDel('{:url('tasklist/batchDel')}','tasklist')">添加</button>
+                    </div>
+                </div>
+
+			    <div id="list"></div>
+		  	</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+table.render({
+    elem: '#list',
+    url: '{:url("comictype/list")}',
+    defaultToolbar: [],
+    title: '数据表',
+    cols: [[
+    	{field:'id', title:'ID', width:30},
+       	{field:'name', title:'分类名称',},
+        {field:'field', title:'字段',},
+        {field:'sort', title:'排序',},
+        {field:'mode', title:'模式', templet:'#modeTpl'},
+       	{title:'操作', toolbar: '#cmdTpl', width:180, fixed: 'right',}
+     ]],
+    page: true
+});
+
+
+///
+});
+</script>
+
+
+<script type="text/html" id="cmdTpl">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+
+<script type="text/html" id="modeTpl">
+    {{# if (d.mode == 0){ }}
+    <a class="layui-btn layui-btn-xs">单选</a>
+    {{# } else if (d.mode == 1) { }}
+    <a class="layui-btn layui-btn-xs">多选</a>
+    {{# } }}
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}

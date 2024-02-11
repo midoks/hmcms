@@ -37,7 +37,7 @@ class Comic extends AdminBase
         $limit = $this->request->param('limit');
 
         $comic = $this->model('Comic');
-        $data = $comic->list();
+        $data = $comic->list($page, $limit);
         $count = $data['total'];
         $list = $data['data'];
 

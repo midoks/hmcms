@@ -58,13 +58,12 @@ var admin = layui.admin
 table.render({
     elem: '#user',
     url: '{:url("user/list")}',
-    // toolbar: '#toolbar_list',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
         {type: 'checkbox', fixed: 'left'},
         {field:'id', title:'ID', width:30},
-        {field:'name', title:'用户名'},
+        {field:'name', title:'用户名',width:80},
         {field:'tel', title:'手机'},
         {field:'email', title:'邮件'},
         {field:'nick', title:'昵称'},

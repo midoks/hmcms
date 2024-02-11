@@ -289,7 +289,6 @@ CREATE TABLE `hm_comic` (
   KEY `shits` (`shits`) USING BTREE,
   KEY `cion` (`cion`) USING BTREE,
   KEY `yid` (`yid`) USING BTREE,
-  KEY `addtime` (`addtime`) USING BTREE,
   KEY `pay` (`pay`) USING BTREE,
   KEY `ticket` (`ticket`) USING BTREE,
   KEY `score` (`score`) USING BTREE
