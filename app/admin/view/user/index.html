@@ -7,7 +7,7 @@
             <div class="layui-card-body">
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('comiccomment/batchDel')}','comic_comment')">批量删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('user/batchDel')}','user')">批量删除</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -35,11 +35,11 @@
                     </div>
 
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm" data-id="comic_comment" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
+                        <button class="layui-btn layui-btn-sm" data-id="user" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
                         </button>
                     </div>
                 </div>
-                <div id="comic_comment"></div>
+                <div id="user"></div>
             </div>
         </div>
     </div>
@@ -56,22 +56,24 @@ var admin = layui.admin
 ,table = layui.table;
 
 table.render({
-    elem: '#comic_comment',
-    url: '{:url("comiccomment/list")}',
+    elem: '#user',
+    url: '{:url("user/list")}',
     // toolbar: '#toolbar_list',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
         {type: 'checkbox', fixed: 'left'},
         {field:'id', title:'ID', width:30},
-        {field:'mid', title:'漫画ID'},
-        {field:'uid', title:'会员ID'},
-        {field:'reply_num', title:'回复总数'},
-        {field:'text', title:'内容'},
-        {field:'machine', title:'来源'},
-        {field:'ip', title:'IP'},
-        {field:'zan', title:'赞', width:20,},
-        {field:'create_time', title:'评论时间',width:170,},
+        {field:'name', title:'用户名'},
+        {field:'tel', title:'手机'},
+        {field:'email', title:'邮件'},
+        {field:'nick', title:'昵称'},
+        {field:'vip', title:'是否VIP',width:100},
+        {field:'rmb', title:'rmb'},
+        {field:'cion', title:'金币'},
+        {field:'ticket', title:'月票'},
+        {field:'viptime', title:'VIP到期', width:100},
+        {field:'create_time', title:'评论时间',width:162,},
         {title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right'}
      ]],
     page: true
@@ -99,7 +101,7 @@ table.render({
 
 
 <script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('comiccomment/del')}','{{d.id}}')">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('user/del')}','{{d.id}}')">删除</a>
 </script>
 
 

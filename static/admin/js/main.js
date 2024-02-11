@@ -116,7 +116,7 @@ Admin.prototype.del = function(_this,_url,_id) {
 };
 //弹出层
 Admin.prototype.open = function (title,url,w,h,full) {
-    if(wap) w = '';
+    console.log(title,url,w,h,full);
     if (title == null || title == '') {
         var title = false;
     };

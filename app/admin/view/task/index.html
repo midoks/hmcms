@@ -1,0 +1,70 @@
+{include file="app/admin/view/common/header.html" /}
+
+<div class="layui-fluid">
+    <div class="layui-col-md12" style="padding: 5px;">
+        <div class="layui-card">
+            
+            <div class="layui-card-body">
+                <div id="task"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+table.render({
+    elem: '#task',
+    url: '{:url("task/list")}',
+    defaultToolbar: [],
+    title: '数据表',
+    cols: [[
+        {field:'name', title:'任务标题',width:100},
+        {field:'text', title:'任务内容',width:230},
+        {field:'cion', title:'奖励金币数量'},
+        {field:'vip', title:'奖励VIP天数'},
+        {field:'daynum', title:'每日上限次数',width:130},
+        {field:'status', title:'是否开启',width:86,toolbar: '#statusTpl'},
+        {field:'type', title:'模式',toolbar: '#typeTpl',width:86},
+        {title:'操作', toolbar: '#cmdTpl', width:120, fixed: 'right'}
+     ]],
+    page: true
+});
+
+///
+});
+</script>
+
+
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status == 0){ }}
+    <span class="layui-btn layui-btn-xs layui-btn-normal">已开启</span>
+    {{#  } else { }}
+    <span class="layui-btn layui-btn-xs layui-btn-danger">已暂停</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="typeTpl">
+    {{#  if(d.type == 0){ }}
+    <span class="layui-btn layui-btn-xs layui-btn-normal">默认</span>
+    {{#  } else { }}
+    <span class="layui-btn layui-btn-xs layui-btn-danger">多模式</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="cmdTpl">
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('任务编辑','{:url('task/edit')}?id={{d.id}}',600,480)">修改</a>
+    {{#  if(d.type == 1){ }}
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('任务编辑','{:url('task/edit')}?id={{d.id}}',600,600)">编辑</a>
+    {{#  } }}
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}

@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 
 return [
-    'app_debug'        => true,
+    'app_debug'        => false,
     'app_trace'        => false,
     // 应用地址
     'app_host'         => env('APP_HOST', ''),

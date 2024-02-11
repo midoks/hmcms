@@ -1,0 +1,57 @@
+{include file="app/admin/view/common/header_head.html" /}
+<!-- start -->
+
+<div class="layui-fluid">
+    <form class="layui-form" action="{:url('task/save')}">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">任务标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input" value="" placeholder="请输入任务标题">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">任务介绍</label>
+            <div class="layui-input-block">
+                <input type="text" name="text" required lay-verify="required" autocomplete="off" class="layui-input" value="" placeholder="请输入任务介绍">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">奖励</label>
+            <div class="layui-input-block">
+                <input type="number" name="cion" required lay-verify="required" autocomplete="off" class="layui-input" value="" placeholder="请输入单次奖励数量">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">奖励VIP</label>
+            <div class="layui-input-block">
+                <input type="number" name="vip" required lay-verify="required" autocomplete="off" class="layui-input" value="" placeholder="请输入单次奖励VIP天数">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">每日上限</label>
+            <div class="layui-input-block">
+                <input type="number" name="daynum" required lay-verify="required" autocomplete="off" class="layui-input" value="" placeholder="请输入任务每日上限奖励次数，0代表不限制">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">任务状态</label>
+            <div class="layui-input-block">
+                <select name="yid">
+                    <option value="0">开启</option>
+                    <option value="1">关闭</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" style="text-align: center;">
+            <input type="hidden" name="id" value="">
+            <button class="layui-btn" lay-filter="*" lay-submit>保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+
+<!-- end -->
+</body>
+</html>
+
+

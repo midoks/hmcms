@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `hm_admin`;
 CREATE TABLE `hm_admin` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(30) NOT NULL DEFAULT '' COMMENT '用户名',
-  `password` char(32) NOT NULL DEFAULT '' COMMENT '秘密',
+  `password` char(32) NOT NULL DEFAULT '' COMMENT '密码',
   `random` char(32) NOT NULL DEFAULT '' COMMENT '随机',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   `auth` text NOT NULL,
@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `hm_admin_access` (
 -- ----------------------------
 -- Table structure for hm_admin_role
 -- ----------------------------
+DROP TABLE IF EXISTS `hm_admin_role`;
 CREATE TABLE IF NOT EXISTS `hm_admin_role` (
   `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
@@ -128,6 +129,7 @@ CREATE TABLE `hm_user` (
 -- ----------------------------
 -- Table structure for hm_order
 -- ----------------------------
+DROP TABLE IF EXISTS `hm_order`;
 CREATE TABLE `hm_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0' COMMENT '用户ID',
@@ -148,6 +150,7 @@ CREATE TABLE `hm_order` (
 -- ----------------------------
 -- Table structure for hm_message
 -- ----------------------------
+DROP TABLE IF EXISTS `hm_message`;
 CREATE TABLE `hm_message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0' COMMENT '用户ID',
@@ -164,6 +167,7 @@ CREATE TABLE `hm_message` (
 -- ----------------------------
 -- Table structure for hm_feedback
 -- ----------------------------
+DROP TABLE IF EXISTS `hm_feedback`;
 CREATE TABLE `hm_feedback` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `uid` int(11) NOT NULL COMMENT '用户ID',
@@ -176,6 +180,63 @@ CREATE TABLE `hm_feedback` (
   KEY `uid` (`uid`) USING BTREE,
   KEY `name` (`name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='意见反馈';
+
+-- ----------------------------
+-- Table structure for hm_task
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_task`;
+CREATE TABLE `hm_task` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) DEFAULT '' COMMENT '任务标题',
+  `text` varchar(64) DEFAULT '' COMMENT '任务内容',
+  `cion` int(11) DEFAULT '0' COMMENT '奖励金币',
+  `vip` int(11) DEFAULT '0' COMMENT '奖励VIP天数',
+  `daynum` int(11) DEFAULT '0' COMMENT '每日奖励上限次数，0不限制',
+  `type` int(11) DEFAULT '0' COMMENT '0:单任务,1:多任务',
+  `pid` int(11) DEFAULT '0' COMMENT '父ID',
+  `status` int(11) DEFAULT '0' COMMENT '0:开启,1:关闭',
+  `create_time` datetime NOT NULL COMMENT '添加时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='每日任务';
+
+-- ----------------------------
+-- Table structure for hm_task_list
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_task_list`;
+CREATE TABLE `hm_task_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0' COMMENT '用户ID',
+  `tid` int(11) DEFAULT '0' COMMENT '任务ID',
+  `vip` int(11) DEFAULT '0' COMMENT '奖励VIP天数',
+  `cion` int(11) DEFAULT '0' COMMENT '获得金币',
+  `state` int(11) DEFAULT '0' COMMENT '签到状态',
+  `is_repair` tinyint(11) DEFAULT '0' COMMENT '是否是补签',
+  `week` tinyint(4) NOT NULL COMMENT '周几',
+  `create_time` datetime NOT NULL COMMENT '添加时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`) USING BTREE,
+  KEY `tid` (`tid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='任务记录表';
+
+-- ----------------------------
+-- Table structure for hm_user_invite
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_user_invite`;
+CREATE TABLE `hm_user_invite` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0' COMMENT '用户ID',
+  `inviteid` int(11) DEFAULT '0' COMMENT '邀请人ID',
+  `deviceid` varchar(128) DEFAULT '' COMMENT '设备ID',
+  `create_time` datetime NOT NULL COMMENT '添加时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`) USING BTREE,
+  KEY `inviteid` (`inviteid`) USING BTREE,
+  KEY `deviceid` (`deviceid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='用户邀请记录';
 
 -- ----------------------------
 -- Table structure for hm_comic
