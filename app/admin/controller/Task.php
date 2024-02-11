@@ -19,6 +19,9 @@ class Task extends AdminBase
 
     public function edit($id='')
     {
+        $m = $this->model('task');
+        $data = $m->dataById($id);
+        View::assign("data", $data);
         return $this->fetch('task/edit');
     }
 
@@ -73,7 +76,7 @@ class Task extends AdminBase
 
     public function batchDel(){
         $ids = $this->request->param('id');
-        $m = $this->model('order');
+        $m = $this->model('task');
 
         foreach ($ids as $k => $id) {
             $res = $m->dataDelete($id);
@@ -83,6 +86,37 @@ class Task extends AdminBase
         }
 
         return $this->returnJson(1, '批量删除成功!');
+    }
+
+    public function save(){
+        
+        $id = $this->request->param('id');
+
+        $data = [];
+        $data['name'] = $this->request->param('name');
+        $data['text'] = $this->request->param('text');
+        $data['cion'] = $this->request->param('cion');
+        $data['vip'] = $this->request->param('vip');
+        $data['status'] = $this->request->param('status');
+        $data['daynum'] = $this->request->param('daynum');
+
+        if(empty($data['name'])){
+            return $this->returnJson(-1, '任务标题不能为空~!');
+        }
+        if(empty($data['text'])) {
+            return $this->returnJson(-1, '任务介绍不能为空~!');
+        }
+
+        $m = $this->model('task');
+        $r = $m->dataSave($data, $id);
+
+        $msg_head = $id > 0 ? '更新' : '添加';
+        
+        if ($r){
+            return $this->returnJson(0, $msg_head.'成功!');
+        } else {
+            return $this->returnJson(-1, $msg_head.'失败!');
+        }
     }
 
 }

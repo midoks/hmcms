@@ -56,6 +56,11 @@ class Task extends Base {
 		return $list;
 	}
 
+	public function dataById($id){
+		$data = $this->getDataByID($id);
+		return $data;
+	}
+
 	public function dataDelete($id){
 		if ($id < 1){
 			return false;

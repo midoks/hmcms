@@ -46,6 +46,21 @@ form.on('submit(table-sreach)', function (data) {
 });
 
 
+
+//监听全局表单提交
+form.on('submit(submit_save)', function(data){
+    var index = layer.load();
+    $.post(data.form.action, data.field, function(res) {
+        showMsg(res.msg, function(){
+            layer.close(index);
+            if(res.code > -1){
+                parent.location.reload();
+            }
+        },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+    },'json');
+    return false;
+});
+
 // 时间范围选择
 laydate.render({
     elem: 'input[name="times"]',
@@ -69,6 +84,7 @@ Admin = function(){
 //默认加载
 Admin.prototype.init = function () {
 };
+
 
 //批量删除
 Admin.prototype.batchDel = function(_url,_id) {
