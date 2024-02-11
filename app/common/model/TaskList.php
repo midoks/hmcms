@@ -3,10 +3,11 @@
 namespace app\common\model;
 use think\Db;
 
-//任务模型
-class Task extends Base {
 
-	protected $name = 'task';
+//任务记录模型
+class TaskList extends Base {
+
+	protected $name = 'task_list';
 	protected $pk = 'id';
 
 	// 开启自动写入时间戳字段
@@ -24,8 +25,6 @@ class Task extends Base {
 	 public function list($page=1, $size=10, $wh = []) {
 		$m = $this->field('id');
 
-      
-        $m->where('pid', $wh['pid']);
 		$list = $m->order('id', 'asc')->paginate(['page'=>$page,'list_rows'=>$size]);
 
 		if ($list){
