@@ -42,20 +42,5 @@ class Task extends Base {
 		return $data;
 	}
 
-	public function dataDelete($id){
-		if ($id < 1){
-			return false;
-		}
-		return $this->where('id',$id)->delete();
-	}
-
-	public function dataSave($data, $id=null){
-		if ( $id > 0 ){
-            return $this->where('id',$id)->save($data);
-        } else{
-            return $this->save($data);
-        }
-	}
-
 
 }

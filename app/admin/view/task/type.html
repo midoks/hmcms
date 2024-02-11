@@ -69,18 +69,6 @@ table.on('edit(task_type)', function(obj){
     {{#  } }}
 </script>
 
-<script type="text/html" id="typeTpl">
-    {{#  if(d.type == 0){ }}
-    <span class="layui-btn layui-btn-xs layui-btn-normal">默认</span>
-    {{#  } else { }}
-    <span class="layui-btn layui-btn-xs layui-btn-danger">多模式</span>
-    {{#  } }}
-</script>
-
-<script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-xs" onclick="Admin.open('编辑','{:url('task/edit')}?id={{d.id}}',600,480)">修改</a>
-</script>
-
 </body>
 </html>
 

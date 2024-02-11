@@ -50,13 +50,5 @@ class ComicType extends Base {
 		return $list;
 	}
 
-	public function dataSave($data, $id=null){
-		if ($id>0){
-            return $this->where('id',$id)->save($data);
-        } else{
-            return $this->save($data);
-        }
-	}
-
 
 }
