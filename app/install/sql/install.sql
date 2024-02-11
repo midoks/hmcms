@@ -195,6 +195,7 @@ CREATE TABLE `hm_task` (
   `type` int(11) DEFAULT '0' COMMENT '0:单任务,1:多任务',
   `pid` int(11) DEFAULT '0' COMMENT '父ID',
   `status` int(11) DEFAULT '0' COMMENT '0:开启,1:关闭',
+  `extra` varchar(10) DEFAULT '' COMMENT '额外字段',
   `create_time` datetime NOT NULL COMMENT '添加时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),

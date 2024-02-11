@@ -1,15 +1,18 @@
-{include file="app/admin/view/common/header.html" /}
-
+{include file="app/admin/view/common/header_head.html" /}
+<!-- start -->
 <div class="layui-fluid">
     <div class="layui-col-md12" style="padding: 5px;">
         <div class="layui-card">
             
             <div class="layui-card-body">
-                <div id="task"></div>
+                <div id="task_type"></div>
             </div>
         </div>
     </div>
 </div>
+
+
+<!-- end -->
 
 <script type="text/javascript">
 
@@ -21,21 +24,36 @@ var admin = layui.admin
 ,table = layui.table;
 
 table.render({
-    elem: '#task',
-    url: '{:url("task/list")}',
+    elem: '#task_type',
+    url: '{:url("task/type_list")}?pid={$pid}',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
         {field:'name', title:'任务标题',width:100},
         {field:'text', title:'任务内容',width:230},
-        {field:'cion', title:'奖励金币数量'},
-        {field:'vip', title:'奖励VIP天数'},
+        {field:'cion', title:'奖励金币数量',width:130, edit: 'text'},
         {field:'daynum', title:'每日上限次数',width:130},
+        {field:'extra', title:'周几',width:130},
         {field:'status', title:'是否开启',width:86,toolbar: '#statusTpl'},
-        {field:'type', title:'模式',toolbar: '#typeTpl',width:86},
-        {title:'操作', toolbar: '#cmdTpl', width:140, fixed: 'right'}
      ]],
-    page: true
+    page: false
+});
+
+
+ //监听单元格编辑
+table.on('edit(task_type)', function(obj){
+    var value = obj.value //得到修改后的值
+    var data = obj.data //得到所在行所有键值
+    var field = obj.field; //得到字段
+    // layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改值为：'+ util.escape(value));
+
+    $.post('{:url("task/update")}', {'id':data.id,'zd':field,'val': util.escape(value)}, function(res) {
+        showMsg(res.msg, function(){
+            if(res.code > -1){
+                location.reload();
+            }
+        },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+    },'json');
 });
 
 ///
@@ -60,11 +78,10 @@ table.render({
 </script>
 
 <script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-xs" onclick="Admin.open('任务编辑','{:url('task/edit')}?id={{d.id}}',600,480)">修改</a>
-    {{#  if(d.type == 1){ }}
-    <a class="layui-btn layui-btn-xs" onclick="Admin.open('{{d.name}}','{:url('task/type')}?pid={{d.id}}',800,400)">子列表</a>
-    {{#  } }}
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('编辑','{:url('task/edit')}?id={{d.id}}',600,480)">修改</a>
 </script>
 
+</body>
+</html>
 
-{include file="app/admin/view/common/footer.html" /}
+
