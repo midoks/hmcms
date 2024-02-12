@@ -38,10 +38,14 @@ class ComicType extends Base {
 		}
 		return true;
    	}
+
+   	public function menuList(){
+		   		
+   	}
     
 	public function list($page=1, $size=10, $wh = []) {
 		$m = $this->field('id');
-		
+
 		if (isset($wh['pid'])){
 			$m->where('pid',$wh['pid']);
 		}

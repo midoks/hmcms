@@ -24,8 +24,10 @@ class Task extends Base {
 	 public function list($page=1, $size=10, $wh = []) {
 		$m = $this->field('id');
 
-      
-        $m->where('pid', $wh['pid']);
+      	if (isset($wh['pid'])){
+      		$m->where('pid', $wh['pid']);
+      	}
+        
 		$list = $m->order('id', 'asc')->paginate(['page'=>$page,'list_rows'=>$size]);
 
 		if ($list){
@@ -35,11 +37,6 @@ class Task extends Base {
 		$ids_data = $this->getDataByIds($ids);
 		$list['data'] = $ids_data;
 		return $list;
-	}
-
-	public function dataById($id){
-		$data = $this->getDataByID($id);
-		return $data;
 	}
 
 

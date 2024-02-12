@@ -6,31 +6,31 @@
         <div class="layui-form-item">
             <label class="layui-form-label layui-form-required">任务标题</label>
             <div class="layui-input-block">
-                <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data['name']}" placeholder="请输入任务标题">
+                <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data['name']|default=''}" placeholder="请输入任务标题">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label layui-form-required">任务介绍</label>
             <div class="layui-input-block">
-                <input type="text" name="text" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data['text']}" placeholder="请输入任务介绍">
+                <input type="text" name="text" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data['text']|default=''}" placeholder="请输入任务介绍">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label layui-form-required">奖励</label>
             <div class="layui-input-block">
-                <input type="number" name="cion" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data['cion']}" placeholder="请输入单次奖励数量">
+                <input type="number" name="cion" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data['cion']|default=''}" placeholder="请输入单次奖励数量">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label layui-form-required">奖励VIP</label>
             <div class="layui-input-block">
-                <input type="number" name="vip" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data['vip']}" placeholder="请输入单次奖励VIP天数">
+                <input type="number" name="vip" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data['vip']|default=''}" placeholder="请输入单次奖励VIP天数">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label layui-form-required">每日上限</label>
             <div class="layui-input-block">
-                <input type="number" name="daynum" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data['daynum']}" placeholder="请输入任务每日上限奖励次数，0代表不限制">
+                <input type="number" name="daynum" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data['daynum']|default=''}" placeholder="请输入任务每日上限奖励次数，0代表不限制">
             </div>
         </div>
         <div class="layui-form-item">
@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="layui-form-item" style="text-align: center;">
-            <input type="hidden" name="id" value="{$data['id']}">
+            <input type="hidden" name="id" value="{$data['id']|default='0'}">
             <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>

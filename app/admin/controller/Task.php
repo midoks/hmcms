@@ -20,7 +20,7 @@ class Task extends AdminBase
     public function edit($id='')
     {
         $m = $this->model('task');
-        $data = $m->dataById($id);
+        $data = $m->getDataByID($id);
         View::assign("data", $data);
         return $this->fetch('task/edit');
     }

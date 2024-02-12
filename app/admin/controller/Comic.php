@@ -17,6 +17,23 @@ class Comic extends AdminBase
         return $this->fetch('comic/index');
     }
 
+    public function edit($id=''){
+        $m = $this->model('Comic');
+        $data = $m->getDataByID($id);
+        View::assign("data", $data);
+
+        $classM = $this->model('ComicClass');
+        $classData = $classM->list(1, 100, ['pid'=>0]);
+        View::assign("classData", $classData['data']);
+
+        $typeM = $this->model('ComicType');
+        $typeData = $typeM->list(1,100,['pid'=>0]);
+
+        var_dump($typeData);
+
+        return $this->fetch('comic/edit');
+    }
+
     public function list(){
         $page = $this->request->param('page');
         $limit = $this->request->param('limit');

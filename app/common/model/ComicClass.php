@@ -41,8 +41,14 @@ class ComicClass extends Base {
 		return true;
    	}
     
-	public function list($page=1, $size=10) {
-		$list = $this->field('id')->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
+	public function list($page=1, $size=10, $wh=[]) {
+		$m = $this->field('id');
+
+		if (isset($wh['pid'])){
+      		$m->where('pid', $wh['pid']);
+      	}
+      	
+		$list = $m->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
 		if ($list){
 			$list = $list->toArray();
 		}
