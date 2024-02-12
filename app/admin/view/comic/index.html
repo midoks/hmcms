@@ -3,14 +3,89 @@
 <div class="layui-fluid">
 	<div class="layui-col-md12" style="padding: 5px;">
 		<div class="layui-card">
-		  	
 		  	<div class="layui-card-body">
-		  		<script type="text/html" id="toolbar_list">
-				 	<div class="layui-btn-container">
-				    	<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon"></i>添加</button>
-				  	</div>
-				</script>
-			    <div id="list"></div>
+
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this" data-yid="0">已审漫画</li>
+                        <li data-yid="1">待审漫画</li>
+                        <li data-yid="2">未通过漫画</li>
+                        <li data-yid="3">检测重复漫画</li>
+                    </ul>
+                </div>
+
+                <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('comic/batchDel')}','comic_list')">删除</button>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <input name="times" class="layui-input date-icon h30" type="text" placeholder="请选择日期范围" autocomplete="off" lay-key="1">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline select100 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="zd">
+                                <option value="name">漫画名称</option>
+                                <option value="author">漫画作者</option>
+                                <option value="id">漫画ID</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <input type="text" name="key" placeholder="请输入关键字" autocomplete="off" class="layui-input h30" value="">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline select70 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="serialize">
+                                <option value="">状态</option>
+                                <option value="连载">连载</option>
+                                <option value="完结">完结</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline select70 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="pay">
+                                <option value="">收费</option>
+                                <option value="1">否</option>
+                                <option value="2">是</option>
+                                <option value="3">VIP</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline select70 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="tid">
+                                <option value="">推荐</option>
+                                <option value="2">是</option>
+                                <option value="1">否</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline select70 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="ttid">
+                                <option value="">人工推荐</option>
+                                <option value="2">是</option>
+                                <option value="1">否</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <button class="layui-btn layui-btn-sm" data-id="comic_list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
+                        </button>
+                    </div>
+                </div>
+			    <div id="comic_list"></div>
 		  	</div>
 		</div>
 	</div>
@@ -19,136 +94,85 @@
 
 <script type="text/javascript">
 
-layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery','dropdown'], function(){
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
 ///
 var admin = layui.admin
 ,$ = layui.$
 ,form = layui.form
-,dropdown = layui.dropdown
 ,table = layui.table;
 
-table.render({
-    elem: '#list',
-    url: '{:url("comic/list")}',
-    toolbar: '#toolbar_list',
-    defaultToolbar: [],
-    title: '数据表',
-    cols: [[
-    	{field:'id', title:'ID', width:30, templet:function(data){
-    		return data.id;
-    	}},
-       	{field:'name', title:'名称',},
-       	{title:'操作', toolbar: '#nav-list-right-btn', width:180, fixed: 'right',}
-     ]],
-    page: true
-});
 
-table.on('tool(list)', function(obj){
-    switch(obj.event){
-        case 'delete':opDelete(obj);break;
-        case 'edit':opAdd(obj);break;
-    };
-});
-
-//头工具栏事件
-table.on('toolbar(list)', function(obj){
-    switch(obj.event){
-        case 'add':opAdd(obj);break;
-    };
-});
-// add
-function opAdd(obj){
-
-    console.log(obj);
-
-    var name = '';
-    var remark = '';
-
-    if (obj.event == 'edit'){
-        name = obj.data.name;
-        remark = obj.data.remark;
-    }
-
-
-    var type_option_html = '';
-    var title_nav = '';
-
-    var btn_action = ['添加','取消'];
-    var layer_title = '添加';
-    if (obj.event == 'edit'){
-        btn_action = ['更新','取消'];
-        layer_title = '编辑';
-    }
-
-    layer.open({
-        area: ['400px',"220px"],
-        title:layer_title,
-        content: '<form id="add_menu_form" class="layui-form layui-form-pane" style="padding:5px;">\
-            <div class="layui-form-item">\
-              <label class="layui-form-label">名称</label>\
-              <div class="layui-input-block">\
-                <input type="text" name="name" value="'+name+'" autocomplete="off" placeholder="请输入名称" class="layui-input">\
-              </div>\
-            </div>\
-            <div class="layui-form-item">\
-              <label class="layui-form-label">备注</label>\
-              <div class="layui-input-block">\
-                <input type="text" name="remark" value="'+remark+'" autocomplete="off" placeholder="请输入备注" class="layui-input">\
-              </div>\
-            </div>\
-            <input type="hidden" name="id" value="">\
-        </form>',
-        btn: btn_action,
-        type: 1,
-        shadeClose: false,
-        success:function(){
-            form.render();
-            if (obj.event == 'edit'){
-                $('input[name="id"]').val(obj.data.id);
-            }
-
-            $('input[name="name"]').change(function(){
-                $('input[name="remark"]').val($(this).val());
-            });
-
-        },
-        yes: function(index, layero){
-            var data = $("#add_menu_form").serialize();
-            $.post('{:url("auth/roleAdd")}', data, function(data) {
-                showMsg(data.msg,function(){
-                    if (data.code>-1){
-                        layer.close(index);
-                        location.reload();
-                    }
-                },{icon:data.code>-1?1:2});
-            },'json');
-            return;
-        }
+function render_table(){
+    table.render({
+        elem: '#comic_list',
+        url: '{:url("comic/list")}',
+        defaultToolbar: [],
+        title: '数据表',
+        cols: [[
+            {type: 'checkbox', fixed: 'left'},
+            {field:'id', title:'漫画ID', width:100},
+            {field:'name', title:'漫画名称', width:230},
+            {field:'tid', title:'推荐', width:60,templet:'#tjTpl'},
+            {field:'ttid', title:'人工推荐', width:100,templet:'#ttjTpl'},
+            {field:'pay', title:'收费', width:100,templet:'#payTpl'},
+            {field:'author', title:'漫画作者', width:100},
+            {field:'shits', title:'收藏', width:80},
+            {field:'serialize', title:'连载', width:100},
+            {field:'hits', title:'总', width:100},
+            {field:'rhits', title:'日', width:100},
+            {field:'sid', title:'状态', width:100, templet:'#ztTpl'},
+            {title:'操作', toolbar: '#cmdTpl', width:180, fixed: 'right',}
+         ]],
+        page: true
     });
 }
+render_table();
 
-function opDelete(obj){
-    layer.confirm('你真的要删除吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("auth/roleDelete")}', {'id':obj.data.id}, function(data) {
-            showMsg(data.msg,function(){
-                if (data.code>-1){
-                    location.reload();
-                }
-            },{icon:data.code>-1?1:2});
-        },'json');
-    });
-}
 
 ///
 });
 </script>
 
-
-<script type="text/html" id="nav-list-right-btn">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-xs" lay-event="role">权限</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+<script type="text/html" id="tjTpl">
+    {{#  if(d.tid == 1){ }}
+        <div style="color:#080;cursor: pointer;" class="layui-icon reco" data-id="{{d.id}}" data-tid="0" title="已推荐，点击取消推荐">&#xe605;</div>
+    {{#  } else { }}
+        <div style="color:#f30;cursor: pointer;" class="layui-icon reco" data-id="{{d.id}}" data-tid="1" title="未推荐，点击推荐">&#x1006;</div>
+    {{#  } }}
 </script>
 
+<script type="text/html" id="ttjTpl">
+    {{#  if(d.ttid == 1){ }}
+        <div style="color:#080;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="0" title="已推荐，点击取消推荐">&#xe605;</div>
+    {{#  } else { }}
+        <div style="color:#f30;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="1" title="未推荐，点击推荐">&#x1006;</div>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="payTpl">
+    {{#  if(d.pay == 2){ }}
+    <font color=#f60>VIP</font>
+    {{#  } else if(d.pay == 1){ }}
+    <font color=red>收费</font>
+    {{#  } else { }}
+    免费
+    {{#  } }}
+</script>
+
+<script type="text/html" id="ztTpl">
+    {{#  if(d.sid == 1){ }}
+    <input type="checkbox" data-id="{{d.id}}" name="switch" lay-text="正常|锁定" lay-skin="switch" lay-filter="*">
+    {{#  } else { }}
+    <input type="checkbox" data-id="{{d.id}}" name="switch" lay-text="正常|锁定" lay-skin="switch" lay-filter="*" checked>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="cmdTpl">
+    <!-- <a class="layui-btn layui-btn-xs" onclick="Admin.open('编辑','{:url('comicclass/edit')}?id={{d.id}}',600,320)">编辑</a> -->
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="role">权限</a>
+
+    <a class="layui-btn layui-btn-danger layui-btn-xs" title="删除" onclick="Admin.del(this, '{:url('comic/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
+</script>
 
 {include file="app/admin/view/common/footer.html" /}

@@ -6,12 +6,12 @@
 		  	
 		  	<div class="layui-card-body">
 
-                <!-- 
+                <!--
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="layui-inline mr0" >
                         <button class="layui-btn layui-btn-sm" onclick="Admin.open('编辑','{:url('comictype/edit')}',600,320)">添加</button>
                     </div>
-                </div> 
+                </div>
                 -->
 
 			    <div id="list"></div>
@@ -31,16 +31,15 @@ var admin = layui.admin
 
 table.render({
     elem: '#list',
-    url: '{:url("comictype/list")}',
+    url: '{:url("comicclass/list")}',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
     	{field:'id', title:'ID', width:30},
        	{field:'name', title:'分类名称',},
-        {field:'field', title:'字段',},
+        {field:'yname', title:'英文别名',},
         {field:'sort', title:'排序',},
-        {field:'mode', title:'模式', templet:'#modeTpl',width:80,},
-       	{title:'操作', toolbar: '#cmdTpl', width:120, fixed: 'right',}
+       	{title:'操作', toolbar: '#cmdTpl', width:80, fixed: 'right',}
      ]],
     page: true
 });
@@ -52,16 +51,7 @@ table.render({
 
 
 <script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-xs" onclick="Admin.open('编辑','{:url('comictype/edit')}?id={{d.id}}',600,320)">编辑</a>
-    <a class="layui-btn layui-btn-xs" onclick="Admin.open('【{{d.name}}】'+'列表','{:url('comictype/sublist')}?pid={{d.id}}',600,420)">列表</a>
-</script>
-
-<script type="text/html" id="modeTpl">
-    {{# if (d.mode == 0){ }}
-    <a class="layui-btn layui-btn-xs">单选</a>
-    {{# } else if (d.mode == 1) { }}
-    <a class="layui-btn layui-btn-xs">多选</a>
-    {{# } }}
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('编辑','{:url('comicclass/edit')}?id={{d.id}}',600,320)">编辑</a>
 </script>
 
 

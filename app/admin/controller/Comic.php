@@ -17,82 +17,35 @@ class Comic extends AdminBase
         return $this->fetch('comic/index');
     }
 
-    public function class()
-    {
-        return $this->fetch('comic/class');
-    }
-
-    public function comment(){
-        return $this->fetch('comic/comment');
-    }
-
-
     public function list(){
         $page = $this->request->param('page');
         $limit = $this->request->param('limit');
 
-        $comic = $this->model('Comic');
-        $data = $comic->list($page, $limit);
+        $wh = [];
+
+        $m = $this->model('Comic');
+        $data = $m->list($page, $limit, $wh);
         $count = $data['total'];
         $list = $data['data'];
 
         return $this->layuiJson(0, 'ok', $list, $count);
     }
 
-    // ************ class ************* //
-    public function classList(){
-        $page = $this->request->param('page');
-        $limit = $this->request->param('limit');
-
-        $comic_class = $this->model('ComicClass');
-        $data = $comic_class->list();
-        $count = $data['total'];
-        $list = $data['data'];
-
-        return $this->layuiJson(0, 'ok', $list, $count);
-    }
-
-    public function classAdd(){
-        $name = $this->request->post('name');
-        $yname = $this->request->post('yname');
-        $pid = $this->request->post('pid');
-        $sort = $this->request->post('sort');
-        $id = $this->request->post('id');
-
-        if (empty($name)){
-            return $this->layuiJson(-1, '名称不能为空');
-        }
-
-        $data = [
-            'name' => $name,
-            'yname' => $yname,
-            'pid' => $pid,
-            'sort' => $sort,
-        ];
-
-        if ($pid){
-            $data['pid'] = $pid;
-        }
-
-        $comic_class = $this->model('ComicClass');
-        $r = $comic_class->dataSave($data, $id);
-        if ($id>0){
-            return $this->returnJson(0, '更新成功!');
-        } else{
-            return $this->returnJson(0, '添加成功!');
-        }
-    }
-
-    public function classDelete(){
-        $id = $this->request->post('id');
+    public function del(){
+        $id = $this->request->param('id');
         if (empty($id)){
             return $this->returnJson(-1, '删除ID不能空!');
         }
 
-        $comic_class = $this->model('ComicClass');
-        $comic_class->recursionDelete($id);
+        $m = $this->model('Comic');
+        $res = $m->dataDelete($id);
+        if (!$res){
+            return $this->returnJson(-1, '删除失败!');
+        }
 
-        return $this->returnJson(0, '删除成功!');
+        return $this->returnJson(1, '删除成功!');
     }
+
+   
 
 }
