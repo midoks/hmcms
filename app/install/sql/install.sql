@@ -325,6 +325,21 @@ CREATE TABLE `hm_comic_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画类型';
 
+-- -----------------------------------------
+-- Table structure for hm_comic_type_related
+-- -----------------------------------------
+CREATE TABLE `hm_comic_type_related` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tid` int(11) DEFAULT '0' COMMENT '类别ID',
+  `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tid_mid` (`tid`,`mid`) USING BTREE,
+  KEY `tid` (`tid`) USING BTREE,
+  KEY `mid` (`mid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画类型关联';
+
 -- ----------------------------
 -- Table structure for hm_comic_comment
 -- ----------------------------

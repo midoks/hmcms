@@ -57,18 +57,7 @@ class Index extends Admin
     }
 
     public function nav(){
-        // var_dump($view);
         return $this->fetch('index/index');
-    }
-
-    public function test()
-    {
-        return $this->fetch('index/test');
-    }
-
-    public function test2()
-    {
-        return $this->fetch('index/test2');
     }
 
 

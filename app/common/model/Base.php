@@ -44,10 +44,16 @@ class Base extends Model {
 
     public function dataSave($data, $id=null){
         if ( $id > 0 ){
-            return $this->where('id',$id)->save($data);
+            $status =  $this->where('id',$id)->save($data);
         } else{
-            return $this->save($data);
+            $status = $this->save($data);
         }
+
+        if ($status){
+            return $this->id;
+        }
+        return $status;
+
     }
 
     public function dataDelete($id){

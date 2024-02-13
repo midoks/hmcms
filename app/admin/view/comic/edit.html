@@ -1,4 +1,56 @@
 {include file="app/admin/view/common/header_head.html" /}
+<style type="text/css">
+.layui-form-item .layui-input-inline{
+    width: auto;
+    margin-left: 5px;
+}
+.type-input{
+    height:70px;
+    overflow-y: auto;
+}
+.type-input::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+}
+.type-input::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background   : #666;
+}
+.type-input::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background   : #ededed;
+}
+.layui-form-radio{
+    margin: 0; 
+    padding-right: 0;
+}
+
+.layui-form-pane .layui-form-checkbox {
+    margin: 4px 0 4px 1px;
+}
+.layui-form-checkbox[lay-skin=primary] span {
+    padding-right: 4px;
+}
+.layui-form-checkbox[lay-skin=primary] i {
+    left: 6px;
+}
+.layui-form-item .layui-col-xs12{
+    margin-top: 10px;
+}
+@media screen and (max-width: 990px){
+    .layui-form-item .layui-col-xs12:first-child{
+        margin-top: 0px;
+    }
+    .layui-form-item{
+        margin-bottom: 10px; 
+    }
+}
+</style>
 <!-- start -->
 
 <div class="layui-fluid">
@@ -10,7 +62,13 @@
                     <select name="cid">
                         <option value="">选择分类</option>
                         {volist name="classData" id="row" key="k"}
+
+                        {if $row['id'] == $data['cid']}
+                        <option value="{$row['id']}" selected>{$row['name']}</option>
+                        {else}
                         <option value="{$row['id']}">{$row['name']}</option>
+                        {/if}
+
                         {/volist}
                     </select>
                 </div>
@@ -131,7 +189,19 @@
                 </div>
             </div>
         </div>
-<!--  -->
+        <!-- 类型/xx related -->
+        {volist name="typeData" id="row" key="k"}
+        <div class="layui-col-xs12 layui-col-md6">
+            <div class="layui-form-item" pane>
+                <label class="layui-form-label">{$row['name']}</label>
+                <div class="layui-input-block type-input" style="background-color: white;">
+                {volist name="row['submenu']" id="item" key="k1"}
+                    <input value="{$item['id']}" type="{if $item['mode']==1}checkbox{else}radio{/if}" name="type[{$item['field']}][]" lay-skin="primary" title="{$item['name']}">
+                {/volist}
+                </div>
+            </div>
+        </div>
+        {/volist}
         <div class="layui-form-item">
             <div class="layui-col-xs12 layui-col-md6">
                 <label class="layui-form-label">图作者</label>
@@ -159,7 +229,7 @@
             </div>
         </div>
 
-        <div class="layui-col-xs12 layui-col-md6">
+        <div class="layui-col-xs12 layui-col-md4">
             <label class="layui-form-label">审核</label>
             <div class="layui-input-block">
                 <select name="yid" lay-filter="yid">
@@ -169,10 +239,19 @@
                 </select>
             </div>
         </div>
-        <div id="yid" class="layui-col-xs12 layui-col-md6">
+        <div id="yid" class="layui-col-xs12 layui-col-md4">
             <label class="layui-form-label">未通过原因</label>
             <div class="layui-input-block">
                 <input type="text" name="msg" class="layui-input" value="{$data['msg']|default=''}" placeholder="请输入未通过原因">
+            </div>
+        </div>
+
+        <div class="layui-col-xs12 layui-col-md4">
+            <div class="layui-form-item">
+                <!-- <label class="layui-form-label">复选框</label> -->
+                <div class="layui-input-block" style="margin-left: 0px;">
+                    <input type="checkbox" name="update_time" title="更新时间">
+                </div>
             </div>
         </div>
 

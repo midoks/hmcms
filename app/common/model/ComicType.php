@@ -39,8 +39,26 @@ class ComicType extends Base {
 		return true;
    	}
 
-   	public function menuList(){
-		   		
+   	//不含有标签[tag]的数据
+   	public function menuList($pid, $limit = 100){
+   		$m = $this->field('id');
+   		$list = $m->where('pid', $pid)->where('field', '<>', 'tag')->limit($limit)->select();
+   		if ($list){
+			$list = $list->toArray();
+		}
+
+		$ids = $this->getFieldList($list,'id');
+		$list = $this->getDataByIds($ids);
+
+		if (empty($list)){
+			return $list;
+		}
+
+		foreach ($list as $k => $v) {
+			$t = $this->menuList($v['id'], $limit);
+			$list[$k]['submenu'] = $t;
+		}
+		return $list;
    	}
     
 	public function list($page=1, $size=10, $wh = []) {

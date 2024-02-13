@@ -244,3 +244,10 @@ function hm_substring($str, $lenth, $start=0)
     return  join('',$r);
 }
 
+function toPinyin($name){
+    $ext_pinyin = '\\pinyin\\Pinyin';
+    $ext_pinyin_m = new $ext_pinyin;
+    $t = $ext_pinyin_m->send($name);
+    return $t;
+}
+
