@@ -16,6 +16,29 @@ function showMsg(msg, callback ,icon, time){
 	}, time);
 }
 
+//字符串转数组对象
+function string2ArrayObject(str){
+    var data = {};
+    kv = str.split('&');
+    for(i in kv){
+        v = kv[i].split('=');
+        data[v[0]] = v[1];
+    }
+    return data;
+}
+
+//表单多维转一维
+function array2arr(sa){
+    var t = {}
+
+    for (var i = 0; i < sa.length; i++) {
+        t[sa[i]['name']] = sa[i]['value'];
+    }
+    return t;
+}
+
+
+
 
 layui.config({
     base: '{__STATIC__}/admin/layuiadmin/'

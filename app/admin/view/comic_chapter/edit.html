@@ -233,9 +233,9 @@
             <label class="layui-form-label">审核</label>
             <div class="layui-input-block">
                 <select name="yid" lay-filter="yid">
-                    <option value="0" {if $data['yid']==0}selected{/if}>已通过</option>
-                    <option value="1" {if $data['yid']==1}selected{/if}>待审核</option>
-                    <option value="2" {if $data['yid']==2}selected{/if}>未通过</option>
+                    <option value="0">已通过</option>
+                    <option value="1">待审核</option>
+                    <option value="2">未通过</option>
                 </select>
             </div>
         </div>
@@ -264,19 +264,6 @@
 </div>
 
 <!-- end -->
-
-<script type="text/javascript">
-layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
-///
-var admin = layui.admin
-,$ = layui.$
-,form = layui.form
-,table = layui.table;
-
-form.render();
-});
-    
-</script>
 </body>
 </html>
 

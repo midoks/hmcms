@@ -19,7 +19,7 @@ class Comic extends Base {
         return self::$instance;
     }
     
-	 public function list($page=1, $size=10, $wh = []) {
+	public function list($page=1, $size=10, $wh = []) {
 
 	 	$m = $this->field('id');
 
@@ -33,18 +33,55 @@ class Comic extends Base {
             }
         }
 
-        if (!empty($wh['pid'])) {
-            $m->where('pid', $wh['pid']);
+        if (isset($wh['tid'])) {
+            $m->where('tid', $wh['tid']);
+        }
+        if (isset($wh['ttid'])) {
+            $m->where('ttid', $wh['ttid']);
         }
 
-		if (!empty($wh['kstime'])) {
-            $m->whereTime('create_time', '>=', $wh['kstime']);
+        if (isset($wh['pay'])) {
+            $m->where('pay', $wh['pay']);
+        }
+
+        if (!empty($wh['kstime'])) {
+            $m->whereTime('addtime', '>=', strtotime($wh['kstime']));
         }
         if (!empty($wh['jstime'])) {
-        	$m->whereTime('create_time', '<=', $wh['jstime']);
+        	$m->whereTime('addtime', '<=', strtotime($wh['jstime']));
         }
 
-		$list = $m->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
+		// if (!empty($wh['kstime'])) {
+        //     $m->whereTime('create_time', '>=', $wh['kstime']);
+        // }
+        // if (!empty($wh['jstime'])) {
+        // 	$m->whereTime('create_time', '<=', $wh['jstime']);
+        // }
+
+        if (!empty($wh['sort_field']) && !empty($wh['sort_order'])){
+            $m->order($wh['sort_field'], $wh['sort_order']);
+        } else {
+        	$m->order('id', 'desc');
+        }
+
+        if (isset($wh['yid'])) {
+        	//检测重复名称
+        	if ($wh['yid'] == 3) {
+
+        		$gm = $this->field('name');
+        		$gm->group('name');
+        		$gm->having('count(*)>1');
+        		$sql = $gm->buildSql();
+
+        		$m->alias('a');
+        		$m->join([$sql=> 'b'], 'b.name = a.name','right');
+        	} else {
+        		$m->where('yid', $wh['yid']);
+        	}
+        }
+
+        // $this->debugSQL($m);
+		$list = $m->paginate(['page'=>$page,'list_rows'=>$size]);
 		if ($list){
 			$list = $list->toArray();
 		}

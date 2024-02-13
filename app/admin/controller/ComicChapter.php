@@ -9,12 +9,12 @@ use app\common\model\Comic as ComicModel;
 use think\facade\View;
 use think\facade\Db;
 
-class Comic extends AdminBase
+class ComicChapter extends AdminBase
 {
 
     public function index()
     {
-        return $this->fetch('comic/index');
+        return $this->fetch('comic_chapter/index');
     }
 
     public function list(){
@@ -23,8 +23,15 @@ class Comic extends AdminBase
 
         $wh = [];
         $wh['yid'] = $this->request->param('yid');
-        $wh['sort_field'] = $this->request->param('sort_field','');
-        $wh['sort_order'] = $this->request->param('sort_order','');
+        $wh['kstime'] = $this->request->param('kstime');
+        $wh['jstime'] = $this->request->param('jstime');
+        $wh['zd'] = $this->request->param('zd');
+        $wh['key'] = $this->request->param('key');
+        $wh['tid'] = $this->request->param('tid');
+        $wh['ttid'] = $this->request->param('ttid');
+        $wh['pay'] = $this->request->param('pay');
+        $wh['serialize'] = $this->request->param('serialize');
+
 
         $m = $this->model('Comic');
         $data = $m->list($page, $limit, $wh);
@@ -78,8 +85,6 @@ class Comic extends AdminBase
         $data['rhits'] = $this->request->post('rhits');
 
         // $data['update_time'] = date('Y-m-d H:i:s');
-
-        // var_dump($data);
 
         if ($data['yid'] == 2 && empty($data['msg'])) {
             return $this->returnJson(-1, '未通过原因不能为空~!');

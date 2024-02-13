@@ -62,4 +62,18 @@ class Base extends Model {
         }
         return $this->where('id',$id)->delete();
     }
+
+    public function debugSQL($m){
+        $_m = $m;
+        $sql = $_m->fetchSql(true)->select();
+        var_dump($sql);
+        return $m;
+    }
+
+    public function  __destruct(){
+        // Db::listen(function($sql, $runtime, $master) {
+        //     // 进行监听处理
+        //     var_dump($sql);
+        // });
+    }
 }

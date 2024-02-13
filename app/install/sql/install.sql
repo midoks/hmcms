@@ -294,6 +294,46 @@ CREATE TABLE `hm_comic` (
   KEY `score` (`score`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画列表';
 
+-- ------------------------------------
+-- Table structure for hm_comic_chapter
+-- ------------------------------------
+CREATE TABLE `hm_comic_chapter` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
+ `xid` int(11) DEFAULT '0' COMMENT '排序ID',
+ `image` varchar(255) DEFAULT '' COMMENT '图片',
+ `name` varchar(128) DEFAULT '' COMMENT '标题',
+ `vip` tinyint(1) DEFAULT '0' COMMENT 'VIP阅读，0否1是',
+ `cion` int(11) DEFAULT '0' COMMENT '章节需要金币',
+ `pnum` int(11) DEFAULT '0' COMMENT '图片数量',
+ `yid` tinyint(1) DEFAULT '0' COMMENT '0已审核，1待审核，2未通过',
+ `msg` varchar(128) DEFAULT '' COMMENT '未通过原因',
+ `create_time` datetime NOT NULL COMMENT '入库时间',
+ `update_time` datetime NOT NULL COMMENT '更新时间',
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `mid_xid` (`mid`,`xid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画章节';
+
+-- ------------------------------------
+-- Table structure for hm_comic_pic
+-- ------------------------------------
+CREATE TABLE `hm_comic_pic` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `cid` int(11) DEFAULT '0' COMMENT '章节ID',
+ `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
+ `img` varchar(255) DEFAULT '' COMMENT '图片url地址',
+ `width` int(11) DEFAULT '0' COMMENT '图片宽度',
+ `height` int(11) DEFAULT '0' COMMENT '图片高度',
+ `xid` int(11) DEFAULT '0' COMMENT '排序ID',
+ `create_time` datetime NOT NULL COMMENT '入库时间',
+ `update_time` datetime NOT NULL COMMENT '更新时间',
+ PRIMARY KEY (`id`),
+ KEY `cid` (`cid`) USING BTREE,
+ KEY `mid` (`mid`) USING BTREE,
+ KEY `xid` (`xid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画章节图片';
+
+
 -- ----------------------------
 -- Table structure for hm_comic_class
 -- ----------------------------

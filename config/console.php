@@ -7,4 +7,9 @@ return [
     'commands' => [
         'hello' => 'app\command\Hello',
     ],
+
+    'trace' =>[
+        // 使用浏览器console输出trace信息
+        'type'  =>  'console',
+    ]
 ];

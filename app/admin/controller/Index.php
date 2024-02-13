@@ -47,6 +47,7 @@ class Index extends Admin
 
         $list = $this->model('AdminMenu')->list();
         $pageTpl = $this->selectedDefaultPage($list, $view);
+        // var_dump($pageTpl);
         return $this->fetch($pageTpl);
     }
 
