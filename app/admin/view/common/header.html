@@ -16,7 +16,11 @@
                     <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="{:url('index/sys')}">系统</a></li>
                 {else}
                     {volist name="hm_nav_list" id="v" key="k"}
+                    
+                    {if $v["display"]}
                     <li class="layui-nav-item layui-hide-xs {if $Request.session.hm_nav_cur == $v['alias']}layui-this{/if}" lay-unselect ><a href="{:url('index/index',['view'=>$v['alias']])}">{$v["name"]}</a></li>
+                    {/if}
+
                     {/volist}
                 {/if}
 
@@ -109,7 +113,10 @@
 
                                 {volist name="$menu_v['submenu']" id="menu_vv" key="k2"}
                                 <dd class="{if isset($menu_vv['selected']) && $menu_vv['selected'] == true }layui-this{/if}">
+
+                                    {if $menu_vv["display"]}
                                     <a href="{:url($menu_vv['route'])}">{$menu_vv["name"]}</a>
+                                    {/if}
                                 </dd>
                                 {/volist}
 

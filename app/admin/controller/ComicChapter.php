@@ -12,8 +12,9 @@ use think\facade\Db;
 class ComicChapter extends AdminBase
 {
 
-    public function index()
+    public function index($mid='')
     {
+        View::assign("mid", $mid);
         return $this->fetch('comic_chapter/index');
     }
 
@@ -33,7 +34,7 @@ class ComicChapter extends AdminBase
         $wh['serialize'] = $this->request->param('serialize');
 
 
-        $m = $this->model('Comic');
+        $m = $this->model('ComicChapter');
         $data = $m->list($page, $limit, $wh);
         $count = $data['total'];
         $list = $data['data'];
@@ -43,19 +44,26 @@ class ComicChapter extends AdminBase
 
 
     public function edit($id=''){
-        $m = $this->model('Comic');
+        $m = $this->model('ComicChapter');
         $data = $m->getDataByID($id);
+
+        if (empty($data)){
+            $data['pic'] = [];
+        } else {
+            
+        }
+        var_dump($data);
         View::assign("data", $data);
 
-        $classM = $this->model('ComicClass');
-        $classData = $classM->list(1, 100, ['pid'=>0]);
-        View::assign("classData", $classData['data']);
+        // $classM = $this->model('ComicClass');
+        // $classData = $classM->list(1, 100, ['pid'=>0]);
+        // View::assign("classData", $classData['data']);
 
-        $typeM = $this->model('ComicType');
-        $typeData = $typeM->menuList(0);
-        View::assign("typeData", $typeData);
+        // $typeM = $this->model('ComicType');
+        // $typeData = $typeM->menuList(0);
+        // View::assign("typeData", $typeData);
 
-        return $this->fetch('comic/edit');
+        return $this->fetch('comic_chapter/edit');
     }
 
     public function save(){
@@ -99,7 +107,7 @@ class ComicChapter extends AdminBase
             $data['yname'] = toPinyin($data['name']);
         }
 
-        $m = $this->model('Comic');
+        $m = $this->model('ComicChapter');
         $r = $m->dataSave($data, $id);
 
 
@@ -127,7 +135,7 @@ class ComicChapter extends AdminBase
             return $this->returnJson(-1, '删除ID不能空!');
         }
 
-        $m = $this->model('Comic');
+        $m = $this->model('ComicChapter');
         $res = $m->dataDelete($id);
         if (!$res){
             return $this->returnJson(-1, '删除失败!');

@@ -7,16 +7,19 @@
 
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="yid">
-                        <li class="layui-this" data-yid="0">已审漫画</li>
-                        <li data-yid="1">待审漫画</li>
-                        <li data-yid="2">未通过漫画</li>
-                        <li data-yid="3">检测重复漫画</li>
+                        <li class="layui-this" data-yid="0">已审章节</li>
+                        <li data-yid="1">待审章节</li>
+                        <li data-yid="2">未通过章节</li>
                     </ul>
                 </div>
 
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('comic/batchDel')}','comic_list')">删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('comicchapter/batchDel')}','comicchapter_list')">删除</button>
+                    </div>
+
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm" onclick="Admin.open('新增章节','{:url('comicchapter/edit')}?mid={$mid|default=0}',1200,480)">新增</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -28,9 +31,9 @@
                     <div class="layui-inline select100 mr0">
                         <div class="layui-input-inline h30">
                             <select name="zd">
-                                <option value="name">漫画名称</option>
-                                <option value="author">漫画作者</option>
-                                <option value="id">漫画ID</option>
+                                <option value="name">章节名称</option>
+                                <option value="id">章节ID</option>
+                                <option value="mid">漫画ID</option>
                             </select>
                         </div>
                     </div>
@@ -41,51 +44,12 @@
                         </div>
                     </div>
 
-                    <div class="layui-inline select70 mr0">
-                        <div class="layui-input-inline h30">
-                            <select name="serialize">
-                                <option value="">状态</option>
-                                <option value="连载">连载</option>
-                                <option value="完结">完结</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="layui-inline select70 mr0">
-                        <div class="layui-input-inline h30">
-                            <select name="pay">
-                                <option value="">收费</option>
-                                <option value="1">否</option>
-                                <option value="2">是</option>
-                                <option value="3">VIP</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-inline select70 mr0">
-                        <div class="layui-input-inline h30">
-                            <select name="tid">
-                                <option value="">推荐</option>
-                                <option value="2">是</option>
-                                <option value="1">否</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-inline select70 mr0">
-                        <div class="layui-input-inline h30">
-                            <select name="ttid">
-                                <option value="">人工推荐</option>
-                                <option value="2">是</option>
-                                <option value="1">否</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm" data-id="comic_list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
+                        <button class="layui-btn layui-btn-sm" data-id="comicchapter_list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
                         </button>
                     </div>
                 </div>
-			    <div id="comic_list"></div>
+			    <div id="comicchapter_list"></div>
 		  	</div>
 		</div>
 	</div>
@@ -102,8 +66,10 @@ var admin = layui.admin
 ,table = layui.table;
 
 
-$('#yid li.layui-this').click(function(){
-    // var yid = $(this).data('yid');
+$('#yid li').click(function(){
+    $('#yid li').removeClass('layui-this');
+    $(this).addClass('layui-this');
+
     render_table();
 });
 
@@ -114,23 +80,17 @@ function render_table(){
     console.log(yid);
 
     table.render({
-        elem: '#comic_list',
-        url: '{:url("comic/list")}',
+        elem: '#comicchapter_list',
+        url: '{:url("comicchapter/list")}',
         defaultToolbar: [],
         title: '数据表',
         cols: [[
             {type: 'checkbox', fixed: 'left'},
             {field:'id', title:'漫画ID', width:100},
-            {field:'name', title:'漫画名称', width:230},
-            {field:'tid', title:'推荐', width:60,templet:'#tjTpl'},
-            {field:'ttid', title:'人工推荐', width:100,templet:'#ttjTpl'},
-            {field:'pay', title:'收费', width:100,templet:'#payTpl'},
-            {field:'author', title:'漫画作者', width:100},
-            {field:'shits', title:'收藏', width:80},
-            {field:'serialize', title:'连载', width:100},
-            {field:'hits', title:'总', width:100},
-            {field:'rhits', title:'日', width:100},
-            {field:'sid', title:'状态', width:100, templet:'#ztTpl'},
+            {field:'xid', title:'排序'},
+            {field:'name', title:'章节名称',},
+            {field:'vip', title:'VIP', width:100},
+            {field:'cion', title:'', width:100},
             {title:'操作', toolbar: '#cmdTpl', width:150, fixed: 'right',}
          ]],
         page: true,

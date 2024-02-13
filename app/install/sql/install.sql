@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS `hm_admin_menu` (
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `sort` smallint(6) unsigned DEFAULT NULL COMMENT '排序',
   `type` char(20) DEFAULT '' COMMENT '菜单类型',
+  `display` tinyint NOT NULL DEFAULT '1' COMMENT '是否显示',
   `pid` smallint(6) unsigned DEFAULT '0' COMMENT '上一级ID',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`),
