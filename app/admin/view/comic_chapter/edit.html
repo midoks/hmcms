@@ -88,7 +88,7 @@
                 </div>
             </div>
             <div class="layui-col-xs12 layui-col-md3">
-                <label class="layui-form-label">数量</label>
+                <label class="layui-form-label">金币数量</label>
                 <div class="layui-input-block">
                     <input type="number" name="cion" class="layui-input" value="{$data['cion']|default=0}" placeholder="阅读该章节是否需要">
                 </div>
@@ -106,7 +106,7 @@
             <div class="layui-col-xs12 layui-col-md3">
                 <label class="layui-form-label">排序ID</label>
                 <div class="layui-input-block">
-                    <input type="number" name="xid" class="layui-input" value="{$data['xid']|default=99}" placeholder="排序ID，越小越靠前">
+                    <input type="number" name="xid" class="layui-input" value="{$data['xid']|default=99}"placeholder="排序ID，越小越靠前">
                 </div>
             </div>
         </div>
@@ -148,13 +148,14 @@ form = layui.form;
 
 upload.render({
     elem: '.uppic',
-    url: "{:url('comicchapter/upload')}",
+    url: "{:url('common/upload')}",
     number: 100,
     multiple: true,
     accept: 'file',
     acceptMime: 'image/*',
     exts: 'jpg|gif|png|jpeg|bmp|webp',
     done: function(res){
+        console.log(res);
         if(res.code == 0){
             layer.msg(res.msg,{icon: 1});
             var html='<li><input type="hidden" name="pic[]" value="'+res.pid+'"><img data-original="'+res.img+'"><span title="删除" class="p2" data-id="'+res.pid+'"><i class="layui-icon">&#xe640;</i></span></li>';
