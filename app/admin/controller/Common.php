@@ -11,8 +11,6 @@ use think\facade\Db;
 class Common extends AdminBase
 {
     public function upload(){
-    
-
 
         $file = $this->request->file('file');
 
@@ -20,11 +18,11 @@ class Common extends AdminBase
 
         // validate(['image'=>'fileExt:jpg,png'])->check([$file]);
 
-        $savename = \think\facade\Filesystem::disk('upload')->putFile('comic', $file);
-        // var_dump($savename);
+       // $savename = \think\facade\Filesystem::disk('upload')->putFile('comic', $file);
 
-
-        return json(['code'=>1]);
+       // var_dump($savename);exit;
+       return $this->returnJson(0, '上传成功!');
+        
     }
 
 }
