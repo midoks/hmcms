@@ -6,7 +6,7 @@ use think\Db;
 
 
 // 漫画章节图片
-class ComicChapterPic extends Base {
+class ComicPic extends Base {
 
 	protected $name = 'comic_pic';
 	protected $pk = 'id';
@@ -19,7 +19,20 @@ class ComicChapterPic extends Base {
         return self::$instance;
     }
     
-	 public function list($page=1, $size=10, $wh = []) {
+    public function dataListByCid($cid = '')
+    {
+    	$m = $this->field('id');
+    	$list = $m->where('cid', $cid)->order('xid', 'asc')->limit(10000)->select();
+    	if ($list){
+			$list = $list->toArray();
+		}
+
+		$ids = $this->getFieldList($list,'id');
+		$list = $this->getDataByIds($ids);
+    	return $list;
+    }
+
+	public function list($page=1, $size=10, $wh = []) {
 
 	 	$m = $this->field('id');
 

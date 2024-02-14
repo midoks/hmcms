@@ -44,15 +44,17 @@ class Base extends Model {
 
     public function dataSave($data, $id=null){
         if ( $id > 0 ){
-            $status =  $this->where('id',$id)->save($data);
+            $status =  $this->where('id',$id)->update($data);
+            if ($status){
+                return $status;
+            }
         } else{
             $status = $this->save($data);
+            if ($status){
+                return $this->id;
+            }
         }
-
-        if ($status){
-            return $this->id;
-        }
-        return $status;
+        return false;
 
     }
 

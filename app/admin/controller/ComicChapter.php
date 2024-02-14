@@ -48,21 +48,24 @@ class ComicChapter extends AdminBase
         $data = $m->getDataByID($id);
 
         if (empty($data)){
-            $data['pic'] = [];
+            $data = [
+                'id' => 0,
+                'yid' => 0,
+                'xid' => 0,
+                'name' => '',
+                'vip' => 0,
+                'cion' => 0,
+                'msg' => '',
+                'pic' => [],
+                'image' => ''
+            ];
         } else {
-            
+            $picM = $this->model('ComicPic');
+            $data['pic']= $picM->dataListByCid($id);
         }
-        var_dump($data);
+
+        // var_dump($data);
         View::assign("data", $data);
-
-        // $classM = $this->model('ComicClass');
-        // $classData = $classM->list(1, 100, ['pid'=>0]);
-        // View::assign("classData", $classData['data']);
-
-        // $typeM = $this->model('ComicType');
-        // $typeData = $typeM->menuList(0);
-        // View::assign("typeData", $typeData);
-
         return $this->fetch('comic_chapter/edit');
     }
 
@@ -71,53 +74,19 @@ class ComicChapter extends AdminBase
 
         $data = [];
         $data['name'] = $this->request->post('name');
-        $data['yname'] = $this->request->post('yname');
-        $data['sid'] = $this->request->post('sid');
+        $data['image'] = $this->request->post('image');
+        $data['pnum'] = $this->request->post('pnum');
+        $data['xid'] = $this->request->post('xid');
+        $data['vip'] = $this->request->post('vip');
         $data['yid'] = $this->request->post('yid');
-        $data['tid'] = $this->request->post('tid');
-        $data['ttid'] = $this->request->post('ttid');
-        $data['score'] = $this->request->post('score');
-        $data['notice'] = $this->request->post('notice');
-        $data['text'] = $this->request->post('text');
-        $data['pic'] = $this->request->post('pic');
-        $data['picx'] = $this->request->post('picx');
-        $data['msg'] = $this->request->post('msg');
-        $data['serialize'] = $this->request->post('serialize');
-        $data['author'] = $this->request->post('author');
-        $data['pic_author'] = $this->request->post('pic_author');
-        $data['txt_author'] = $this->request->post('txt_author');
-        $data['content'] = $this->request->post('content');
-        $data['hits'] = $this->request->post('hits');
-        $data['yhits'] = $this->request->post('yhits');
-        $data['zhits'] = $this->request->post('zhits');
-        $data['rhits'] = $this->request->post('rhits');
-
-        // $data['update_time'] = date('Y-m-d H:i:s');
-
-        if ($data['yid'] == 2 && empty($data['msg'])) {
-            return $this->returnJson(-1, '未通过原因不能为空~!');
-        }
 
 
         if(empty($data['name'])){
-            return $this->returnJson(-1, '漫画名称不能为空~!');
-        }
-
-        if (empty($data['yname'])) {
-            $data['yname'] = toPinyin($data['name']);
+            return $this->returnJson(-1, '章节名称不能为空~!');
         }
 
         $m = $this->model('ComicChapter');
         $r = $m->dataSave($data, $id);
-
-
-
-        $type = $this->request->post('type');
-        //更新附表内容
-        if ($r || $id > 0){
-            $ctr_m = $this->model('ComicTypeRelated');
-            $ctr_m->setType($id, $type);
-        }
 
         $msg_head = $id > 0 ? '更新' : '添加';
         if ($r){
