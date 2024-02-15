@@ -18,23 +18,23 @@
                         <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('comicchapter/batchDel')}','comicchapter')">删除</button>
                     </div>
 
-                    <div class="layui-inline mr0" >
+                    <div class="layui-inline mr0">
                         <button class="layui-btn layui-btn-sm" onclick="Admin.open('新增章节','{:url('comicchapter/edit')}?mid={$mid}&id={$id|default=0}',1000,450)">新增</button>
                     </div>
 
-                    <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm">设置VIP</button>
+                    <div class="layui-inline mr0">
+                        <button class="layui-btn layui-btn-sm set-vip">设置VIP</button>
                     </div>
 
-                    <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger">取消VIP</button>
+                    <div class="layui-inline mr0">
+                        <button class="layui-btn layui-btn-sm layui-btn-danger cancel-vip">取消VIP</button>
                     </div>
 
-                    <div class="layui-inline mr0" >
+                    <div class="layui-inline mr0">
                         <button class="layui-btn layui-btn-sm layui-btn-normal">设置收费</button>
                     </div>
 
-                    <div class="layui-inline mr0" >
+                    <div class="layui-inline mr0">
                         <button class="layui-btn layui-btn-sm layui-btn-normal">排序</button>
                     </div>
 
@@ -95,7 +95,6 @@ var admin = layui.admin
 $('#yid li').click(function(){
     $('#yid li').removeClass('layui-this');
     $(this).addClass('layui-this');
-
     render_table();
 });
 
@@ -146,6 +145,45 @@ function render_table(){
     });    
 }
 render_table();
+
+function set_vip(_id, _vip){
+    var ids = [];
+    var checkStatus = table.checkStatus(_id);
+    checkStatus.data.forEach(function(n,i){
+        ids.push(n.id);
+    });
+
+    if( ids.length == 0 ){
+        layer.msg('请选择要操作的数据',{icon: 2});
+    } else {
+        layer.confirm('确定要操作吗', {
+            title:'操作提示',
+            btn: ['确定', '取消'], //按钮
+            shade:0.001
+        }, function(index) {
+            $.post("{:url('comicchapter/batchUpdate')}", {'op':'vip','id':ids,vip:_vip,mid:"{$mid}"}, function(res) {
+                if(res.code == 1){
+                    layer.msg(res.msg,{icon: 1});
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                }else{
+                    layer.msg(res.msg,{icon: 2});
+                }
+            },'json');
+        }, function(index) {
+            layer.close(index);
+        });
+    }
+}
+
+$('.set-vip').click(function(){
+    set_vip('comicchapter',1);
+});
+
+$('.cancel-vip').click(function(){
+    set_vip('comicchapter',2);
+});
 
 ///
 });

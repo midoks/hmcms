@@ -18,7 +18,7 @@ class ComicChapter extends Base {
         return self::$instance;
     }
     
-	 public function list($page=1, $size=10, $wh = []) {
+	 public function list($page=1, $size=10, $wh = [], $is_page = true) {
 
 	 	$m = $this->field('id');
 
@@ -34,6 +34,10 @@ class ComicChapter extends Base {
 
         if (isset($wh['yid'])) {
         	$m->where('yid', $wh['yid']);
+        }
+
+        if (isset($wh['vip'])) {
+        	$m->where('vip', $wh['vip']);
         }
 
         if (isset($wh['pay'])) {
@@ -62,14 +66,25 @@ class ComicChapter extends Base {
         	$m->order('id', 'desc');
         }
 
-		$list = $m->order('id', 'asc')->paginate(['page'=>$page,'list_rows'=>$size]);
+        if ($is_page){
+        	$list = $m->order('id', 'asc')->paginate(['page'=>$page,'list_rows'=>$size]);
+        } else {
+        	$list = $m->order('id', 'asc')->select();
+        }
+
 		if ($list){
 			$list = $list->toArray();
 		}
 
-		$ids = $this->getFieldList($list['data'],'id');
-		$ids_data = $this->getDataByIds($ids);
-		$list['data'] = $ids_data;
+		if ($is_page){
+			$ids = $this->getFieldList($list['data'],'id');
+			$ids_data = $this->getDataByIds($ids);
+			$list['data'] = $ids_data;
+			return $list;
+		}
+
+		$ids = $this->getFieldList($list,'id');
+		$list = $this->getDataByIds($ids);
 		return $list;
 	}
 

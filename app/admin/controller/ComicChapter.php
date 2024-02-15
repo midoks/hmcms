@@ -104,6 +104,56 @@ class ComicChapter extends AdminBase
         }
     }
 
+    public function batchUpdate(){
+        $op = $this->request->param('op');
+        // 设置VIP
+        if ($op == 'vip'){
+            $ids = $this->request->param('id');
+            $vip =  $this->request->param('vip');
+            $cion =  $this->request->param('cion');
+            $mid =  $this->request->param('mid');
+            $ids = implode(',', $ids);
+            if (is_numeric($ids) || preg_match('/^([0-9]+[,]?)+$/', $ids)) {
+                $id = $ids;
+            }
+
+            if (empty($id)) {
+                return $this->returnJson(-1, 'ID不能为空!');
+            }
+
+            if ($vip != 1) {
+                $vip = 0;
+            }
+            $arr = explode(',', $id);
+
+
+            $edit = array('vip' => $vip, 'cion' => 0);
+            $m = $this->model('ComicChapter');
+
+            foreach ($arr as $_id) {
+                $m->dataSave($edit, $_id, $edit);
+            }
+
+            $row = $m->list(1,1,['vip' => 1,'mid'=>$mid], false);
+            if (count($row)>0) {
+                $pay = 2;
+            } else {
+                $row = $m->list(1,1,['cion>' => 0,'mid'=>$mid], false);
+                $pay = count($row)>0 ? 1 : 0;
+            }
+
+            $comicM = $this->model('Comic');
+            $comicM->dataSave(['pay' => $pay], $mid);
+
+            return $this->returnJson(1, '设置VIP成功!');
+        }
+
+
+
+        return $this->returnJson(-1, '批量操作失败!');
+    }
+
+
     public function del(){
         $id = $this->request->param('id');
         if (empty($id)){
