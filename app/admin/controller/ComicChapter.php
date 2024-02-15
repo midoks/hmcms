@@ -27,6 +27,7 @@ class ComicChapter extends AdminBase
         $wh['jstime'] = $this->request->param('jstime');
         $wh['zd'] = $this->request->param('zd');
         $wh['key'] = $this->request->param('key');
+        $wh['pay'] = $this->request->param('pay');
 
         $wh['sort_field'] = $this->request->param('sort_field','');
         $wh['sort_order'] = $this->request->param('sort_order','');
@@ -81,6 +82,7 @@ class ComicChapter extends AdminBase
         $data['vip'] = $this->request->post('vip');
         $data['yid'] = $this->request->post('yid');
         $data['mid'] = $this->request->post('mid');
+        $data['cion'] = $this->request->post('cion');
 
 
         if(empty($data['name'])){

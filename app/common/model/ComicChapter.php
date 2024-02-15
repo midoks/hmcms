@@ -36,11 +36,30 @@ class ComicChapter extends Base {
         	$m->where('yid', $wh['yid']);
         }
 
+        if (isset($wh['pay'])) {
+        	$pay = $wh['pay'];
+        	if ($pay > 0) {
+	            if ($pay == 3) {
+	                $m->where('cion', '>', 0);
+	            } elseif ($pay == 2) {
+	                $m->where('vip', 1);
+	            } elseif ($pay == 1) {
+	                $m->where('vip', 0)->where('cion',0);
+	            }
+	        }
+        }
+
 		if (!empty($wh['kstime'])) {
             $m->whereTime('create_time', '>=', $wh['kstime']);
         }
         if (!empty($wh['jstime'])) {
         	$m->whereTime('create_time', '<=', $wh['jstime']);
+        }
+
+        if (!empty($wh['sort_field']) && !empty($wh['sort_order'])){
+            $m->order($wh['sort_field'], $wh['sort_order']);
+        } else {
+        	$m->order('id', 'desc');
         }
 
 		$list = $m->order('id', 'asc')->paginate(['page'=>$page,'list_rows'=>$size]);

@@ -22,6 +22,22 @@
                         <button class="layui-btn layui-btn-sm" onclick="Admin.open('新增章节','{:url('comicchapter/edit')}?mid={$mid}&id={$id|default=0}',1000,450)">新增</button>
                     </div>
 
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm">设置VIP</button>
+                    </div>
+
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm layui-btn-danger">取消VIP</button>
+                    </div>
+
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm layui-btn-normal">设置收费</button>
+                    </div>
+
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm layui-btn-normal">排序</button>
+                    </div>
+
                     <div class="layui-inline mr0">
                         <div class="layui-input-inline mr0">
                             <input name="times" class="layui-input date-icon h30" type="text" placeholder="请选择日期范围" autocomplete="off" lay-key="1">
@@ -41,6 +57,17 @@
                     <div class="layui-inline mr0">
                         <div class="layui-input-inline mr0">
                             <input type="text" name="key" placeholder="请输入关键字" autocomplete="off" class="layui-input h30" value="">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline select100 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="pay">
+                                <option value="">阅读方式</option>
+                                <option value="1">免费阅读</option>
+                                <option value="2">Vip阅读</option>
+                                <option value="3">金币阅读</option>
+                            </select>
                         </div>
                     </div>
 
@@ -96,11 +123,11 @@ function render_table(){
         title: '数据表',
         cols: [[
             {type: 'checkbox', fixed: 'left'},
-            {field:'id', title:'漫画ID', width:100},
-            {field:'xid', title:'排序'},
+            {field:'id', title:'章节ID', width:100,sort:true},
+            {field:'xid', title:'排序',width:80},
             {field:'name', title:'章节名称',},
-            {field:'vip', title:'VIP', width:100},
-            {field:'cion', title:'金币', width:100},
+            {field:'vip', title:'收费', width:110, toolbar:'#ztTpl'},
+            {field:'create_time', title:'更新日期', width:162,sort:true},
             {title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right',}
          ]],
         page: true,
@@ -122,6 +149,16 @@ render_table();
 
 ///
 });
+</script>
+
+<script type="text/html" id="ztTpl">
+    {{#  if(d.vip > 0){ }}
+        <span class="layui-btn layui-btn-xs layui-btn-danger">Vip阅读</span>
+    {{#  } else if(d.cion > 0){ }}
+        <span class="layui-btn layui-btn-xs layui-btn-normal">【{{d.cion}}】阅读</span>
+    {{#  } else { }}
+        <span class="layui-btn layui-btn-xs">免费阅读</span>
+    {{#  } }}
 </script>
 
 
