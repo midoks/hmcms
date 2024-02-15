@@ -27,11 +27,9 @@ class ComicChapter extends AdminBase
         $wh['jstime'] = $this->request->param('jstime');
         $wh['zd'] = $this->request->param('zd');
         $wh['key'] = $this->request->param('key');
-        $wh['tid'] = $this->request->param('tid');
-        $wh['ttid'] = $this->request->param('ttid');
-        $wh['pay'] = $this->request->param('pay');
-        $wh['serialize'] = $this->request->param('serialize');
 
+        $wh['sort_field'] = $this->request->param('sort_field','');
+        $wh['sort_order'] = $this->request->param('sort_order','');
 
         $m = $this->model('ComicChapter');
         $data = $m->list($page, $limit, $wh);

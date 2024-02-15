@@ -19,7 +19,7 @@
                     </div>
 
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm" onclick="Admin.open('新增章节','{:url('comicchapter/edit')}?id={$id|default=0}',1000,600)">新增</button>
+                        <button class="layui-btn layui-btn-sm" onclick="Admin.open('新增章节','{:url('comicchapter/edit')}?id={$id|default=0}',1000,450)">新增</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -49,7 +49,7 @@
                         </button>
                     </div>
                 </div>
-			    <div id="comicchapter_list"></div>
+			    <div id="comicchapter"></div>
 		  	</div>
 		</div>
 	</div>
@@ -65,7 +65,6 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
-
 $('#yid li').click(function(){
     $('#yid li').removeClass('layui-this');
     $(this).addClass('layui-this');
@@ -73,15 +72,26 @@ $('#yid li').click(function(){
     render_table();
 });
 
+
 function render_table(){
 
-    var yid = $('#yid .layui-this').data('yid');
+    var where_data = $('#comicchapter_list').serializeArray();
+    where_data = array2arr(where_data);
 
-    console.log(yid);
+    if (where_data['times']) {
+        var searchDate = where_data['times'].split(' - ');
+        where_data['kstime'] = searchDate[0];
+        where_data['jstime'] = searchDate[1];
+    } else {
+        where_data['kstime'] = '';
+        where_data['jstime'] = '';
+    }
+    where_data['times'] = undefined;
+    var yid = $('#yid li.layui-this').data('yid');
 
     table.render({
-        elem: '#comicchapter_list',
-        url: '{:url("comicchapter/list")}',
+        elem: '#comicchapter',
+        url: '{:url("comicchapter/list")}?yid='+yid,
         defaultToolbar: [],
         title: '数据表',
         cols: [[
@@ -94,49 +104,26 @@ function render_table(){
             {title:'操作', toolbar: '#cmdTpl', width:150, fixed: 'right',}
          ]],
         page: true,
-
+        where:where_data
     });
+
+    
+    table.on('sort(comicchapter)', function(obj){
+        table.reload('comicchapter', {
+            initSort: obj,
+            where: {
+                sort_field: obj.field,
+                sort_order: obj.type
+            }
+        });
+    });    
 }
 render_table();
-
 
 ///
 });
 </script>
 
-<script type="text/html" id="tjTpl">
-    {{#  if(d.tid == 1){ }}
-        <div style="color:#080;cursor: pointer;" class="layui-icon reco" data-id="{{d.id}}" data-tid="0" title="已推荐，点击取消推荐">&#xe605;</div>
-    {{#  } else { }}
-        <div style="color:#f30;cursor: pointer;" class="layui-icon reco" data-id="{{d.id}}" data-tid="1" title="未推荐，点击推荐">&#x1006;</div>
-    {{#  } }}
-</script>
-
-<script type="text/html" id="ttjTpl">
-    {{#  if(d.ttid == 1){ }}
-        <div style="color:#080;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="0" title="已推荐，点击取消推荐">&#xe605;</div>
-    {{#  } else { }}
-        <div style="color:#f30;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="1" title="未推荐，点击推荐">&#x1006;</div>
-    {{#  } }}
-</script>
-
-<script type="text/html" id="payTpl">
-    {{#  if(d.pay == 2){ }}
-    <font color=#f60>VIP</font>
-    {{#  } else if(d.pay == 1){ }}
-    <font color=red>收费</font>
-    {{#  } else { }}
-    免费
-    {{#  } }}
-</script>
-
-<script type="text/html" id="ztTpl">
-    {{#  if(d.sid == 1){ }}
-    <input type="checkbox" data-id="{{d.id}}" name="switch" lay-text="正常|锁定" lay-skin="switch" lay-filter="*">
-    {{#  } else { }}
-    <input type="checkbox" data-id="{{d.id}}" name="switch" lay-text="正常|锁定" lay-skin="switch" lay-filter="*" checked>
-    {{#  } }}
-</script>
 
 <script type="text/html" id="cmdTpl">
 

@@ -32,7 +32,9 @@ class ComicChapter extends Base {
             }
         }
 
-     
+        if (isset($wh['yid'])) {
+        	$m->where('yid', $wh['yid']);
+        }
 
 		if (!empty($wh['kstime'])) {
             $m->whereTime('create_time', '>=', $wh['kstime']);
@@ -41,7 +43,7 @@ class ComicChapter extends Base {
         	$m->whereTime('create_time', '<=', $wh['jstime']);
         }
 
-		$list = $m->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
+		$list = $m->order('id', 'asc')->paginate(['page'=>$page,'list_rows'=>$size]);
 		if ($list){
 			$list = $list->toArray();
 		}
