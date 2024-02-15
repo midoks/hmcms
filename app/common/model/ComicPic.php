@@ -40,48 +40,35 @@ class ComicPic extends Base {
 
     	$add = [];
     	$add['cid'] = $cid;
-    	// $add['mid'] = $mid;
     	$add['img'] = $pic_path;
     	$add['xid'] = $xid;
 
     	return $this->dataSave($add);
     }
 
-	public function list($page=1, $size=10, $wh = []) {
-
-	 	$m = $this->field('id');
-
-	 	if (!empty($wh['zd']) && !empty($wh['key'])) {
-		 	$zd = $wh['zd'];
-		 	$key = $wh['key'];
-		 	if ($zd == 'text') {
-                $m->where($zd, 'like', $key);
-            } else {
-                $m->where($zd, $key);
+	//通过章节ID删除
+    public function dataDeleteByCid($cid){
+    	// 批量硬删除
+        $list = $this->dataListByCid($cid);
+        foreach ($list as $k => $v) {
+            $path = app()->getRootPath().'/upload/'.$v['img'];
+            if (file_exists($path)){
+                unlink($path);
             }
         }
+        return $this->where('cid',$cid)->delete();
+    }
 
-        if (!empty($wh['pid'])) {
-            $m->where('pid', $wh['pid']);
+    //通过ID删除
+    public function dataDeleteById($id){
+        // 硬删除
+        $row = $this->where('id',$id)->find();
+        $path = app()->getRootPath().'/upload/'.$row['img'];
+        if (file_exists($path)){
+            unlink($path);
         }
-
-		if (!empty($wh['kstime'])) {
-            $m->whereTime('create_time', '>=', $wh['kstime']);
-        }
-        if (!empty($wh['jstime'])) {
-        	$m->whereTime('create_time', '<=', $wh['jstime']);
-        }
-
-		$list = $m->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
-		if ($list){
-			$list = $list->toArray();
-		}
-
-		$ids = $this->getFieldList($list['data'],'id');
-		$ids_data = $this->getDataByIds($ids);
-		$list['data'] = $ids_data;
-		return $list;
-	}
+        return $this->dataDelete($id);
+    }
 
 
 }

@@ -138,6 +138,7 @@
             </div>
         </div>
         <div class="layui-form-item" style="text-align: center;padding: 5px;">
+            <input type="hidden" name="mid" value="{$data['mid']|default='0'}">
             <input type="hidden" name="id" value="{$data['id']|default='0'}">
             <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>

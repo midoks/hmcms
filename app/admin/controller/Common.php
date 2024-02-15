@@ -14,8 +14,8 @@ class Common extends AdminBase
     //上传章节封面
     public function uploadCoverByCid(){
         $cid = $this->request->param('cid');
-        if ($cid < 0){
-            return $this->returnJson(-1, '缺少章节ID!');
+        if ($cid <= 0){
+            return $this->returnJson(-1, '缺少章节ID!,先创建章节再上传封面!');
         }
 
         $file = $this->request->file('file');
@@ -36,8 +36,8 @@ class Common extends AdminBase
     //上传章节图片通过章节ID
     public function uploadPicByCid(){
         $cid = $this->request->param('cid');
-        if ($cid < 0){
-            return $this->returnJson(-1, '缺少章节ID!');
+        if ($cid <= 0){
+            return $this->returnJson(-1, '缺少章节ID!,先创建章节再上传封面!');
         }
 
         $file = $this->request->file('file');

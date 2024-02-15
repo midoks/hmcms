@@ -21,17 +21,7 @@ class ComicPic extends AdminBase
 
         if ($ac == 'all'){
             $m = $this->model('ComicPic');
-
-            // 批量硬删除
-            $list = $m->dataListByCid($id);
-            foreach ($list as $k => $v) {
-                $path = app()->getRootPath().'/upload/'.$v['img'];
-                if (file_exists($path)){
-                    unlink($path);
-                }
-            }
-            $res = $m->where('cid',$id)->delete();
-
+            $res = $m->dataDeleteByCid($id);
 
             $ccM = $this->model('ComicChapter');
             $ccM->where('id', $id)->update(['pnum'=>0]);

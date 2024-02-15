@@ -40,8 +40,11 @@ class ComicChapter extends AdminBase
     }
 
 
-    public function edit($id=''){
+    public function edit(){
         $m = $this->model('ComicChapter');
+
+        $id = $this->request->param('id');
+        $mid = $this->request->param('mid');
         $data = $m->getDataByID($id);
 
         if (empty($data)){
@@ -50,6 +53,7 @@ class ComicChapter extends AdminBase
                 'yid' => 0,
                 'xid' => 0,
                 'name' => '',
+                'mid' => $mid,
                 'vip' => 0,
                 'cion' => 0,
                 'msg' => '',
@@ -76,10 +80,15 @@ class ComicChapter extends AdminBase
         $data['xid'] = $this->request->post('xid');
         $data['vip'] = $this->request->post('vip');
         $data['yid'] = $this->request->post('yid');
+        $data['mid'] = $this->request->post('mid');
 
 
         if(empty($data['name'])){
             return $this->returnJson(-1, '章节名称不能为空~!');
+        }
+
+        if(empty($data['mid'])){
+            return $this->returnJson(-1, '章节ID不能为空~!');
         }
 
         $m = $this->model('ComicChapter');
@@ -91,8 +100,6 @@ class ComicChapter extends AdminBase
         } else {
             return $this->returnJson(-1, $msg_head.'失败!');
         }
-
-
     }
 
     public function del(){
@@ -106,6 +113,9 @@ class ComicChapter extends AdminBase
         if (!$res){
             return $this->returnJson(-1, '删除失败!');
         }
+
+        $cpM = $this->model('ComicPic');
+        $cpM->dataDeleteByCid($id);
 
         return $this->returnJson(1, '删除成功!');
     }
