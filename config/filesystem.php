@@ -13,11 +13,11 @@ return [
             // 磁盘类型
             'type'       => 'local',
             // 磁盘路径
-            'root'       => app()->getRootPath() . 'upload/storage',
+            'root'       => app()->getRootPath() . 'upload',
             // 磁盘路径对应的外部URL路径
-            'url'        => '/storage',
+            'url'        => '',
             // 可见性
-            'visibility' => 'upload',
+            'visibility' => 'public',
         ],
         // 更多的磁盘配置信息
     ],

@@ -4,43 +4,51 @@
     width: auto;
     margin-left: 5px;
 }
-.type-input{
-    height:70px;
-    overflow-y: auto;
-}
-.type-input::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
-    height: 1px;
-}
-.type-input::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 10px;
-    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background   : #666;
-}
-.type-input::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    background   : #ededed;
-}
-.layui-form-radio{
-    margin: 0; 
-    padding-right: 0;
-}
-
 .layui-form-pane .layui-form-checkbox {
     margin: 4px 0 4px 1px;
 }
-.layui-form-checkbox[lay-skin=primary] span {
-    padding-right: 4px;
-}
-.layui-form-checkbox[lay-skin=primary] i {
-    left: 6px;
-}
 .layui-form-item .layui-col-xs12{
     margin-top: 10px;
+}
+.layui-pic {
+    margin-top: -20px;
+}
+.layui-pic li {
+    float: left;
+    width: 15%;
+    height: 250px;
+    overflow: hidden;
+    margin-left:1%;
+    margin-bottom:10px;
+    position:relative;
+    border: 3px solid #eee;
+}
+
+.layui-pic li {
+    float: left;
+    width: 15%;
+    height: 250px;
+    overflow: hidden;
+    margin-left: 1%;
+    margin-bottom: 10px;
+    position: relative;
+    border: 3px solid #eee;
+}
+.layui-pic li>img {
+    width: 100%;
+    cursor: pointer;
+}
+.p2{
+    position:absolute;
+    bottom:0;
+    right:0;
+    padding:2px 10px;
+    background: #ff5722;
+    cursor: pointer;
+}
+.p2 i{
+    font-size: 16px;
+    color:#fff;
 }
 @media screen and (max-width: 990px){
     .layui-form-item .layui-col-xs12:first-child{
@@ -118,7 +126,7 @@
                     {volist name="data['pic']" id="v" key="k"}
                     <li class="p1">
                         <input type="hidden" name="pic[]" value="{$v['id']}">
-                        <img data-original="" />
+                        <img src="/upload/{$v['img']}" style="cursor: pointer;" />
                         <span class="p2" data-id="{$v['id']}" title="删除"><i class="layui-icon">&#xe640;</i></span>
                     </li>
                     {/volist}
@@ -147,8 +155,26 @@ var upload = layui.upload,
 form = layui.form;
 
 upload.render({
+    elem: '.uppic_cover',
+    url: "{:url('common/uploadCoverByCid')}?cid={$data['id']}",
+    number: 100,
+    multiple: true,
+    accept: 'file',
+    acceptMime: 'image/*',
+    exts: 'jpg|gif|png|jpeg|bmp|webp',
+    done: function(res){
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+            $('input[name="image"]').val(res.data['url']);
+        }else{
+            layer.msg(res.msg,{icon: 2});
+        }
+    }
+});
+
+upload.render({
     elem: '.uppic',
-    url: "{:url('common/upload')}",
+    url: "{:url('common/uploadPicByCid')}?cid={$data['id']}",
     number: 100,
     multiple: true,
     accept: 'file',
@@ -158,14 +184,63 @@ upload.render({
         console.log(res);
         if(res.code == 0){
             layer.msg(res.msg,{icon: 1});
-            var html='<li><input type="hidden" name="pic[]" value="'+res.pid+'"><img data-original="'+res.img+'"><span title="删除" class="p2" data-id="'+res.pid+'"><i class="layui-icon">&#xe640;</i></span></li>';
+            var html='<li>'+
+                '<input type="hidden" name="pic[]" value="'+res.data['id']+'">'+
+                '<img src="/upload/'+res.data['url']+'">'+
+                '<span title="删除" class="p2" data-id="'+res.data['id']+'">'+
+                '<i class="layui-icon">&#xe640;</i></span>'+
+                '</li>';
             $('.layui-pic').append(html);
-            // get_pic_px();
-            // reloadDecodeImage();
         }else{
             layer.msg(res.msg,{icon: 2});
         }
     }
+});
+
+//删除所有图片
+$('.all-del').click(function(){
+    layer.confirm('不可恢复，确定要删除吗', {
+        title:'删除提示',
+        btn: ['确定', '取消'], //按钮
+        shade:0.001
+    }, function(index) {
+        var index = layer.load();
+        $.post("{:url('comicpic/del')}", {id:"{$data['id']|default='0'}",ac:'all'}, function(res) {
+            layer.close(index);
+            if(res.code == 1){
+                layer.msg('删除成功...',{icon: 1});
+                $('.layui-pic').html('');
+            }else{
+                layer.msg(res.msg,{icon: 2});
+            }
+        },'json');
+    }, function(index) {
+        layer.close(index);
+    });
+});
+
+//删除单张图片
+$('body').delegate(".p2", "click", function(){
+    var _this = $(this);
+    var pid = $(this).attr('data-id');
+    layer.confirm('不可恢复，确定要删除吗', {
+        title:'删除提示',
+        btn: ['确定', '取消'], //按钮
+        shade:0.001
+    }, function(index) {
+        var index = layer.load();
+        $.post("{:url('comicpic/del')}",{id:pid},function(res) {
+            layer.close(index);
+            if(res.code == 1){
+                layer.msg('删除成功...',{icon: 1});
+                $(_this).parent().remove();
+            }else{
+                layer.msg(res.msg,{icon: 2});
+            }
+        },'json');
+    }, function(index) {
+        layer.close(index);
+    });
 });
 
 //

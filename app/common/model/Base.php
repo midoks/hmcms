@@ -58,9 +58,11 @@ class Base extends Model {
 
     }
 
-    public function dataDelete($id){
+    public function dataDelete($id = 0){
         if ($id < 1){
             return false;
+        } else {
+            
         }
         return $this->where('id',$id)->delete();
     }

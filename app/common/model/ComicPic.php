@@ -32,6 +32,21 @@ class ComicPic extends Base {
     	return $list;
     }
 
+    public function dataAdd($pic_path, $cid){
+    	$row = $this->field('xid')->where('cid', $cid)->order('xid', 'desc')->find();
+
+    	// var_dump($row);
+    	$xid = $row ? $row['xid'] + 1 : 0;
+
+    	$add = [];
+    	$add['cid'] = $cid;
+    	// $add['mid'] = $mid;
+    	$add['img'] = $pic_path;
+    	$add['xid'] = $xid;
+
+    	return $this->dataSave($add);
+    }
+
 	public function list($page=1, $size=10, $wh = []) {
 
 	 	$m = $this->field('id');
