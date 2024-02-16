@@ -215,7 +215,7 @@ function set_px(_id){
         xids.push(val);
         ids.push(n.id);
     });
-    if(ids.length ==0){
+    if( ids.length == 0 ){
         layer.msg('请选择要操作的数据',{icon: 2});
     }else{
         var req = {'op':'px','id':ids,xid:xids,mid:"{$mid}"};
