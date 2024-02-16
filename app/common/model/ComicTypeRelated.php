@@ -52,6 +52,23 @@ class ComicTypeRelated extends Base {
     	}
     }
 
+    //检查类型数据是否存在
+    public function checkTypeData($data, $mid){
+    	$m = $this->field('id');
+    	foreach($data as $k => $v) {
+    		$row = $m->where('mid', $mid)->where('tid', $v['id'])->find();
+    		if ($row){
+    			$data[$k]['checked'] = true;
+    		} else {
+    			$data[$k]['checked'] = false;
+    		}
+    		if (!empty($v['submenu'])){
+    			$data[$k]['submenu'] = $this->checkTypeData($v['submenu'], $mid); 
+    		}
+    	}
+    	return $data;
+    }
+
 	public function list($page=1, $size=10, $wh = []) {
 		$m = $this->field('id');
 
