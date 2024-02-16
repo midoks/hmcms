@@ -31,11 +31,11 @@
                     </div>
 
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm layui-btn-normal">设置收费</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-normal set-cion">设置收费</button>
                     </div>
 
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm layui-btn-normal">排序</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-normal set-px">排序</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -123,7 +123,7 @@ function render_table(){
         cols: [[
             {type: 'checkbox', fixed: 'left'},
             {field:'id', title:'章节ID', width:100,sort:true},
-            {field:'xid', title:'排序',width:80},
+            {field:'xid', title:'排序',width:80, toolbar:"#xidTpl"},
             {field:'name', title:'章节名称',},
             {field:'vip', title:'收费', width:110, toolbar:'#ztTpl'},
             {field:'create_time', title:'更新日期', width:162,sort:true},
@@ -177,12 +177,76 @@ function set_vip(_id, _vip){
     }
 }
 
+function set_cion(_id){
+    var ids = [];
+    var checkStatus = table.checkStatus(_id);
+    checkStatus.data.forEach(function(n,i){
+        ids.push(n.id);
+    });
+    if(ids.length ==0){
+        layer.msg('请选择要操作的数据',{icon: 2});
+    }else{
+        layer.prompt({title: '请输入数量',area: ['200px', '150px']},function(value, index, elem){
+            if(isNaN(value)){
+                layer.msg('请输入正确的数量',{icon: 2});
+            }else{
+                $.post("{:url('comicchapter/batchUpdate')}", {'op':'cion','id':ids,cion:value,mid:"{$mid}"}, function(res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon: 1});
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    }else{
+                        layer.msg(res.msg,{icon: 2});
+                        layer.close(index);
+                    }
+                },'json');
+            }
+        });
+    }
+}
+
+function set_px(_id){
+    var ids = [],xids = [];
+    var checkStatus = table.checkStatus(_id);
+    checkStatus.data.forEach(function(n,i){
+        var id = n.id;
+        var val = $('#xid_'+id).val();
+        xids.push(val);
+        ids.push(n.id);
+    });
+    if(ids.length ==0){
+        layer.msg('请选择要操作的数据',{icon: 2});
+    }else{
+        var req = {'op':'px','id':ids,xid:xids,mid:"{$mid}"};
+        $.post("{:url('comicchapter/batchUpdate')}", req, function(res) {
+            if(res.code == 1){
+                layer.msg(res.msg,{icon: 1});
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            }else{
+                layer.msg(res.msg,{icon: 2});
+                layer.close(index);
+            }
+        },'json');
+    }
+}
+
 $('.set-vip').click(function(){
     set_vip('comicchapter',1);
 });
 
 $('.cancel-vip').click(function(){
     set_vip('comicchapter',2);
+});
+
+$('.set-cion').click(function(){
+    set_cion('comicchapter');
+});
+
+$('.set-px').click(function(){
+    set_px('comicchapter');
 });
 
 ///
@@ -197,6 +261,10 @@ $('.cancel-vip').click(function(){
     {{#  } else { }}
         <span class="layui-btn layui-btn-xs">免费阅读</span>
     {{#  } }}
+</script>
+
+<script type="text/html" id="xidTpl">
+    <input type="text" id="xid_{{d.id}}" class="layui-input" style="height: 28px;text-align: center;padding-left:0px;" value="{{d.xid}}" placeholder="排序编号，越小越前" title="排序编号，越小越前">
 </script>
 
 

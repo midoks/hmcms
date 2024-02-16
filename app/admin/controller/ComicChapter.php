@@ -106,32 +106,31 @@ class ComicChapter extends AdminBase
 
     public function batchUpdate(){
         $op = $this->request->param('op');
+        $mid =  $this->request->param('mid');
+        $ids = $this->request->param('id');
+        $ids = implode(',', $ids);
+        if (is_numeric($ids) || preg_match('/^([0-9]+[,]?)+$/', $ids)) {
+            $id = $ids;
+        }
+
+        if (empty($id)) {
+            return $this->returnJson(-1, 'ID不能为空!');
+        }
+        $arr = explode(',', $id);
+
+        $m = $this->model('ComicChapter');
         // 设置VIP
         if ($op == 'vip'){
-            $ids = $this->request->param('id');
             $vip =  $this->request->param('vip');
             $cion =  $this->request->param('cion');
-            $mid =  $this->request->param('mid');
-            $ids = implode(',', $ids);
-            if (is_numeric($ids) || preg_match('/^([0-9]+[,]?)+$/', $ids)) {
-                $id = $ids;
-            }
-
-            if (empty($id)) {
-                return $this->returnJson(-1, 'ID不能为空!');
-            }
-
+            
             if ($vip != 1) {
                 $vip = 0;
             }
-            $arr = explode(',', $id);
-
 
             $edit = array('vip' => $vip, 'cion' => 0);
-            $m = $this->model('ComicChapter');
-
             foreach ($arr as $_id) {
-                $m->dataSave($edit, $_id, $edit);
+                $m->dataSave($edit, $_id);
             }
 
             $row = $m->list(1,1,['vip' => 1,'mid'=>$mid], false);
@@ -146,9 +145,37 @@ class ComicChapter extends AdminBase
             $comicM->dataSave(['pay' => $pay], $mid);
 
             return $this->returnJson(1, '设置VIP成功!');
+        } else if ($op == 'cion'){ //设置金币
+            
+            $vip =  $this->request->param('vip');
+            $cion =  $this->request->param('cion');
+
+            $edit = array('vip' => 0, 'cion' => $cion);
+            foreach ($arr as $_id) {
+                $m->dataSave($edit, $_id);
+            }
+
+            $row = $m->list(1,1,['cion>' => 0,'mid'=>$mid], false);
+            if (count($row)>0) {
+                $pay = 1;
+            } else {
+                $row = $m->list(1,1,['vip' => 1,'mid'=>$mid], false);
+                $pay = count($row)>0 ? 2 : 0;
+            }
+
+            $comicM = $this->model('Comic');
+            $comicM->dataSave(['pay' => $pay], $mid);
+
+            return $this->returnJson(1, '设置金币成功!');
+        } else if ($op == 'px'){
+            $xids = $this->request->param('xid');
+            foreach ($arr as $k => $_id) {
+                $_xid = $xids[$k];
+                $m->dataSave(['xid' => $_xid], $_id);
+            }
+
+            return $this->returnJson(1, '设置排序成功!');
         }
-
-
 
         return $this->returnJson(-1, '批量操作失败!');
     }
