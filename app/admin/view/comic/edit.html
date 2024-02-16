@@ -271,9 +271,43 @@ layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], f
 var admin = layui.admin
 ,$ = layui.$
 ,form = layui.form
-,table = layui.table;
+,table = layui.table,
+upload = layui.upload;
 
-form.render();
+upload.render({
+    elem: '.uppic',
+    url: "{:url('common/uploadComicCover')}?id={$data['id']}",
+    accept: 'file',
+    acceptMime: 'image/*',
+    exts: 'jpg|gif|png|jpeg|bmp|webp',
+    done: function(res){
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+            $('#pic').val(res['data']['url']);
+        } else {
+            layer.msg(res.msg,{icon: 2});
+        }
+    }
+});
+
+
+upload.render({
+    elem: '.uppicx',
+    url: "{:url('common/uploadComicCoverX')}?id={$data['id']}",
+    accept: 'file',
+    acceptMime: 'image/*',
+    exts: 'jpg|gif|png|jpeg|bmp|webp',
+    done: function(res){
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+            $('#picx').val(res['data']['url']);
+        } else {
+            layer.msg(res.msg,{icon: 2});
+        }
+    }
+});
+
+//
 });
     
 </script>

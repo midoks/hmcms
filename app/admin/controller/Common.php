@@ -11,6 +11,46 @@ use think\facade\Db;
 class Common extends AdminBase
 {
 
+    public function uploadComicCover()
+    {
+        $id = $this->request->param('id');
+        if ($id <= 0){
+            return $this->returnJson(-1, '缺少漫画ID!,先创建漫画信息再上传封面!');
+        }
+
+        $file = $this->request->file('file');
+        $path = \think\facade\Filesystem::disk('upload')->putFile('comic_cover', $file);
+        $m = $this->model('Comic');
+
+        $r = $m->dataSave(['pic'=> $path], $id);
+        $rdata = ['url'=>$path];
+        if ($r){
+            return $this->returnJson(1, '上传成功!', $rdata);
+        }
+        return $this->returnJson(0, '上传失败!');
+
+    }
+
+    public function uploadComicCoverX()
+    {
+        $id = $this->request->param('id');
+        if ($id <= 0){
+            return $this->returnJson(-1, '缺少漫画ID!,先创建漫画信息再上传封面X!');
+        }
+
+        $file = $this->request->file('file');
+        $path = \think\facade\Filesystem::disk('upload')->putFile('comic_cover', $file);
+        $m = $this->model('Comic');
+
+        $r = $m->dataSave(['picx'=> $path], $id);
+        $rdata = ['url'=>$path];
+        if ($r){
+            return $this->returnJson(1, '上传成功!', $rdata);
+        }
+        return $this->returnJson(0, '上传失败!');
+
+    }
+
     //上传章节封面
     public function uploadCoverByCid(){
         $cid = $this->request->param('cid');
