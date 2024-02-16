@@ -48,8 +48,6 @@ class Comic extends AdminBase
 
         $typeRelatedM = $this->model('ComicTypeRelated');
         $typeData = $typeRelatedM->checkTypeData($typeData, $id);
-
-        // var_dump($typeData);
         View::assign("typeData", $typeData);
 
         return $this->fetch('comic/edit');
