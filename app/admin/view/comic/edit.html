@@ -63,7 +63,7 @@
                         <option value="">选择分类</option>
                         {volist name="classData" id="row" key="k"}
 
-                        {if $row['id'] == $data['cid']}
+                        {if isset($data['cid']) && $row['id'] == $data['cid']}
                         <option value="{$row['id']}" selected>{$row['name']}</option>
                         {else}
                         <option value="{$row['id']}">{$row['name']}</option>
@@ -196,7 +196,7 @@
                 <label class="layui-form-label">{$row['name']}</label>
                 <div class="layui-input-block type-input" style="background-color: white;">
                 {volist name="row['submenu']" id="item" key="k1"}
-                    <input value="{$item['id']}" type="{if $item['mode']==1}checkbox{else}radio{/if}" name="type[{$item['field']}][]" lay-skin="primary" title="{$item['name']}" {if $item['checked']}checked{/if}>
+                    <input value="{$item['id']}" type="{if $item['mode']==1}checkbox{else}radio{/if}" name="type[{$item['field']}][]" lay-skin="primary" title="{$item['name']}" {if isset($item['checked']) && $item['checked']}checked{/if}>
                 {/volist}
                 </div>
             </div>
@@ -233,9 +233,9 @@
             <label class="layui-form-label">审核</label>
             <div class="layui-input-block">
                 <select name="yid" lay-filter="yid">
-                    <option value="0" {if $data['yid']==0}selected{/if}>已通过</option>
-                    <option value="1" {if $data['yid']==1}selected{/if}>待审核</option>
-                    <option value="2" {if $data['yid']==2}selected{/if}>未通过</option>
+                    <option value="0" {if isset($data['yid']) && $data['yid']==0}selected{/if}>已通过</option>
+                    <option value="1" {if isset($data['yid']) && $data['yid']==1}selected{/if}>待审核</option>
+                    <option value="2" {if isset($data['yid']) && $data['yid']==2}selected{/if}>未通过</option>
                 </select>
             </div>
         </div>

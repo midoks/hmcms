@@ -36,7 +36,14 @@ class Comic extends AdminBase
 
     public function edit($id=''){
         $m = $this->model('Comic');
-        $data = $m->getDataByID($id);
+
+        if (!empty($id)){
+            $data = $m->getDataByID($id);
+        } else {
+            $data = [
+                'id' => 0,
+            ];
+        }
         View::assign("data", $data);
 
         $classM = $this->model('ComicClass');
@@ -45,10 +52,10 @@ class Comic extends AdminBase
 
         $typeM = $this->model('ComicType');
         $typeData = $typeM->menuList(0);
-
-        $typeRelatedM = $this->model('ComicTypeRelated');
-        $typeData = $typeRelatedM->checkTypeData($typeData, $id);
-        // var_dump($typeData);
+        if ($id >0 ){
+           $typeRelatedM = $this->model('ComicTypeRelated');
+            $typeData = $typeRelatedM->checkTypeData($typeData, $id); 
+        }
         View::assign("typeData", $typeData);
 
         return $this->fetch('comic/edit');
@@ -61,6 +68,7 @@ class Comic extends AdminBase
         $data['name'] = $this->request->post('name');
         $data['yname'] = $this->request->post('yname');
         $data['sid'] = $this->request->post('sid');
+        $data['cid'] = $this->request->post('cid');
         $data['yid'] = $this->request->post('yid');
         $data['tid'] = $this->request->post('tid');
         $data['ttid'] = $this->request->post('ttid');
