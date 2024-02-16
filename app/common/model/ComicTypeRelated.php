@@ -54,9 +54,11 @@ class ComicTypeRelated extends Base {
 
     //检查类型数据是否存在
     public function checkTypeData($data, $mid){
-    	$m = $this->field('id');
     	foreach($data as $k => $v) {
-    		$row = $m->where('mid', $mid)->where('tid', $v['id'])->find();
+    		$row = $this->field('id')->where('mid', $mid)->where('tid', $v['id'])->find();
+    		if ($row){
+    			$row = $row->toArray();
+    		}
     		if ($row){
     			$data[$k]['checked'] = true;
     		} else {

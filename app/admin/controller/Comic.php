@@ -48,6 +48,7 @@ class Comic extends AdminBase
 
         $typeRelatedM = $this->model('ComicTypeRelated');
         $typeData = $typeRelatedM->checkTypeData($typeData, $id);
+        // var_dump($typeData);
         View::assign("typeData", $typeData);
 
         return $this->fetch('comic/edit');
@@ -110,9 +111,9 @@ class Comic extends AdminBase
 
         $msg_head = $id > 0 ? '更新' : '添加';
         if ($r){
-            return $this->returnJson(0, $msg_head.'成功!');
+            return $this->returnJson(1, $msg_head.'成功!');
         } else {
-            return $this->returnJson(-1, $msg_head.'失败!');
+            return $this->returnJson(2, $msg_head.'失败!');
         }
 
 
