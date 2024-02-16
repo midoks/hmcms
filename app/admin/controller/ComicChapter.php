@@ -137,7 +137,7 @@ class ComicChapter extends AdminBase
             if (count($row)>0) {
                 $pay = 2;
             } else {
-                $row = $m->list(1,1,['cion>' => 0,'mid'=>$mid], false);
+                $row = $m->list(1,1,['pay' => 3,'mid'=>$mid], false);
                 $pay = count($row)>0 ? 1 : 0;
             }
 
