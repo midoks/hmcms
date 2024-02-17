@@ -1,0 +1,194 @@
+{include file="app/admin/view/common/header.html" /}
+
+<style type="text/css">
+.w120 .layui-form-label {
+    width: 120px;
+}   
+.w400{
+    width: 400px!important;
+}
+.l40{
+    margin-left: 42px!important;
+}
+.pdl60{
+    padding-left: 65px;
+}
+.select-ssl{
+    position: absolute;
+    top:0;
+    left:0;
+}
+.select-ssl .layui-unselect,.select-ssl .layui-input-inline{
+    width: 62px!important;
+}
+.select-ssl .layui-form-select .layui-input{
+    padding-right: 0px;
+}
+.select-ssl .layui-edge{
+    display: none;
+}
+
+.layui-input-block {
+    margin-left: 150px;
+    min-height: 36px;
+}
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <form class="layui-form" action="{:url('setting/save')}">
+            <div class="layui-card-body">
+                <div class="layui-tab layui-tab-brief" lay-filter="setting">
+                    <ul class="layui-tab-title">
+                        <li lay-id="t1" class="layui-this">用户配置</li>
+                        <li lay-id="t2">作者配置</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">注册开关:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input lay-filter="none" xs="no" type="radio" name="user[user_reg]" value="0" title="开启" {if isset($user['user_reg']) && $user['user_reg'] == 0 }checked{/if}>
+                                        <input lay-filter="none" xs="yes" type="radio" name="user[user_reg]" value="1" title="关闭" {if isset($user['user_reg']) && $user['user_reg'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">注册验证:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input lay-filter="none" xs="no" type="radio" name="user[user_reg_tel]" value="0" title="开启" {if isset($user['user_reg_tel']) && $user['user_reg_tel'] == 0 }checked{/if}>
+                                        <input lay-filter="none" xs="yes" type="radio" name="user[user_reg_tel]" value="1" title="关闭" {if isset($user['user_reg_tel']) && $user['user_reg_tel'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">默认会员组:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input type="radio" name="user[user_reg_vip]" value="0" title="普通会员" {if isset($user['user_reg_vip']) && $user['user_reg_vip'] == 0 }checked{/if}>
+                                        <input type="radio" name="user[user_reg_vip]" value="1" title="Vip会员" {if isset($user['user_reg_vip']) && $user['user_reg_vip'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">注册赠送金币:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="user[user_reg_cion]" placeholder="新用户注册赠送金币" value="{$user['user_reg_cion']|default='0'}" class="layui-input" lay-verify="required" required/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">注册赠送VIP:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="user[user_reg_vid_day]" placeholder="新用户注册赠送多少天VIP" value="{$user['user_reg_vid_day']|default='0'}" class="layui-input" lay-verify="required" required/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">推广访问金币:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="user[user_tg_cion]" placeholder="推广成功访问赠送金币" value="{$user['user_tg_cion']|default='0'}" class="layui-input" lay-verify="required" required/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">评论赠送金币:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="user[user_pl_cion]" placeholder="评论一次赠送的金币数量" value="{$user['user_pl_cion']|default='0'}" class="layui-input" lay-verify="required" required/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">评论赠送上限:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="user[user_pl_num]" placeholder="每天评论最多赠送多少金币" value="{$user['user_pl_num']|default='0'}" class="layui-input" lay-verify="required" required/>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">会员中心公告:</label>
+                                    <div class="layui-input-block">
+                                        <textarea style="min-height:100px;" name="user[user_gg]" placeholder="会员中心公告" class="layui-textarea">{$user['user_gg']|default=''}</textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">作者开关:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input lay-filter="none" xs="no" type="radio" name="user[author_mode]" value="0" title="开启" {if isset($user['author_mode']) && $user['author_mode'] == 0 }checked{/if}>
+                                        <input lay-filter="none" xs="yes" type="radio" name="user[author_mode]" value="1" title="关闭" {if isset($user['author_mode']) && $user['author_mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">注册验证:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input lay-filter="none" xs="no" type="radio" name="user[author_rz]" value="0" title="开启" {if isset($user['author_rz']) && $user['author_rz'] == 0 }checked{/if}>
+                                        <input lay-filter="none" xs="yes" type="radio" name="user[author_rz]" value="1" title="关闭" {if isset($user['author_rz']) && $user['author_rz'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">提现最低金额:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="user[author_tx_rmb]" placeholder="作者收入提现最小金额" value="{$user['author_tx_rmb']|default='10'}" class="layui-input" lay-verify="required" required/>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- end -->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+layui.use(['layer', 'form'], function () {
+//
+var form = layui.form,
+    layer = layui.layer;
+//监听伪静态
+form.on('radio(index-mode)', function (r) {
+    if(r.value == '1'){
+        $('blockquote').show();
+    }else{
+        $('blockquote').hide();
+    }
+});
+form.on('select(url)', function (r) {
+    var _id = $(r.elem).attr('data-id');
+    console.log(_id);
+    $("input[name='"+_id+"']").val(r.value);
+});
+var tps = '';
+$('.layui-input,.layui-textarea').click(function(){
+    if($(this).attr('placeholder') != tps){
+        tps = $(this).attr('placeholder');
+        layer.tips(tps, $(this),{tips:1});    
+    }
+});
+//
+});
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}

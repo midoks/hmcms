@@ -22,7 +22,7 @@ class TaskList extends Base {
         return self::$instance;
     }
     
-	 public function list($page=1, $size=10, $wh = []) {
+	public function list($page=1, $size=10, $wh = []) {
 		$m = $this->field('id');
 
 		$list = $m->order('id', 'asc')->paginate(['page'=>$page,'list_rows'=>$size]);

@@ -21,7 +21,7 @@ class Message extends Base {
         return self::$instance;
     }
     
-	 public function list($page=1, $size=10, $wh = []) {
+	public function list($page=1, $size=10, $wh = []) {
 		$m = $this->field('id');
 
 		if (!empty($wh['zd']) && !empty($wh['key'])) {

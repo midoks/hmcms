@@ -13,7 +13,26 @@ use app\common\model\Admin as AdminModel;
 
 
 class Setting extends Admin
-{
+{   
+    public function index()
+    {
+        $m = $this->model('Option');
+
+        $base = $m->getValueByName('base');
+        $base = json_decode($base, true);
+        View::assign("base", $base);
+        return $this->fetch('setting/index');
+    }
+
+    public function user(){
+        $m = $this->model('Option');
+
+        $user = $m->getValueByName('user');
+        $user = json_decode($user, true);
+        View::assign("user", $user);
+        return $this->fetch('setting/user');
+    }
+
     public function web()
     {
         return $this->fetch('auth/index');
@@ -27,6 +46,31 @@ class Setting extends Admin
     public function admin()
     {
         return $this->fetch('auth/admin');
+    }
+
+    public function save()
+    {
+        $m = $this->model('Option');
+        $op = ['base', 'user'];
+
+        foreach ($op as $k => $v) {
+            $req = $this->request->param($v);
+            if (!empty($req)){
+                $r = $m->setValueByName(json_encode($req), $v);
+                if($r){
+                    return $this->returnJson(1, '更新成功!');
+                }
+                return $this->returnJson(-1, '更新失败!');
+            }            
+        }
+
+        // $base = $this->request->param('base');
+        // $m = $this->model('Option');
+        // $r = $m->setValueByName(json_encode($base), 'base');
+        // if($r){
+        //     return $this->returnJson(1, '更新成功!');
+        // }
+        // return $this->returnJson(-1, '更新失败!');
     }
 
     //获取后台菜单权限列表

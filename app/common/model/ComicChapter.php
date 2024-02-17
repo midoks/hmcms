@@ -18,7 +18,7 @@ class ComicChapter extends Base {
         return self::$instance;
     }
     
-	 public function list($page=1, $size=10, $wh = [], $is_page = true) {
+	public function list($page=1, $size=10, $wh = [], $is_page = true) {
 
 	 	$m = $this->field('id');
 

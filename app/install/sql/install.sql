@@ -240,6 +240,20 @@ CREATE TABLE `hm_user_invite` (
   KEY `deviceid` (`deviceid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='用户邀请记录';
 
+-- -----------------------------
+-- Table structure for hm_option
+-- -----------------------------
+DROP TABLE IF EXISTS `hm_option`;
+CREATE TABLE `hm_option` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) DEFAULT '' COMMENT '配置名称',
+  `value` text COMMENT '配置内容',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='配置表';
+
 -- ----------------------------
 -- Table structure for hm_comic
 -- ----------------------------

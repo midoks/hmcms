@@ -1,105 +1,360 @@
 {include file="app/admin/view/common/header.html" /}
 
+<style type="text/css">
+.w120 .layui-form-label {
+    width: 120px;
+}   
+.w400{
+    width: 400px!important;
+}
+.l40{
+    margin-left: 42px!important;
+}
+.pdl60{
+    padding-left: 65px;
+}
+.select-ssl{
+    position: absolute;
+    top:0;
+    left:0;
+}
+.select-ssl .layui-unselect,.select-ssl .layui-input-inline{
+    width: 62px!important;
+}
+.select-ssl .layui-form-select .layui-input{
+    padding-right: 0px;
+}
+.select-ssl .layui-edge{
+    display: none;
+}
+
+.layui-input-block {
+    margin-left: 150px;
+    min-height: 36px;
+}
+</style>
 <div class="layui-fluid">
-    <div class="layui-col-md12" style="padding: 5px;">
-        <div class="layui-card">
-            
+    <div class="layui-card">
+        <form class="layui-form" action="{:url('setting/save')}">
             <div class="layui-card-body">
-                <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
-                    <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
-                    </div>
+                <div class="layui-tab layui-tab-brief" lay-filter="setting">
+                    <ul class="layui-tab-title">
+                        <li lay-id="t1" class="layui-this">基本配置</li>
+                        <li lay-id="t2">安全配置</li>
+                        <li lay-id="t3">留言评论</li>
+                        <li lay-id="t4">SEO配置</li>
+                        <li lay-id="t5">公告配置</li>
+                        <li lay-id="t6">APP启动配置</li>
+                        <li lay-id="t7">帮助/在线配置</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">网站名称:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[name]" placeholder="网站名称" value="{$base['name']|default='鸿蒙CMS'}" class="layui-input" lay-verify="required" required/>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">网站域名:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[web_url]" placeholder="网站域名" value="{$base['web_url']|default=''}" class="layui-input pdl60"/>
+                                        <div class="select-ssl">
+                                            <select name="base[ssl_mode]">
+                                                <option value="0" {if isset($base['ssl_mode']) && $base['ssl_mode'] == 0 }selected{/if}>http://</option>
+                                                <option value="1" {if isset($base['ssl_mode']) && $base['ssl_mode'] == 1 }selected{/if}>https://</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">网站开关:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input lay-filter="none" xs="no" type="radio" name="base[site_mode]" value="0" title="开启" {if isset($base['site_mode']) && $base['site_mode'] == 0 }checked{/if}>
+                                        <input lay-filter="none" xs="yes" type="radio" name="base[site_mode]" value="1" title="关闭" {if isset($base['site_mode']) && $base['site_mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
 
-                    <div class="layui-inline mr0">
-                        <div class="layui-input-inline mr0">
-                            <input name="times" class="layui-input date-icon h30" type="text" placeholder="请选择日期范围" autocomplete="off" lay-key="1">
+                                <div class="layui-form-item w120" id="base[web_mode]" {if isset($base['web_mode']) && $base['web_mode'] == 0 }style="display: none;"{/if}>
+                                    <label class="layui-form-label">关闭提示:</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="base[web_close_txt]" placeholder="网站关闭提示，支持HTML" class="layui-textarea">{$base['web_close_txt']|default=''}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">网站备案号:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[web_icp]" placeholder="网站备案号" value="{$base['web_icp']|default='京ICP备18000000号'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">统计代码:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[web_stat]" placeholder="网站备案号" value="{$base['web_stat']|default='网站统计'}" class="layui-input"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新基本配置</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="layui-inline select100 mr0">
-                        <div class="layui-input-inline h30">
-                            <select name="zd" class="h30">
-                                <option value="text">评论内容</option>
-                                <option value="mid">漫画ID</option>
-                                <option value="uid">会员ID</option>
-                                <option value="ip">评论IP</option>
-                            </select>
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">后台IP白名单:</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="base[admin_ip]" placeholder="后台IP白名单，多个用“|”隔开，留空为不限制" class="layui-textarea">{$base['admin_ip']|default=''}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">客服QQ:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[web_qq]" placeholder="客服联系QQ" value="{$base['web_qq']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">客服电话:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[web_tel]" placeholder="客服联系电话" value="{$base['web_tel']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">客服邮箱:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[web_mail]" placeholder="客服联系邮箱" value="{$base['web_mail']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新安全配置</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="layui-inline mr0">
-                        <div class="layui-input-inline mr0">
-                            <input type="text" name="key" placeholder="请输入关键字" autocomplete="off" class="layui-input h30" value="">
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">评论开关:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input type="radio" name="base[pl_mode]" value="0" title="开启" {if isset($base['pl_mode']) && $base['pl_mode'] == 0 }checked{/if}>
+                                        <input type="radio" name="base[pl_mode]" value="1" title="关闭" {if isset($base['pl_mode']) && $base['pl_mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">评论间隔秒数:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[pl_time]" placeholder="评论间隔时间，小于则视为灌水" value="{$base['pl_time']|default='30'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">每人每天条数:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[pl_add_num]" placeholder="每人每天最多评论多少条，0为不限制" value="{$base['pl_add_num']|default='30'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">过滤关键字:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[pl_str]" placeholder="评论时过滤关键字多个用“|”隔开" value="{$base['pl_str']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新留言配置</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm" data-id="comic_comment" lay-submit lay-filter="table-sreach">
-                            <i class="layui-icon">&#xe615;</i>搜索
-                        </button>
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">网站标题:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[seo_title]" placeholder="网站标题" value="{$base['seo_title']|default='鸿蒙CMS'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">网站关键词:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[seo_keyword]" placeholder="网站关键词" value="{$base['seo_keyword']|default='鸿蒙CMS'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">网站描述:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[seo_description]" placeholder="网站描述,控制在80个汉字，160个字符以内" value="{$base['seo_description']|default='鸿蒙CMS'}" class="layui-input"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新SEO配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">公告开关:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input type="radio" name="base[share_mode]" value="0" title="开启" {if isset($base['share_mode']) && $base['share_mode'] == 0 }checked{/if}>
+                                        <input type="radio" name="base[share_mode]" value="1" title="关闭" {if isset($base['share_mode']) && $base['share_mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">二维码链接:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[share_link]" placeholder="二维码链接" value="{$base['share_link']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">弹窗公告:</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="base[share_content]" placeholder="弹窗公告" class="layui-textarea" style="min-height: 100px;">{$base['share_content']|default=''}</textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">分享域名:</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="base[share_domain]" placeholder="分享域名格式|内容，一行一条" class="layui-textarea" style="min-height: 100px;">{$base['share_domain']|default=''}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">(邀请好友)域名:</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="base[share_invite_domain]" placeholder="域名格式|内容，一行一条" class="layui-textarea" style="min-height: 100px;">{$base['share_invite_domain']|default=''}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新公告配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">启动页调转URL:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[app_start_url]" placeholder="启动页调转URL" value="{$base['app_start_url']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">启动页背景图:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[app_start_image]" placeholder="启动页背景图" value="{$base['app_start_image']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">APP引导(文字):</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[app_start_title]" placeholder="APP引导(文字)" value="{$base['app_start_title']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">APP引导(地址):</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[app_start_download_url]" placeholder="APP引导(下载地址)" value="{$base['app_start_download_url']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新公告配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">在线客服:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="base[app_help_customer_text]" placeholder="在线帮助|时间段|URL" value="{$base['app_help_customer_text']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">帮助中心:</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="base[app_help_text]" placeholder="帮助中心|内容，一行一条" class="layui-textarea" style="min-height: 100px;">{$base['app_help_text']|default=''}</textarea>
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- end -->
                     </div>
                 </div>
-                <div id="comic_comment"></div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
-
 <script type="text/javascript">
-
-layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
-///
-var admin = layui.admin
-,$ = layui.$
-,form = layui.form
-,table = layui.table;
-
-table.render({
-    elem: '#comic_comment',
-    url: '{:url("comiccomment/list")}',
-    // toolbar: '#toolbar_list',
-    defaultToolbar: [],
-    title: '数据表',
-    cols: [[
-        {type: 'checkbox', fixed: 'left'},
-        {field:'id', title:'ID', width:30},
-        {field:'mid', title:'漫画ID'},
-        {field:'uid', title:'会员ID'},
-        {field:'reply_num', title:'回复总数'},
-        {field:'text', title:'内容'},
-        {field:'machine', title:'来源'},
-        {field:'ip', title:'IP'},
-        {field:'zan', title:'赞', width:20,},
-        {field:'create_time', title:'评论时间',width:170,},
-        {title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right'}
-     ]],
-    page: true
+layui.use(['layer', 'form'], function () {
+//
+var form = layui.form,
+    layer = layui.layer;
+//监听伪静态
+form.on('radio(index-mode)', function (r) {
+    if(r.value == '1'){
+        $('blockquote').show();
+    }else{
+        $('blockquote').hide();
+    }
 });
-
-// table.on('tool(list)', function(obj){
-//     console.log(obj);
-//     switch(obj.event){
-//         case 'delete':opDelete(obj);break;
-//         case 'edit':opAdd(obj);break;
-//     };
-// });
-
-//头工具栏事件
-// table.on('toolbar(list)', function(obj){
-//     console.log(obj);
-//     switch(obj.event){
-//         case 'add':opAdd(obj);break;
-//     };
-// });
-
-///
+form.on('select(url)', function (r) {
+    var _id = $(r.elem).attr('data-id');
+    console.log(_id);
+    $("input[name='"+_id+"']").val(r.value);
 });
-</script>
-
-
-<script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete" onclick="Admin.del(this, '{:url('comiccomment/del')}','{{d.id}}')">删除</a>
+var tps = '';
+$('.layui-input,.layui-textarea').click(function(){
+    if($(this).attr('placeholder') != tps){
+        tps = $(this).attr('placeholder');
+        layer.tips(tps, $(this),{tips:1});    
+    }
+});
+//
+});
 </script>
 
 
