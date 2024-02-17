@@ -1,0 +1,179 @@
+{include file="app/admin/view/common/header.html" /}
+
+<style type="text/css">
+.w120 .layui-form-label {
+    width: 120px;
+}   
+.w400{
+    width: 400px!important;
+}
+.l40{
+    margin-left: 42px!important;
+}
+.pdl60{
+    padding-left: 65px;
+}
+.select-ssl{
+    position: absolute;
+    top:0;
+    left:0;
+}
+.select-ssl .layui-unselect,.select-ssl .layui-input-inline{
+    width: 62px!important;
+}
+.select-ssl .layui-form-select .layui-input{
+    padding-right: 0px;
+}
+.select-ssl .layui-edge{
+    display: none;
+}
+
+.layui-input-block {
+    margin-left: 150px;
+    min-height: 36px;
+}
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <form class="layui-form" action="{:url('setting/save')}">
+            <div class="layui-card-body">
+                <div class="layui-tab layui-tab-brief" lay-filter="setting">
+                    <ul class="layui-tab-title">
+                        <li lay-id="t1" class="layui-this">基础配置</li>
+                        <li lay-id="t2">Redis配置</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">缓存存储方式:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input lay-filter="mode" type="radio" name="cache[mode]" value="0" title="关闭缓存" {if isset($cache['mode']) && $cache['mode'] == 0 }checked{/if}>
+                                        <input lay-filter="mode" type="radio" name="cache[mode]" value="1" title="Redis" {if isset($cache['mode']) && $cache['mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">缓存安全字符:</label>
+                                    <div class="layui-input-block">
+                                        <input id="rand" type="text" name="cache[rand]" placeholder="同台服务器多网站使用redis时需区分开" value="{$cache['rand']|default='hmcms_'}" class="layui-input" lay-verify="required" required/>
+                                        <div class="layui-btn layui-btn-danger" onclick="Admin.getRand('rand');" style="position: absolute;top: 0px;right: 0;">随机生成</div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">列表页缓存时间:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cache[time_list]" placeholder="单位秒，数据更新时缓存数据会同步，0不缓存。" value="{$cache['time_list']|default='3600'}" class="layui-input" lay-verify="number" required/>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">内容页缓存时间:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cache[time_content]" placeholder="单位秒，数据更新时缓存数据会同步，0不缓存。" value="{$cache['time_content']|default='3600'}" class="layui-input" lay-verify="number" required/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">其他缓存时间:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cache[time_other]" placeholder="单位秒，数据更新时缓存数据会同步，0不缓存。" value="{$cache['time_other']|default='3600'}" class="layui-input" lay-verify="number" required/>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                
+                                <div id="Redis">
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">Redis缓存主机:</label>
+                                        <div class="layui-input-block">
+                                            <input id="reads_ip" type="text" name="cache[redis_ip]" placeholder="缓存主机一般为：127.0.0.1" value="{$cache['redis_ip']|default='127.0.0.1'}" class="layui-input"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">Redis缓存端口:</label>
+                                        <div class="layui-input-block">
+                                            <input id="reads_port" type="text" name="cache[redis_port]" placeholder="Redis缓存端口一般为：6379" value="{$cache['redis_port']|default='6379'}" class="layui-input"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label">Redis缓存密码:</label>
+                                        <div class="layui-input-block">
+                                            <input id="reads_pass" type="text" name="cache[redis_pass]" placeholder="没有密码可留空" value="{$cache['redis_pass']|default=''}" class="layui-input"/>
+                                            <div class="layui-btn layui-btn-normal" onclick="get_cache(3);" style="position: absolute;top: 0px;right: 0;">测试链接</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                        
+                                
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- end -->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+layui.use(['layer', 'form'], function () {
+//
+var form = layui.form,
+    layer = layui.layer;
+//监听伪静态
+form.on('radio(index-mode)', function (r) {
+    if(r.value == '1'){
+        $('blockquote').show();
+    }else{
+        $('blockquote').hide();
+    }
+});
+form.on('select(url)', function (r) {
+    var _id = $(r.elem).attr('data-id');
+    console.log(_id);
+    $("input[name='"+_id+"']").val(r.value);
+});
+
+
+//
+});
+
+function get_cache(sign){
+    var index = layer.load();
+   
+    var ip = $('#reads_ip').val();
+    var port = $('#reads_port').val();
+    var pass = $('#reads_pass').val(); 
+    
+    $.post("{:url('setting/checkCache')}", {'id':sign,'ip':ip,'port':port,'pass':pass}, function(res) {
+        layer.close(index);
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+        }else{
+            layer.msg(res.msg,{icon: 2});
+        }
+    },'json');
+}
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}

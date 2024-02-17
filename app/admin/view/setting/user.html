@@ -179,13 +179,7 @@ form.on('select(url)', function (r) {
     console.log(_id);
     $("input[name='"+_id+"']").val(r.value);
 });
-var tps = '';
-$('.layui-input,.layui-textarea').click(function(){
-    if($(this).attr('placeholder') != tps){
-        tps = $(this).attr('placeholder');
-        layer.tips(tps, $(this),{tips:1});    
-    }
-});
+
 //
 });
 </script>

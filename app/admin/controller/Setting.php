@@ -14,44 +14,72 @@ use app\common\model\Admin as AdminModel;
 
 class Setting extends Admin
 {   
-    public function index()
+
+    private function initCommonVar($tag='')
     {
         $m = $this->model('Option');
+        $data = $m->getValueByName($tag);
+        $data = json_decode($data, true);
+        View::assign($tag, $data);
+    }
 
-        $base = $m->getValueByName('base');
-        $base = json_decode($base, true);
-        View::assign("base", $base);
+    //基础
+    public function index()
+    {
+        $this->initCommonVar('base');
         return $this->fetch('setting/index');
     }
 
-    public function user(){
-        $m = $this->model('Option');
+    // 统一配置
+    // public function cfg($page='')
+    // {
+    //     $op = ['user','sms'];
+    //     if (in_array($page, $op)){
+    //         $this->initCommonVar($page);
+    //         return $this->fetch('setting/'.$page);
+    //     }
+    // }
 
-        $user = $m->getValueByName('user');
-        $user = json_decode($user, true);
-        View::assign("user", $user);
+    //用户
+    public function user(){
+        $this->initCommonVar('user');
         return $this->fetch('setting/user');
     }
 
-    public function web()
-    {
-        return $this->fetch('auth/index');
+    //缓存
+    public function cache(){
+        $this->initCommonVar('cache');
+        return $this->fetch('setting/cache');
     }
 
-    public function role()
-    {
-        return $this->fetch('auth/role');
+    //短信
+    public function sms(){
+        $this->initCommonVar('sms');
+        return $this->fetch('setting/sms');
     }
 
-    public function admin()
-    {
-        return $this->fetch('auth/admin');
+    //短信
+    public function mail(){
+        $this->initCommonVar('mail');
+        return $this->fetch('setting/mail');
     }
 
     public function save()
     {
         $m = $this->model('Option');
-        $op = ['base', 'user'];
+        $op = ['base', 'user', 'cache', 'sms', 'mail'];
+
+        $initNum = 0;
+        foreach ($op as $k => $v) {
+            $req = $this->request->param($v);
+            if (!empty($req)){
+                $initNum+=1;
+            }
+        }
+
+        if ($initNum>1){
+            return $this->returnJson(-1, '设置,一页只能有一个数组保持!');
+        }
 
         foreach ($op as $k => $v) {
             $req = $this->request->param($v);
@@ -63,155 +91,95 @@ class Setting extends Admin
                 return $this->returnJson(-1, '更新失败!');
             }            
         }
+    }
 
-        // $base = $this->request->param('base');
-        // $m = $this->model('Option');
-        // $r = $m->setValueByName(json_encode($base), 'base');
-        // if($r){
-        //     return $this->returnJson(1, '更新成功!');
+    public function multiSave(){
+        $m = $this->model('Option');
+        $op = ['base', 'user', 'cache','sms'];
+        foreach ($op as $k => $v) {
+            $req = $this->request->param($v);
+            if (!empty($req)){
+                $r = $m->setValueByName(json_encode($req), $v);
+                if($r){
+                    return $this->returnJson(1, '更新成功!');
+                }
+                return $this->returnJson(-1, '更新失败!');
+            }            
+        }
+    }   
+
+    public function checkCache(){
+        $id = (int) $this->request->post('id');
+        $ip = $this->request->post('ip', true);
+        $port = (int) $this->request->post('port');
+        $pass = $this->request->post('pass', true);
+        if (empty($ip) || $port == 0) {
+            return $this->returnJson(-1, '缺少参数');
+        }
+
+        if ($id == 2) {
+            if (!class_exists('Memcache')) {
+                return $this->returnJson(-1, '发生错误，请检查是否开启相应扩展库!');
+            }
+
+            //创建对象
+            $conn = new Memcache;
+            $res = $conn->pconnect($ip, $port);
+            if (!$res) {
+                return $this->returnJson(-1, '链接失败，请检查主机地址或者端口是否有误!');
+            }
+
+        } else {
+            if (!class_exists('Redis')) {
+                return $this->returnJson(-1, '发生错误，请检查是否开启相应扩展库!');
+            }
+
+            //创建对象
+            $redis = new \Redis();
+            $res = $redis->connect($ip, $port);
+            if (!$res) {
+                return $this->returnJson(-1, '链接失败，请检查主机地址或者端口是否有误!');
+            }
+
+        }
+        return $this->returnJson(1, '链接成功');
+    }
+
+    //测试邮件
+    public function mailadd()
+    {
+        $arr = array(
+            'type' => $this->request->post('type'),
+            'host' => $this->request->post('host'),
+            'port' => $this->request->post('port'),
+            'user' => $this->request->post('user'),
+            'pass' => $this->request->post('pass'),
+            'crypto' => $this->request->post('crypto'),
+            'form_mail' => $this->request->post('form_mail'),
+            'form_name' => $this->request->post('form_name'),
+            'to_mail' => $this->request->post('to_mail'),
+            'title' => '这是一封测试邮件',
+            'html' => '这是一封测试邮件，收到就说明我来过了，无需回复，谢谢!!!',
+        );
+
+        return $this->returnJson(-1, '开发中..');
+
+        // if ($arr['pass'] == hm_hidden_pass(Mail_Pass)) {
+        //     $arr['pass'] = Mail_Pass;
         // }
-        // return $this->returnJson(-1, '更新失败!');
-    }
 
-    //获取后台菜单权限列表
-    public function list(){
-        $menu = AdminMenu::getInstance();
-        $list = $menu->submenu(0);
-        return $this->layuiJson(0, 'ok',  $list);
-    }
-
-    // ************ role ************* //
-    public function roleList(){
-        $page = $this->request->param('page');
-        $limit = $this->request->param('limit');
-
-        $role = AdminRole::getInstance();
-        $data = $role->list();
-        $count = $data['total'];
-        $list = $data['data'];
-
-        return $this->layuiJson(0, 'ok', $list, $count);
-    }
-
-    public function roleAdd(){
-        $name = $this->request->post('name');
-        $remark = $this->request->post('remark');
-        $id = $this->request->post('id');
-
-        if (empty($name)){
-            return $this->layuiJson(-1, '名称不能为空');
+        foreach ($arr as $k => $v) {
+            if (empty($v) && $k != 'crypto') {
+                return $this->returnJson(-1, $k . '-->参数内容不完整!');
+            }
         }
-
-        $data = [
-            'name' => $name,
-            'remark' => $remark,
-        ];
-
-        $role = AdminRole::getInstance();
-        if ($id>0){
-            $role->where('id',$id)->save($data);
-            return $this->returnJson(0, '更新成功!');
-        } else{
-            $role->insert($data);
-            return $this->returnJson(0, '添加成功!');
+        $this->load->model('mail');
+        $res = $this->mail->send($arr);
+        if ($res) {
+            return $this->returnJson(-1, '邮件发送失败，请检查信息是否有误!');
+        } else {
+            return $this->returnJson(1, '哇，恭喜，邮件发送成功...');
         }
-    }
-
-    public function roleDelete(){
-        $id = $this->request->post('id');
-        if (empty($id)){
-            return $this->returnJson(-1, '删除ID不能空!');
-        }
-
-        $role = AdminRole::getInstance();
-        $role->where('id', $id)->delete();
-        return $this->returnJson(0, '删除成功!');
-    }
-
-    // ************ role ************* //
-
-
-    // ************ admin ************* //
-
-    public function adminList(){
-        $page = $this->request->param('page');
-        $limit = $this->request->param('limit');
-
-        $admin = AdminModel::getInstance();
-        $data = $admin->list();
-        $count = $data['total'];
-        $list = $data['data'];
-
-        return $this->layuiJson(0, 'ok', $list, $count);
-    }
-
-
-    // ************ admin ************* //
-
-
-    //获取列表
-    public function listpid(){
-        $menu = AdminMenu::getInstance();
-        $pid = $this->request->param('pid');
-        // var_dump($pid);
-        $list = $menu->submenu($pid);
-        return $this->layuiJson(0, 'ok',  $list, );
-    }
-
-    public function menu_plist(){
-        $menu = AdminMenu::getInstance();
-        $list = $menu->submenu2(0,false);
-        return $this->layuiJson(0, 'ok',  $list, );
-    }
-
-    public function delete(){
-        $id = $this->request->post('id');
-        if (empty($id)){
-            return $this->returnJson(-1, '删除ID不能空!');
-        }
-
-        $menu = AdminMenu::getInstance();
-        $menu->recursionDelete($id);
-
-        return $this->returnJson(0, '删除成功!');
-    }
-
-    public function add(){
-        $name = $this->request->post('name');
-        $alias = $this->request->post('alias');
-        $remark = $this->request->post('remark');
-        $icon = $this->request->post('icon');
-        $route = $this->request->post('route');
-        $pid = $this->request->post('pid');
-        $id = $this->request->post('id');
-
-        if (empty($name)){
-            return $this->layuiJson(-1, '名称不能为空');
-        }
-
-        $data = [
-            'name' => $name,
-            'alias' => $alias,
-            'remark' => $remark,
-            'icon' => $icon,
-            'route' => $route,
-        ];
-
-        if ($pid){
-            $data['pid'] = $pid;
-        }
-
-        $menu = AdminMenu::getInstance();
-
-        if ($id>0){
-            $menu->where('id',$id)->save($data);
-            return $this->returnJson(0, '更新成功!');
-        } else{
-            $menu->insert($data);
-            return $this->returnJson(0, '添加成功!');
-        }
-        
-        return $this->returnJson(0, '添加成功!');
     }
 
 

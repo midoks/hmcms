@@ -244,6 +244,54 @@ function hm_substring($str, $lenth, $start=0)
     return  join('',$r);
 }
 
+function encodeImage($imgsrc, $newsrc, $xor_num = '136'){
+    $img = file_get_contents($imgsrc);
+    $imgData = str_split($img);
+    $binData = '';
+    foreach ($imgData as $value) {
+        $value = hexdec(bin2hex($value)) ^ $xor_num;
+        $value = dechex($value);
+        if (strlen($value) % 2) {
+            $binData .= pack('h*', $value);
+        } else {
+            $binData .= hex2bin($value);
+        }
+    }
+    file_put_contents($newsrc, $binData);
+}
+
+//真实密码隐藏
+function hm_hidden_pass($pass, $len = 2, $x = 6)
+{
+    if (empty($pass)) {
+        return '';
+    }
+
+    $xh = '';
+    for ($i = 0; $i < $x; $i++) {
+        $xh .= '*';
+    }
+
+    return substr($pass, 0, $len) . $xh . substr($pass, -$len);
+}
+
+/**
+ *  多位字段排序
+ *  @param &$array 数组
+ *  @param $field 字段
+ *  @param $desc 排序
+ */
+function sortArrByField(&$array, $field, $desc = false)
+{
+    $fieldArr = array();
+    foreach ($array as $k => $v) {
+        $fieldArr[$k] = $v[$field];
+    }
+    $sort = $desc == false ? SORT_ASC : SORT_DESC;
+    array_multisort($fieldArr, $sort, $array);
+}
+
+
 function toPinyin($name){
     $ext_pinyin = '\\pinyin\\Pinyin';
     $ext_pinyin_m = new $ext_pinyin;

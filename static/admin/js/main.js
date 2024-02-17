@@ -93,6 +93,13 @@ laydate.render({
     trigger: 'click'
 });
 
+var tps = '';
+$('.layui-input,.layui-textarea').click(function(){
+    if($(this).attr('placeholder') != tps){
+        tps = $(this).attr('placeholder');
+        layer.tips(tps, $(this),{tips:1});    
+    }
+});
 
 ///
 });
@@ -108,6 +115,10 @@ Admin = function(){
 Admin.prototype.init = function () {
 };
 
+Admin.prototype.getRand = function(_id){
+    var rand = Math.random().toString(36).substr(2)+Math.random().toString(36).substr(5);
+    $('#'+_id).val(rand);
+};
 
 //批量删除
 Admin.prototype.batchDel = function(_url,_id) {
@@ -155,7 +166,7 @@ Admin.prototype.del = function(_this,_url,_id) {
 };
 //弹出层
 Admin.prototype.open = function (title,url,w,h,full) {
-    console.log(title,url,w,h,full);
+    // console.log(title,url,w,h,full);
     if (title == null || title == '') {
         var title = false;
     };

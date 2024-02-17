@@ -1,0 +1,281 @@
+{include file="app/admin/view/common/header.html" /}
+
+<style type="text/css">
+.w120 .layui-form-label {
+    width: 120px;
+}   
+.w400{
+    width: 400px!important;
+}
+.l40{
+    margin-left: 42px!important;
+}
+.pdl60{
+    padding-left: 65px;
+}
+.select-ssl{
+    position: absolute;
+    top:0;
+    left:0;
+}
+.select-ssl .layui-unselect,.select-ssl .layui-input-inline{
+    width: 62px!important;
+}
+.select-ssl .layui-form-select .layui-input{
+    padding-right: 0px;
+}
+.select-ssl .layui-edge{
+    display: none;
+}
+
+.layui-input-block {
+    margin-left: 150px;
+    min-height: 36px;
+}
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <form class="layui-form" action="{:url('setting/save')}">
+            <div class="layui-card-body">
+                <div class="layui-tab layui-tab-brief" lay-filter="setting">
+                    <ul class="layui-tab-title">
+                        <li lay-id="t1" class="layui-this">基础配置</li>
+                        <li lay-id="t2">腾讯云配置</li>
+                        <li lay-id="t3">幻讯国际配置</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">是否开启:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input lay-filter="mode" type="radio" name="sms[mode]" value="0" title="关闭短信" {if isset($sms['mode']) && $sms['mode'] == 0 }checked{/if}>
+                                        <input lay-filter="mode" type="radio" name="sms[mode]" value="1" title="开启短信" {if isset($sms['mode']) && $sms['mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">记录开启:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input type="radio" name="sms[record]" value="0" title="关闭" {if isset($sms['record']) && $sms['record'] == 0 }checked{/if}>
+                                        <input type="radio" name="sms[record]" value="1" title="开启" {if isset($sms['record']) && $sms['record'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">模式选择:</label>
+                                    <div class="layui-input-block">
+                                        <select name="sms[method]">
+                                            <option value="0" {if isset($sms['method']) && $sms['method'] == 0 }selected{/if}>无</option>
+                                            <option value="1" {if isset($sms['method']) && $sms['method'] == 1 }selected{/if}>根据指定</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">是否开启:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input type="radio" name="sms[tx][mode]" value="0" title="关闭" {if isset($sms['tx']['mode']) && $sms['tx']['mode'] == 0 }checked{/if}>
+                                        <input type="radio" name="sms[tx][mode]" value="1" title="开启" {if isset($sms['tx']['mode']) && $sms['tx']['mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">AppId:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[tx][app_id]" placeholder="腾讯云对应AppId" value="{$sms['tx']['app_id']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">AppKey:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[tx][app_key]" placeholder="腾讯云对应AppKey" value="{$sms['tx']['app_key']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">SecretId:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[tx][secret_id]" placeholder="腾讯云对SecretId" value="{$sms['tx']['secret_id']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">SecretKey:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[tx][secret_key]" placeholder="腾讯云对SecretKey" value="{$sms['tx']['secret_key']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">短信签名:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[tx][sign_name]" placeholder="短信签名，如：cms" value="{$sms['tx']['sign_name']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">注册登陆模版编号:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[tx][tpl_log]" placeholder="模板编号需要在服务商短信控制台中申请" value="{$sms['tx']['tpl_log']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">绑定手机模版编号:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[tx][tpl_bind]" placeholder="模板编号需要在服务商短信控制台中申请" value="{$sms['tx']['tpl_bind']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">找回密码模版编号:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[tx][tpl_pass]" placeholder="模板编号需要在服务商短信控制台中申请" value="{$sms['tx']['tpl_pass']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <blockquote class="layui-elem-quote layui-quote-nm">
+                                    提示信息：<br>
+                                    请务必按照短信接口服务商的要求做好短信签名和短信内容的设置。<br>
+                                    腾讯云短信：https://cloud.tencent.com/product/sms<br>
+                                    腾讯云短信模板例子：<br>
+                                    尊敬的用户，您的验证码为：{1}，请勿泄漏于他人！<br>
+                                    验证码为：{1}，您正在绑定手机，若非本人操作，请勿泄露。<br>
+                                    验证码为：{1}，您正在进行密码重置操作，如非本人操作，请忽略本短信！<br>
+                                </blockquote>
+                            
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">是否开启:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input type="radio" name="sms[hx][mode]" value="0" title="关闭" {if isset($sms['hx']['mode']) && $sms['hx']['mode'] == 0 }checked{/if}>
+                                        <input type="radio" name="sms[hx][mode]" value="1" title="开启" {if isset($sms['hx']['mode']) && $sms['hx']['mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">AppId:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[hx][app_id]" placeholder="AppId" value="{$sms['hx']['app_id']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">Spcode:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[hx][spcode]" placeholder="Spcode" value="{$sms['hx']['spcode']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">登录名:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[hx][login_name]" placeholder="登录名" value="{$sms['hx']['login_name']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">密码:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sms[hx][pass]" placeholder="密码" value="{$sms['hx']['pass']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <blockquote class="layui-elem-quote layui-quote-nm">
+                                    提示信息：<br>
+                                    请务必按照短信接口服务商的要求做好短信签名和短信内容的设置。<br>
+                                    http://sms.huanxun58.com/#/smsDoc<br>
+                                </blockquote>
+                            
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- end -->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+layui.use(['layer', 'form'], function () {
+//
+var form = layui.form,
+    layer = layui.layer;
+//监听伪静态
+form.on('radio(index-mode)', function (r) {
+    if(r.value == '1'){
+        $('blockquote').show();
+    }else{
+        $('blockquote').hide();
+    }
+});
+form.on('select(url)', function (r) {
+    var _id = $(r.elem).attr('data-id');
+    console.log(_id);
+    $("input[name='"+_id+"']").val(r.value);
+});
+var tps = '';
+$('.layui-input,.layui-textarea').click(function(){
+    if($(this).attr('placeholder') != tps){
+        tps = $(this).attr('placeholder');
+        layer.tips(tps, $(this),{tips:1});    
+    }
+});
+
+
+//
+});
+
+function get_cache(sign){
+    var index = layer.load();
+   
+    var ip = $('#reads_ip').val();
+    var port = $('#reads_port').val();
+    var pass = $('#reads_pass').val(); 
+    
+    $.post("{:url('setting/checkCache')}", {'id':sign,'ip':ip,'port':port,'pass':pass}, function(res) {
+        layer.close(index);
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+        }else{
+            layer.msg(res.msg,{icon: 2});
+        }
+    },'json');
+}
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}
