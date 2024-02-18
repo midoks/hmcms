@@ -74,6 +74,7 @@ form.on('submit(table-sreach)', function (data) {
 form.on('submit(submit_save)', function(data){
     var index = layer.load();
     $.post(data.form.action, data.field, function(res) {
+        console.log(res);
         showMsg(res.msg, function(){
             layer.close(index);
             if(res.code > -1){

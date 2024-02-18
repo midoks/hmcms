@@ -1,0 +1,549 @@
+{include file="app/admin/view/common/header.html" /}
+
+<style type="text/css">
+.w120 .layui-form-label {
+    width: 120px;
+}   
+.w400{
+    width: 400px!important;
+}
+.l40{
+    margin-left: 42px!important;
+}
+.pdl60{
+    padding-left: 65px;
+}
+.select-ssl{
+    position: absolute;
+    top:0;
+    left:0;
+}
+.select-ssl .layui-unselect,.select-ssl .layui-input-inline{
+    width: 62px!important;
+}
+.select-ssl .layui-form-select .layui-input{
+    padding-right: 0px;
+}
+.select-ssl .layui-edge{
+    display: none;
+}
+
+.layui-input-block {
+    margin-left: 150px;
+    min-height: 36px;
+}
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <form class="layui-form" action="{:url('setting/save')}">
+            <div class="layui-card-body">
+                <div class="layui-tab layui-tab-brief" lay-filter="setting">
+                    <ul class="layui-tab-title">
+                        <li lay-id="t1" class="layui-this">基础配置</li>
+                        <li lay-id="t2">充值配置</li>
+                        <li lay-id="t3">支付宝配置</li>
+                        <li lay-id="t4">微信配置</li>
+                        <li lay-id="t5">其他配置</li>
+                        <li lay-id="t6">其他(通道2)</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
+                                
+                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">虚拟货币名称:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[cion_name]" placeholder="虚拟币的简称如：积分" value="{$pay['cion_name']|default='金币'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">换算比列:</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="pay[rmb_cion]" placeholder="1元人民币等于多少?" value="{$pay['rmb_cion']|default=1}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">最低充值金额:</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="pay[rmb_min]" placeholder="最低充值金额，单位元" value="{$pay['rmb_min']|default=1}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">模式选择:</label>
+                                    <div class="layui-input-block">
+                                        <select name="pay[method]">
+                                            <option value="0" {if isset($pay['method']) && $pay['method'] == 0 }selected{/if}>无</option>
+                                            <option value="1" {if isset($pay['method']) && $pay['method'] == 1 }selected{/if}>根据指定</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-form layui-text" style="max-width: 700px;padding-top: 15px;">
+                                <div class="layui-collapse" lay-accordion="">
+                                    <div class="layui-colla-item">
+                                        <h2 class="layui-colla-title" style="font-size:14px;">VIP充值套餐</h2>
+                                        <div class="layui-colla-content layui-show">
+                                            <div class="layui-form-item w120">
+
+                                            {for start="0" end="$pay['vip_def_num']" step="1" name="line"}
+                                                <div class="layui-col-xs6 layui-col-md4" style="margin-bottom:10px;">
+                                                    <label class="layui-form-label">天数：</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="number" name="pay[vip][{$line}][day]" placeholder="VIP天数" value="{$pay['vip'][$line]['day']|default=$pay['vip_def']['day']}" class="layui-input" lay-verify="required" required/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="layui-col-xs6 layui-col-md4" style="margin-bottom:10px;">
+                                                    <label class="layui-form-label">价格：</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="number" name="pay[vip][{$line}][rmb]" placeholder="需要金额" value="{$pay['vip'][$line]['rmb']|default=$pay['vip_def']['rmb']}" class="layui-input" lay-verify="required" required/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="layui-col-xs6 layui-col-md4" style="margin-bottom:10px;">
+                                                    <label class="layui-form-label">赠送金币：</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="number" name="pay[vip][{$line}][cion]" placeholder="金币" value="{$pay['vip'][$line]['cion']|default=$pay['vip_def']['cion']}" class="layui-input" lay-verify="required" required/>
+                                                    </div>
+                                                </div>
+                                            {/for}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-colla-item">
+                                        <h2 class="layui-colla-title" style="font-size:14px;">充值套餐</h2>
+                                        <div class="layui-colla-content layui-show">
+                                            <div class="layui-form-item w120">
+                                            {for start="0" end="$pay['cion_def_num']" step="1" name="line"}
+                                                <div class="layui-col-xs6 layui-col-md6" style="margin-bottom:10px;">
+                                                    <label class="layui-form-label">金币：</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="number" name="pay[cion][{$line}][cion]" placeholder="金币数量" value="{$pay['cion'][$line]['cion']|default=$pay['cion_def']['cion']}" class="layui-input" lay-verify="required" required/>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-col-xs6 layui-col-md6" style="margin-bottom:10px;">
+                                                    <label class="layui-form-label">价格：</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="number" name="pay[cion][{$line}][rmb]" placeholder="需要金额" value="{$pay['cion'][$line]['rmb']|default=$pay['cion_def']['rmb']}" class="layui-input" lay-verify="required" required/>
+                                                    </div>
+                                                </div>
+                                            {/for}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="layui-form-item w120" style="margin-top:10px;">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>
+                                            更新配置信息
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">是否启用:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input type="radio" name="pay[alipay][mode]" value="0" title="开启" {if isset($pay['alipay']['mode']) && $pay['alipay']['mode'] == 0 }checked{/if}>
+                                        <input type="radio" name="pay[alipay][mode]" value="1" title="关闭" {if isset($pay['alipay']['mode']) && $pay['alipay']['mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">支付宝应用ID:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[alipay][app_id]" placeholder="支付宝应用ID，APPID" value="{$pay['alipay']['app_id']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">支付宝公钥:</label>
+                                    <div class="layui-input-block">
+                                        <textarea style="min-height:150px;" name="pay[alipay][pubkey]" placeholder="支付宝公钥" class="layui-textarea">{$pay['alipay']['pubkey']|default=''}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">商户应用私钥:</label>
+                                    <div class="layui-input-block">
+                                        <textarea style="min-height:150px;" name="pay[alipay][prikey]" placeholder="商户应用私钥" class="layui-textarea">{$pay['alipay']['prikey']|default=''}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">金额限制(支付宝):</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[alipay][wx_limit]" placeholder="20,30" value="{$pay['alipay']['wx_limit']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">备注:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[alipay][remark]" placeholder="备注" value="{$pay['alipay']['remark']|default='备注'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">排序:</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="pay[alipay][sort]" placeholder="排序" value="{$pay['alipay']['sort']|default='99'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">是否启用:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input type="radio" name="pay[wxpay][mode]" value="0" title="开启" {if isset($pay['wxpay']['mode']) && $pay['wxpay']['mode'] == 0 }checked{/if}>
+                                        <input type="radio" name="pay[wxpay][mode]" value="1" title="关闭" {if isset($pay['wxpay']['mode']) && $pay['wxpay']['mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">微信应用ID:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[wxpay][app_id]" placeholder="微信支付分配的公众账号ID（企业号corpid即为此appId）" value="{$pay['wxpay']['app_id']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">密钥KEY:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[wxpay][key]" placeholder="微信商户平台(pay.weixin.qq.com)-->账户设置-->API安全-->密钥设置" value="{$pay['wxpay']['key']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">商户号ID:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[wxpay][user]" placeholder="微信支付分配的商户号" value="{$pay['wxpay']['user']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">金额限制(微信):</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[wxpay][wx_limit]" placeholder="20,30" value="{$pay['wxpay']['wx_limit']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">备注:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[wxpay][remark]" placeholder="备注" value="{$pay['wxpay']['remark']|default='备注'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">排序:</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="pay[wxpay][sort]" placeholder="排序" value="{$pay['wxpay']['sort']|default='99'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">是否启用:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input type="radio" name="pay[ot][mode]" value="0" title="开启" {if isset($pay['ot']['mode']) && $pay['ot']['mode'] == 0 }checked{/if}>
+                                        <input type="radio" name="pay[ot][mode]" value="1" title="关闭" {if isset($pay['ot']['mode']) && $pay['ot']['mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">商户ID:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot][app_id]" placeholder="商户ID" value="{$pay['ot']['app_id']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">密钥KEY:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot][key]" placeholder="密钥KEY" value="{$pay['ot']['key']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">微信(通道):</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot][wx_type]" placeholder="微信(通道)" value="{$pay['ot']['wx_type']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">支付宝(通道):</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot][alipay_type]" placeholder="支付宝(通道)" value="{$pay['ot']['alipay_type']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">金额限制(微信)::</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot][wx_limit]" placeholder="20,30" value="{$pay['ot']['wx_limit']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">金额限制(支付宝):</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot][alipay_limit]" placeholder="20,30" value="{$pay['ot']['alipay_limit']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">请求地址:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot][addr]" placeholder="请求地址" value="{$pay['ot']['addr']|default='http://127.0.0.1:8888'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">备注:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot][remark]" placeholder="备注" value="{$pay['ot']['remark']|default='备注'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">排序:</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="pay[ot][sort]" placeholder="排序" value="{$pay['ot']['sort']|default='99'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">是否启用:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input type="radio" name="pay[ot2][mode]" value="0" title="开启" {if isset($pay['ot2']['mode']) && $pay['ot2']['mode'] == 0 }checked{/if}>
+                                        <input type="radio" name="pay[ot2][mode]" value="1" title="关闭" {if isset($pay['ot2']['mode']) && $pay['ot2']['mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">商户ID:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot2][app_id]" placeholder="商户ID" value="{$pay['ot2']['app_id']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">密钥KEY:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot2][key]" placeholder="密钥KEY" value="{$pay['ot2']['key']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">微信(通道):</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot2][wx_type]" placeholder="微信(通道)" value="{$pay['ot2']['wx_type']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">支付宝(通道):</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot2][alipay_type]" placeholder="支付宝(通道)" value="{$pay['ot2']['alipay_type']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">金额限制(微信)::</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot2][wx_limit]" placeholder="20,30" value="{$pay['ot2']['wx_limit']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">金额限制(支付宝):</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot2][alipay_limit]" placeholder="20,30" value="{$pay['ot2']['alipay_limit']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">请求地址:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot2][addr]" placeholder="请求地址" value="{$pay['ot2']['addr']|default='http://127.0.0.1:8888'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">备注:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pay[ot2][remark]" placeholder="备注" value="{$pay['ot2']['remark']|default='备注'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">排序:</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="pay[ot2][sort]" placeholder="排序" value="{$pay['ot2']['sort']|default='99'}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- end -->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+layui.config({
+    base: '{__STATIC__}/admin/layuiadmin/'
+}).use(['layer','form'], function () {
+//
+var form = layui.form,
+layer = layui.layer;
+
+//监听伪静态
+form.on('radio(index-mode)', function (r) {
+    if(r.value == '1'){
+        $('blockquote').show();
+    }else{
+        $('blockquote').hide();
+    }
+});
+form.on('select(url)', function (r) {
+    var _id = $(r.elem).attr('data-id');
+    console.log(_id);
+    $("input[name='"+_id+"']").val(r.value);
+});
+
+
+// var editor_code_msg = layedit.build('editor_code_msg');
+
+$('.hmcms-label').click(function(){
+    var id= $(this).attr('data-id');
+    var tpl= $(this).attr('data-name');
+    console.log(id,tpl);
+    layedit.setContent(eval('editor'+id), tpl, true);
+});
+form.verify({
+    editor_code_msg: function(value) {
+        layedit.sync(editor_code_msg);
+    },
+    // editor2: function(value) {
+    //     layedit.sync(editor2);
+    // },
+    // editor3: function(value) {
+    //     layedit.sync(editor3);
+    // }
+});
+//
+});
+
+function get_cache(sign){
+    var index = layer.load();
+   
+    var ip = $('#reads_ip').val();
+    var port = $('#reads_port').val();
+    var pass = $('#reads_pass').val(); 
+    
+    $.post("{:url('setting/checkCache')}", {'id':sign,'ip':ip,'port':port,'pass':pass}, function(res) {
+        layer.close(index);
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+        }else{
+            layer.msg(res.msg,{icon: 2});
+        }
+    },'json');
+}
+
+//发送测试邮件
+function mail_demo(){
+    var post = {
+        // type:mail_type,
+        // crypto:mail_crypto,
+        host:$('#mail_host').val(),
+        port:$('#mail_port').val(),
+        user:$('#mail_user').val(),
+        pass:$('#mail_pass').val(),
+        form_mail:$('#mail_email').val(),
+        form_name:$('#mail_name').val(),
+        to_mail:$('#mail_tomail').val()
+    };
+    var index = layer.load();
+    $.post("{:url('setting/mailadd')}", post, function(res) {
+        layer.close(index);
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+        }else{
+            layer.msg(res.msg,{icon: 2});
+        }
+    },'json');
+}
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}

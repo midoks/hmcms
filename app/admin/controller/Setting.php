@@ -14,13 +14,42 @@ use app\common\model\Admin as AdminModel;
 
 class Setting extends Admin
 {   
+    protected $op = [
+        'base', 'user', 'cache',
+        'sms', 'mail', 'pay'
+    ];
 
-    private function initCommonVar($tag='')
+    protected function initCommonVar($tag='')
     {
         $m = $this->model('Option');
         $data = $m->getValueByName($tag);
         $data = json_decode($data, true);
         View::assign($tag, $data);
+    }
+
+    protected function initVarByPay()
+    {
+        $m = $this->model('Option');
+        $pay = $m->getValueByName('pay');
+        $pay = json_decode($pay, true);
+
+
+        // 针对支付初始化配置
+        // VIP默认配置
+        $pay['vip_def'] = [
+            'day' => '30',
+            'rmb' => '1000',
+            'cion' => '10',
+        ];
+        $pay['vip_def_num'] = 4;
+       
+        // 充值默认配置
+        $pay['cion_def'] = [
+            'cion' => '4000',
+            'rmb' => '4000',
+        ];
+        $pay['cion_def_num'] = 6;
+        View::assign('pay', $pay);
     }
 
     //基础
@@ -64,10 +93,16 @@ class Setting extends Admin
         return $this->fetch('setting/mail');
     }
 
+    //财务
+    public function pay(){
+        $this->initVarByPay();
+        return $this->fetch('setting/pay');
+    }
+
     public function save()
     {
         $m = $this->model('Option');
-        $op = ['base', 'user', 'cache', 'sms', 'mail'];
+        $op = $this->op;
 
         $initNum = 0;
         foreach ($op as $k => $v) {
@@ -91,11 +126,13 @@ class Setting extends Admin
                 return $this->returnJson(-1, '更新失败!');
             }            
         }
+
+        return $this->returnJson(-1, '更新失败!');
     }
 
     public function multiSave(){
         $m = $this->model('Option');
-        $op = ['base', 'user', 'cache','sms'];
+        $op = $this->op;
         foreach ($op as $k => $v) {
             $req = $this->request->param($v);
             if (!empty($req)){

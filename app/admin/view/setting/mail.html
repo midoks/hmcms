@@ -242,7 +242,26 @@
                         <div class="layui-tab-item">
                             <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
                                 
-                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">验证码发送标题:</label>
+                                    <div class="layui-input-block">
+                                        <!-- 您正在{site_name}操作的验证码 -->
+                                        <input type="text" name="mail['tpl']['code_title']" placeholder="验证码发送邮件标题" value="{$mail['tpl']['code_title']|default=''}" class="layui-input"/>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">验证码发送内容:</label>
+                                    <div class="layui-input-block">
+                                        <textarea lay-verify="editor1" id="editor_code_msg" name="mail['tpl']['code_msg']" placeholder="验证码发送内容" class="layui-textarea">{$mail['tpl']['code_msg']|default=''}</textarea>
+                                        <div class="layui-form-mid layui-word-aux">
+                                            网站名称：<a class="hmcms-label" href="javascript:" data-id="1" data-name="{site_name}" title="网站名称">{web_name}</a> 
+                                            网站地址：<a class="hmcms-label" href="javascript:" data-id="1" data-name="{web_url}" title="网站地址">{web_url}</a> 
+                                            操作类型：<a class="hmcms-label" href="javascript:" data-id="1" data-name="{type}" title="操作类型">{type}</a> 
+                                            验证码：<a class="hmcms-label" href="javascript:" data-id="1" data-name="{code}" title="验证码">{code}</a>
+                                        </div>
+                                    </div>
+                                </div>
                             
                                 <div class="layui-form-item w120">
                                     <div class="layui-input-block">
@@ -262,10 +281,13 @@
 
 
 <script type="text/javascript">
-layui.use(['layer', 'form'], function () {
+layui.config({
+    base: '{__STATIC__}/admin/layuiadmin/'
+}).use(['layer','form'], function () {
 //
 var form = layui.form,
-    layer = layui.layer;
+layer = layui.layer;
+
 //监听伪静态
 form.on('radio(index-mode)', function (r) {
     if(r.value == '1'){
@@ -280,6 +302,26 @@ form.on('select(url)', function (r) {
     $("input[name='"+_id+"']").val(r.value);
 });
 
+
+// var editor_code_msg = layedit.build('editor_code_msg');
+
+$('.hmcms-label').click(function(){
+    var id= $(this).attr('data-id');
+    var tpl= $(this).attr('data-name');
+    console.log(id,tpl);
+    layedit.setContent(eval('editor'+id), tpl, true);
+});
+form.verify({
+    editor_code_msg: function(value) {
+        layedit.sync(editor_code_msg);
+    },
+    // editor2: function(value) {
+    //     layedit.sync(editor2);
+    // },
+    // editor3: function(value) {
+    //     layedit.sync(editor3);
+    // }
+});
 //
 });
 
