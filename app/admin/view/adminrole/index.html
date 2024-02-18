@@ -29,16 +29,14 @@ var admin = layui.admin
 
 table.render({
     elem: '#list',
-    url: '{:url("auth/adminList")}',
+    url: '{:url("adminrole/list")}',
     toolbar: '#toolbar_list',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
     	{field:'id', title:'ID', width:30},
-       	{field:'username', title:'名称',},
-        {field:'create_time', title:'创建时间'},
-        {field:'update_time', title:'更新时间'},
-       	{title:'操作', toolbar: '#nav-list-right-btn', width:180, fixed: 'right',}
+       	{field:'name', title:'名称',},
+       	{title:'操作', toolbar: '#cmdTpl', width:180, fixed: 'right',}
      ]],
     page: true
 });
@@ -144,7 +142,7 @@ function opDelete(obj){
 </script>
 
 
-<script type="text/html" id="nav-list-right-btn">
+<script type="text/html" id="cmdTpl">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs" lay-event="role">权限</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>

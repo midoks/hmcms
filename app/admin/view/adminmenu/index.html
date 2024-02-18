@@ -2,7 +2,7 @@
 
 <div class="layui-fluid">
 
-	<div class="layui-col-md4" style="padding: 5px;">
+	<div class="layui-col-md12" style="padding: 5px;">
 		<div class="layui-card">
 		  	<div class="layui-card-header">导航</div>
 		  	<div class="layui-card-body">
@@ -16,7 +16,7 @@
 		</div>
 	</div>
 
-	<div class="layui-col-md4" style="padding: 5px;">
+	<div class="layui-col-md6" style="padding: 5px;">
 		<div class="layui-card">
 		  	<div class="layui-card-header">菜单</div>
 		  	<div class="layui-card-body">
@@ -30,7 +30,7 @@
 		</div>
 	</div>
 
-	<div class="layui-col-md4" style="padding: 5px;">
+	<div class="layui-col-md6" style="padding: 5px;">
 		<div class="layui-card">
 		  	<div class="layui-card-header">子菜单</div>
 		  	<div class="layui-card-body">
@@ -43,16 +43,6 @@
 		  	</div>
 		</div>
 	</div>
-
-<!-- 	<div class="layui-col-md4" style="padding: 5px;">
-		<div class="layui-card">
-		  	<div class="layui-card-header">权限</div>
-		  	<div class="layui-card-body">
-		    卡片式面板面板通常用于非白色背景色的主体内<br>
-		    从而映衬出边框投影
-		  	</div>
-		</div>
-	</div> -->
 
 </div>
 
@@ -80,9 +70,12 @@ table.render({
     		}
     		return data.id;
     	}},
-        {field:'sort',title:'排序',width:20},
        	{field:'name', title:'名称',},
-       	{title:'操作', toolbar: '#nav-list-right-btn', width:120, fixed: 'right',}
+        {field:'alias', title:'别名',},
+        {field:'sort',title:'排序',width:20},
+        {field:'display', title:'是否显示',width:88,toolbar: '#displayTpl',},
+        {field:'status', title:'是否使用',width:88,toolbar: '#statusTpl',},
+       	{title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right',}
      ]],
     page: false
 });
@@ -124,6 +117,7 @@ table.on('tool(nav_list)', function(obj){
     switch(obj.event){
         case 'delete':menuDelete(obj);break;
         case 'edit':menuAdd(obj, 'nav');break;
+        case 'display':menuDisplay(obj);break;
     };
 });
 
@@ -143,7 +137,19 @@ table.on('tool(submenu_list)', function(obj){
 
 function menuDelete(obj){
     layer.confirm('你真的要删除吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("auth/delete")}', {'id':obj.data.id}, function(data) {
+        $.post('{:url("adminmenu/delete")}', {'id':obj.data.id}, function(data) {
+            showMsg(data.msg,function(){
+                if (data.code>-1){
+                    location.reload();
+                }
+            },{icon:data.code>-1?1:2});
+        },'json');
+    });
+}
+
+function menuDisplay(obj){
+    layer.confirm('你真的更改显示吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('{:url("adminmenu/triggerDisplay")}', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
                 if (data.code>-1){
                     location.reload();
@@ -212,7 +218,6 @@ function makeIconList(){
 
     return ndata;
 }
-
 
 // add
 function menuAdd(obj,mtype){
@@ -394,7 +399,8 @@ function renderMenuTable(data){
     		}},
             {field:'sort',title:'排序',width:20},
 	       	{field:'name', title:'名称',},
-	       	{title:'操作', toolbar: '#nav-list-right-btn', width:120, fixed: 'right'}
+            {field:'display', title:'是否显示',width:90,toolbar: '#displayTpl',},
+	       	{title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right'}
 	     ]],
 	    page: false
 	});
@@ -412,7 +418,8 @@ function renderSubMenuTable(data){
 	    	{field:'id', title:'ID', width:30},
 	       	{field:'name', title:'名称',},
             {field:'sort',title:'排序',width:20},
-	       	{title:'操作', toolbar: '#nav-list-right-btn', width:120, fixed: 'right'}
+            {field:'display', title:'是否显示',width:90,toolbar: '#displayTpl',},
+	       	{title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right'}
 	     ]],
 	    page: false
 	});
@@ -423,9 +430,25 @@ function renderSubMenuTable(data){
 </script>
 
 
-<script type="text/html" id="nav-list-right-btn">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+<script type="text/html" id="displayTpl">
+    {{# if (d.display == 0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="display">不显示</a>
+    {{# } else if (d.display == 1) { }}
+    <a class="layui-btn layui-btn-xs" lay-event="display">显示</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="statusTpl">
+    {{# if (d.status == 0){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="status">开启</a>
+    {{# } else if (d.status == 1) { }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">关闭</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="cmdTpl">
+    <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete"><i class="layui-icon">&#xe640;</i></a>
 </script>
 
 

@@ -55,7 +55,6 @@ class Base extends Model {
             }
         }
         return false;
-
     }
 
     public function dataDelete($id = 0){
@@ -65,6 +64,13 @@ class Base extends Model {
             
         }
         return $this->where('id',$id)->delete();
+    }
+
+    public function dataTriggerField($id, $field_name){
+        $row = $this->getDataByID($id);
+        $d = $row[$field_name];
+        $update_status  = $d > 0 ? 0 : 1;
+        return $this->dataSave([$field_name=> $update_status ], $id);
     }
 
     public function debugSQL($m){

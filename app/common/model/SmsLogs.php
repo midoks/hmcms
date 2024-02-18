@@ -1,12 +1,12 @@
 <?php
-
 namespace app\common\model;
+
 use think\Db;
-use think\helper\Str;
 
-class AdminRole extends Base {
+class SmsLogs extends Base {
 
-	protected $name = 'admin_role';
+
+	protected $name = 'sms_logs';
 	protected $pk = 'id';
 
 	// 开启自动写入时间戳字段
@@ -19,22 +19,9 @@ class AdminRole extends Base {
         }
         return self::$instance;
     }
-
-	public function listAll($page=1, $size=100, $wh = []) {
-		$m = $this->field('id');
-
-		$list = $m->order('id', 'asc')->paginate(['page'=>$page,'list_rows'=>$size]);
-
-		if ($list){
-			$list = $list->toArray();
-		}
-		$ids = $this->getFieldList($list['data'],'id');
-		return $this->getDataByIds($ids);
-	}
-
-	public function list($page=1, $size=10, $wh = []) {
-		$m = $this->field('id');
-
+    
+    public function list($page=1, $size=10, $wh=[]) {
+    	$m = $this->field('id');
 		$list = $m->order('id', 'asc')->paginate(['page'=>$page,'list_rows'=>$size]);
 
 		if ($list){
@@ -44,8 +31,8 @@ class AdminRole extends Base {
 		$ids_data = $this->getDataByIds($ids);
 		$list['data'] = $ids_data;
 		return $list;
+		return $list;
 	}
-
 
 
 }

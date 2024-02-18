@@ -23,11 +23,17 @@ class Admin extends Base {
         return self::$instance;
     }
     
-    public function list($page=1, $size=10) {
-		$list = $this->where('status', '1')->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
+    public function list($page=1, $size=10, $wh=[]) {
+    	$m = $this->field('id');
+		$list = $m->order('id', 'asc')->paginate(['page'=>$page,'list_rows'=>$size]);
+
 		if ($list){
 			$list = $list->toArray();
 		}
+		$ids = $this->getFieldList($list['data'],'id');
+		$ids_data = $this->getDataByIds($ids);
+		$list['data'] = $ids_data;
+		return $list;
 		return $list;
 	}
 	
@@ -59,7 +65,7 @@ class Admin extends Base {
 			'password' => $db_password,
 			'status' => 1,
 			'random' => $random,
-			'auth' => '',
+			'role_id' => '0',
 		];
 		$id = $this->save($data);
 		return $id;

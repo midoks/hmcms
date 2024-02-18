@@ -1,0 +1,62 @@
+{include file="app/admin/view/common/header_head.html" /}
+<!-- start -->
+
+<div class="layui-fluid">
+    <form class="layui-form" action="{:url('app/save')}">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">应用名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" autocomplete="off" class="layui-input" value="{$data['name']|default=''}" placeholder="应用名称">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">接口密钥</label>
+            <div class="layui-input-block">
+                <input id="apikey" type="text" name="apikey" autocomplete="off" class="layui-input" value="{$data['apikey']|default=''}" placeholder="接口密钥">
+
+                <div class="layui-btn layui-btn-normal rand" style="position: absolute;top: 0px;right: 0;" onclick="Admin.getRand('apikey');">随机生成</div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">AES密钥</label>
+            <div class="layui-input-block">
+                <input id="aeskey" type="text" name="aeskey" autocomplete="off" class="layui-input" value="{$data['aeskey']|default=''}" placeholder="AES密钥">
+
+                <div class="layui-btn layui-btn-normal rand" style="position: absolute;top: 0px;right: 0;" onclick="Admin.getRand('aeskey');">随机生成</div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">加密传输</label>
+            <div class="layui-input-block">
+                <select name="is_encrypt">
+                    <option value="1" {if isset($data['is_encrypt']) && $data['is_encrypt'] == 1 }selected{/if}>启用</option>
+                    <option value="0" {if isset($data['is_encrypt']) && $data['is_encrypt'] == 0 }selected{/if}>禁用</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">状态</label>
+            <div class="layui-input-block">
+                <select name="status">
+                    <option value="1" {if isset($data['status']) && $data['status'] == 1 }selected{/if}>启用</option>
+                    <option value="0" {if isset($data['status']) && $data['status'] == 0 }selected{/if}>禁用</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" style="text-align: center;">
+            <input type="hidden" name="id" value="{$data['id']|default='0'}">
+            <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+
+<!-- end -->
+</body>
+</html>
+
+

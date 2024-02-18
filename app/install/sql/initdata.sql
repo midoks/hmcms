@@ -26,17 +26,28 @@ INSERT INTO `hm_task` (`id`, `type`, `pid`, `status`, `name`, `text`, `cion`, `v
 ('17','0', '1', '0', '周日签到', '周日签到获得奖励', '5', '0', '1', '0','2024-01-14 23:58:37', '2024-01-14 23:58:37');
 
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
-(1, '系统', '', 'sys',   0, '','系统', 1, 'nav', 1,0),
-(2, '小说', '', 'novel', 0, '', '小说', 2, 'nav',1, 0),
-(3, '漫画', '', 'comic', 0, '', '漫画', 3, 'nav', 1, 0),
-(4, '视频', '', 'video', 0, '', '视频', 4, 'nav', 1,0),
-(5, '文章', '', 'article', 0, '','文章', 5, 'nav', 1, 0),
-(6, '用户', '', 'user', 0, '','用户', 6, 'nav', 1,0),
-(7, '运营', '', 'bus', 0, '','运营', 7, 'nav', 1,0),
-(8, '权限管理', 'layui-icon-senior',  '', 0, '','权限管理', 1, 'menu', 1,1),
-(9, '菜单管理', '',  '', 0, 'auth/index','菜单管理', 1, 'submenu', 1,8),
-(10, '角色管理', '',  '', 0, 'auth/role','角色管理', 1, 'submenu', 1,8),
-(11, '管理员', '',  '', 0, 'auth/admin','管理员', 1, 'submenu', 1,8);
+(1,  '系统', '', 'sys',   0, '','系统', 1, 'nav', 1,0),
+(2,  '小说', '', 'novel', 0, '', '小说', 2, 'nav',1, 0),
+(3,  '漫画', '', 'comic', 0, '', '漫画', 3, 'nav', 1, 0),
+(4,  '视频', '', 'video', 0, '', '视频', 4, 'nav', 1,0),
+(5,  '文章', '', 'article', 0, '','文章', 5, 'nav', 1, 0),
+(6,  '运营', '', 'bus', 0, '','运营', 7, 'nav', 1,0);
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(7,  '权限管理', 'layui-icon-senior',  '', 0, '','权限管理', 1, 'menu', 1,1),
+(8,  '菜单管理', '',  '', 0, 'adminmenu/index','菜单管理', 1, 'submenu', 1,8),
+(9,  '角色管理', '',  '', 0, 'adminrole/index','角色管理', 1, 'submenu', 1,8),
+(10, '管理员', '',  '', 0, 'admin/index','管理员', 1, 'submenu', 1,8);
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(11,  '基础设置', 'layui-icon-set',  '', 0, '','基础设置', 1, 'menu', 1,1),
+(12,  '网站配置', '',  '', 0, 'setting/index','网站配置', 1, 'submenu', 1,11),
+(13,  '用户管理', '',  '', 0, 'setting/user','用户管理', 1, 'submenu', 1,1),
+(14,  '缓存配置', '',  '', 0, 'setting/cache','缓存配置', 1, 'submenu', 1,11),
+(15,  '短信配置', '',  '', 0, 'setting/sms','短信配置', 1, 'submenu', 1,11),
+(16,  '邮件配置', '',  '', 0, 'setting/mail','邮件配置', 1, 'submenu', 1,11),
+(17,  '财务管理', '',  '', 0, 'setting/pay','财务管理', 1, 'submenu', 1,11);
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(18,  '应用管理', 'layui-icon-release',  '', 0, '','应用管理', 1, 'menu', 1,1),
+(19,  '应用列表', '',  '', 0, 'app/index','应用列表', 1, 'submenu', 1,18);
 
 
 INSERT INTO `hm_comic_class` (`id`, `name`, `yname`, `sort`,`pid`, `create_time`,`update_time`) VALUES

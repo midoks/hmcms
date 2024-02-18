@@ -7,22 +7,17 @@ use think\facade\Db;
 
 use app\BaseController;
 use app\common\controller\Admin;
-use app\common\model\AdminMenu;
 use app\common\model\AdminRole;
 use app\common\model\Admin as AdminModel;
 
 
-class Auth extends Admin
+class AdminMenu extends Admin
 {
     public function index()
     {
-        return $this->fetch('auth/index');
+        return $this->fetch('adminmenu/index');
     }
 
-    public function role()
-    {
-        return $this->fetch('auth/role');
-    }
 
     public function admin()
     {
@@ -31,9 +26,22 @@ class Auth extends Admin
 
     //获取后台菜单权限列表
     public function list(){
-        $menu = AdminMenu::getInstance();
-        $list = $menu->submenu(0);
+        $m = $this->model('AdminMenu');
+        $list = $m->submenu(0);
         return $this->layuiJson(0, 'ok',  $list);
+    }
+
+    // ************ role ************* //
+    public function roleList(){
+        $page = $this->request->param('page');
+        $limit = $this->request->param('limit');
+
+        $role = AdminRole::getInstance();
+        $data = $role->list();
+        $count = $data['total'];
+        $list = $data['data'];
+
+        return $this->layuiJson(0, 'ok', $list, $count);
     }
 
     public function roleAdd(){
@@ -74,12 +82,32 @@ class Auth extends Admin
     // ************ role ************* //
 
 
+    // ************ admin ************* //
+
+    public function adminList(){
+        $page = $this->request->param('page');
+        $limit = $this->request->param('limit');
+
+        $admin = AdminModel::getInstance();
+
+        $data = $admin->list();
+        $count = $data['total'];
+        $list = $data['data'];
+
+        return $this->layuiJson(0, 'ok', $list, $count);
+    }
+
+
+    // ************ admin ************* //
+
+
     //获取列表
     public function listpid(){
-        $menu = AdminMenu::getInstance();
         $pid = $this->request->param('pid');
         // var_dump($pid);
-        $list = $menu->submenu($pid);
+
+        $m = $this->model('AdminMenu');
+        $list = $m->submenu($pid);
         return $this->layuiJson(0, 'ok',  $list, );
     }
 
@@ -95,10 +123,38 @@ class Auth extends Admin
             return $this->returnJson(-1, '删除ID不能空!');
         }
 
-        $menu = AdminMenu::getInstance();
-        $menu->recursionDelete($id);
+        if ($id<100){
+            return $this->returnJson(-1, '不能删除!');
+        }
 
-        return $this->returnJson(0, '删除成功!');
+        $m = $this->model('AdminMenu');
+        $r = $m->recursionDelete($id);
+        if ($r){
+            return $this->returnJson(0, '删除成功!');
+        }
+        return $this->returnJson(-1, '删除失败!');
+    }
+
+    public function triggerDisplay(){
+        $id = $this->request->post('id');
+        if (empty($id)){
+            return $this->returnJson(-1, '设置ID不能空!');
+        }
+
+        $m = $this->model('AdminMenu');
+        $m->dataTriggerField($id,'display');
+        return $this->returnJson(1, '设置成功!');
+    }
+
+    public function triggerStatus(){
+        $id = $this->request->post('id');
+        if (empty($id)){
+            return $this->returnJson(-1, '设置ID不能空!');
+        }
+
+        $m = $this->model('AdminMenu');
+        $m->dataTriggerField($id,'status');
+        return $this->returnJson(1, '设置成功!');
     }
 
     public function add(){
@@ -128,13 +184,12 @@ class Auth extends Admin
             $data['pid'] = $pid;
         }
 
-        $menu = AdminMenu::getInstance();
-
+        $m = $this->model('AdminMenu');
         if ($id>0){
-            $menu->where('id',$id)->save($data);
+            $m->where('id',$id)->save($data);
             return $this->returnJson(0, '更新成功!');
         } else{
-            $menu->insert($data);
+            $m->insert($data);
             return $this->returnJson(0, '添加成功!');
         }
         

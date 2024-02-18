@@ -1,0 +1,49 @@
+{include file="app/admin/view/common/header_head.html" /}
+<!-- start -->
+
+<div class="layui-fluid">
+    <form class="layui-form" action="{:url('admin/save')}">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="password" autocomplete="off" class="layui-input" value="" placeholder="为空不修改">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">角色</label>
+            <div class="layui-input-block">
+                <select name="role_id">
+                    <option value="0">无</option>
+                    {volist name="roleList" id="row" key="k"}
+                    {if isset($row['id']) && $row['id'] == $data['role_id']}
+                        <option value="{$row['id']}" {if isset($data['role_id']) && $data['role_id'] == $row['id'] }selected{/if}>{$row['name']}</option>
+                    {else}
+                        <option value="{$row['id']}">{$row['name']}</option>
+                    {/if}
+                    {/volist}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">状态</label>
+            <div class="layui-input-block">
+                <select name="status">
+                    <option value="1" {if isset($data['status']) && $data['status'] == 1 }selected{/if}>可用</option>
+                    <option value="0" {if isset($data['status']) && $data['status'] == 0 }selected{/if}>禁用</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" style="text-align: center;">
+            <input type="hidden" name="id" value="{$data['id']|default='0'}">
+            <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+
+<!-- end -->
+</body>
+</html>
+
+

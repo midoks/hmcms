@@ -9,7 +9,6 @@ CREATE TABLE `hm_admin` (
   `password` char(32) NOT NULL DEFAULT '' COMMENT '密码',
   `random` char(32) NOT NULL DEFAULT '' COMMENT '随机',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
-  `auth` text NOT NULL,
   `role_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '角色ID',
   `login_time` int(10) unsigned NOT NULL DEFAULT '0',
   `login_ip` int(10) unsigned NOT NULL DEFAULT '0',
@@ -253,6 +252,75 @@ CREATE TABLE `hm_option` (
   PRIMARY KEY (`id`),
   KEY `name` (`name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='配置表';
+
+
+-- -----------------------------
+-- Table structure for hm_app
+-- -----------------------------
+DROP TABLE IF EXISTS `hm_app`;
+CREATE TABLE `hm_app` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) DEFAULT '' COMMENT '应用名称',
+  `apikey` text COMMENT '接口密钥',
+  `aeskey` text COMMENT 'AES密钥',
+  `extra` text COMMENT '额外字段',
+  `is_encrypt` tinyint(1) DEFAULT '0' COMMENT '是否加密传输,1:开启,0:关闭',
+  `status` tinyint(1) DEFAULT '0' COMMENT '1:开启,0:关闭',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='应用表';
+
+-- -----------------------------
+-- Table structure for hm_telcode
+-- -----------------------------
+DROP TABLE IF EXISTS `hm_telcode`;
+CREATE TABLE `hm_telcode` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tel` varchar(20) DEFAULT '' COMMENT '手机号码',
+  `code` varchar(10) DEFAULT '' COMMENT '验证码',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `tel` (`tel`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='手机验证码';
+
+-- -----------------------------
+-- Table structure for hm_sms_logs
+-- -----------------------------
+DROP TABLE IF EXISTS `hm_sms_logs`;
+CREATE TABLE `hm_sms_logs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL DEFAULT '默认' COMMENT '名称',
+  `tel` varchar(20) DEFAULT '' COMMENT '手机号码',
+  `request` text COMMENT '请求参数',
+  `receive` text COMMENT '接收数据',
+  `extra` text COMMENT '额外字段',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `tel` (`tel`) USING BTREE
+  KEY `name` (`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='短信日志表';
+
+-- -----------------------------
+-- Table structure for hm_mail_logs
+-- -----------------------------
+DROP TABLE IF EXISTS `hm_mail_logs`;
+CREATE TABLE `hm_mail_logs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL DEFAULT '默认' COMMENT '名称',
+  `email` varchar(200) NOT NULL DEFAULT '' COMMENT '邮件地址',
+  `request` text COMMENT '请求参数',
+  `receive` text COMMENT '接收数据',
+  `extra` text COMMENT '额外字段',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `email` (`email`) USING BTREE
+  KEY `name` (`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='邮件日志表';
 
 -- ----------------------------
 -- Table structure for hm_comic
