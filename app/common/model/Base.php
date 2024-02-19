@@ -36,8 +36,7 @@ class Base extends Model {
             return false;
         }
 
-        var_dump(Cache::store('master'));
-
+        // var_dump(Cache::store('master'));
         return Cache::store('slave')->get($key);
     }
 
