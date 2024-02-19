@@ -32,6 +32,7 @@ class v3
             $t = decrypt_data($data);
             unset($_POST['data']);
             $_POST = array_merge($_POST, $t);
+            $request->withPost($_POST);
         }
         return $next($request);
     }

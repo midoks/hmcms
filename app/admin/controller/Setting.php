@@ -115,12 +115,12 @@ class Setting extends Admin
         }
 
         foreach ($op as $k => $v) {
-            if ($v == 'cache'){
-                $this->makeCacheCfg();
-            }
-
             $req = $this->request->param($v);
             if (!empty($req)){
+                if ($v == 'cache'){
+                    $this->makeCacheCfg();
+                }
+
                 $r = $m->setValueByName(json_encode($req), $v);
                 if($r){
                     return $this->returnJson(1, '更新成功!');
@@ -254,30 +254,24 @@ class Setting extends Admin
             'type' => $this->request->post('type'),
             'host' => $this->request->post('host'),
             'port' => $this->request->post('port'),
-            'user' => $this->request->post('user'),
-            'pass' => $this->request->post('pass'),
-            'crypto' => $this->request->post('crypto'),
+            'username' => $this->request->post('username'),
+            'password' => $this->request->post('password'),
+            'secure' => $this->request->post('secure'),
             'form_mail' => $this->request->post('form_mail'),
-            'form_name' => $this->request->post('form_name'),
+            'nick' => $this->request->post('nick'),
             'to_mail' => $this->request->post('to_mail'),
             'title' => '这是一封测试邮件',
             'html' => '这是一封测试邮件，收到就说明我来过了，无需回复，谢谢!!!',
         );
 
-        return $this->returnJson(-1, '开发中..');
-
-        // if ($arr['pass'] == hm_hidden_pass(Mail_Pass)) {
-        //     $arr['pass'] = Mail_Pass;
-        // }
-
         foreach ($arr as $k => $v) {
-            if (empty($v) && $k != 'crypto') {
+            if (empty($v) && $k != 'secure') {
                 return $this->returnJson(-1, $k . '-->参数内容不完整!');
             }
         }
-        $this->load->model('mail');
-        $res = $this->mail->send($arr);
-        if ($res) {
+        
+        $res = send_mail($arr['to_mail'], $arr['title'], $arr['html'], $arr);
+        if ($res['code']!=1) {
             return $this->returnJson(-1, '邮件发送失败，请检查信息是否有误!');
         } else {
             return $this->returnJson(1, '哇，恭喜，邮件发送成功...');

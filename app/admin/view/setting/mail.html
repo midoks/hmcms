@@ -86,70 +86,73 @@
                         <div class="layui-tab-item">
                             <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
                                 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label">是否开启:</label>
-                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
-                                        <input type="radio" name="mail[master][mode]" value="0" title="关闭" {if isset($mail['master']['mode']) && $mail['master']['mode'] == 0 }checked{/if}>
-                                        <input type="radio" name="mail[master][mode]" value="1" title="开启" {if isset($mail['master']['mode']) && $mail['master']['mode'] == 1 }checked{/if}>
+                                <div id="mail_master">
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label">是否开启:</label>
+                                        <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                            <input type="radio" name="mail[master][mode]" value="0" title="关闭" {if isset($mail['master']['mode']) && $mail['master']['mode'] == 0 }checked{/if}>
+                                            <input type="radio" name="mail[master][mode]" value="1" title="开启" {if isset($mail['master']['mode']) && $mail['master']['mode'] == 1 }checked{/if}>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">SMTP服务器:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[master][mail_host]" placeholder="SMTP服务器地址" value="{$mail['master']['mail_host']|default='smtp.126.com'}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">SMTP服务器:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[master][host]" placeholder="SMTP服务器地址" value="{$mail['master']['host']|default='smtp.126.com'}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">邮件发送端口:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[master][mail_port]" placeholder="邮件发送端口，一般为25，QQ邮箱465" value="{$mail['master']['mail_port']|default='25'}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">邮件发送端口:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[master][port]" placeholder="邮件发送端口，一般为25，QQ邮箱465" value="{$mail['master']['port']|default='25'}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">邮件发送名称:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[master][mail_name]" placeholder="发送者简称，如：鸿蒙CMS" value="{$mail['master']['mail_name']|default='鸿蒙CMS'}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">邮件发送名称:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[master][nick]" placeholder="发送者简称，如：鸿蒙CMS" value="{$mail['master']['nick']|default='鸿蒙CMS'}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">发送邮件:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[master][mail_email]" placeholder="填写完整邮箱" value="{$mail['master']['mail_email']|default='aaaa@126.com'}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">发送邮件:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[master][mail_email]" placeholder="填写完整邮箱" value="{$mail['master']['mail_email']|default='aaaa@126.com'}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">邮箱账号:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[master][mail_user]" placeholder="填写完整邮箱" value="{$mail['master']['mail_user']|default='aaaa@126.com'}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">邮箱账号:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[master][username]" placeholder="填写完整邮箱" value="{$mail['master']['username']|default='aaaa@126.com'}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">邮箱密码:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[master][mail_pass]" placeholder="邮箱密码，如果是qq邮箱填写授权码,163邮箱则填安全密码" value="{$mail['master']['mail_pass']|default=''|hm_hidden_pass}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">邮箱密码:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[master][password]" placeholder="邮箱密码，如果是qq邮箱填写授权码,163邮箱则填安全密码" value="{$mail['master']['password']|default=''}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label">SMTP验证方法:</label>
-                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
-                                        <input lay-filter="crypto" type="radio" name="mail[master][mail_crypto]" value="" title="无" {if isset($mail['master']['mail_crypto']) && $mail['master']['mail_crypto'] == '' }checked{/if}>
-                                        <input lay-filter="crypto" type="radio" name="mail[master][mail_crypto]" value="tls" title="TLS" {if isset($mail['master']['mail_crypto']) && $mail['master']['mail_crypto'] == 'tls' }checked{/if}>
-                                        <input lay-filter="crypto" type="radio" name="mail[master][mail_crypto]" value="ssl" title="SSL" {if isset($mail['master']['mail_crypto']) && $mail['master']['mail_crypto'] == 'ssl' }checked{/if}>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label">SMTP验证方法:</label>
+                                        <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                            <input lay-filter="crypto" type="radio" name="mail[master][secure]" value="" title="无" {if isset($mail['master']['secure']) && $mail['master']['secure'] == '' }checked{/if}>
+                                            <input lay-filter="crypto" type="radio" name="mail[master][secure]" value="tls" title="TLS" {if isset($mail['master']['secure']) && $mail['master']['secure'] == 'tls' }checked{/if}>
+                                            <input lay-filter="crypto" type="radio" name="mail[master][secure]" value="ssl" title="SSL" {if isset($mail['master']['secure']) && $mail['master']['secure'] == 'ssl' }checked{/if}>
+                                        </div>
                                     </div>
+
                                 </div>
 
                                 <div class="layui-form-item w120">
                                     <label class="layui-form-label">测试接收邮件:</label>
                                     <div class="layui-input-block">
-                                        <input id="mail_tomail" type="text" name="mail[master][mail_demo]" placeholder="填写完整邮箱" value="{$mail['master']['mail_demo']|default=''}" class="layui-input"/>
-                                        <div class="layui-btn layui-btn-normal" onclick="mail_demo();" style="position: absolute;top: 0px;right: 0;">发送测试邮件</div>
+                                        <input id="mail_tomail" type="text" name="mail[master][to_mail]" placeholder="填写完整邮箱" value="{$mail['master']['to_mail']|default=''}" class="layui-input"/>
+                                        <button class="layui-btn layui-btn-normal" style="position: absolute;top: 0px;right: 0;" lay-filter="submit_master_test" lay-submit>发送测试邮件</button>
                                     </div>
                                 </div>
                             
@@ -164,70 +167,73 @@
                         <div class="layui-tab-item">
                             <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
                                 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label">是否开启:</label>
-                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
-                                        <input type="radio" name="mail[backup][mode]" value="0" title="关闭" {if isset($mail['backup']['mode']) && $mail['backup']['mode'] == 0 }checked{/if}>
-                                        <input type="radio" name="mail[backup][mode]" value="1" title="开启" {if isset($mail['backup']['mode']) && $mail['backup']['mode'] == 1 }checked{/if}>
+                                <div id="mail_slave">
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label">是否开启:</label>
+                                        <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                            <input type="radio" name="mail[backup][mode]" value="0" title="关闭" {if isset($mail['backup']['mode']) && $mail['backup']['mode'] == 0 }checked{/if}>
+                                            <input type="radio" name="mail[backup][mode]" value="1" title="开启" {if isset($mail['backup']['mode']) && $mail['backup']['mode'] == 1 }checked{/if}>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">SMTP服务器:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[backup][mail_host]" placeholder="SMTP服务器地址" value="{$mail['backup']['mail_host']|default='smtp.126.com'}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">SMTP服务器:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[backup][host]" placeholder="SMTP服务器地址" value="{$mail['backup']['host']|default='smtp.126.com'}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">邮件发送端口:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[backup][mail_port]" placeholder="邮件发送端口，一般为25，QQ邮箱465" value="{$mail['backup']['mail_port']|default='25'}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">邮件发送端口:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[backup][port]" placeholder="邮件发送端口，一般为25，QQ邮箱465" value="{$mail['backup']['port']|default='25'}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">邮件发送名称:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[backup][mail_name]" placeholder="发送者简称，如：鸿蒙CMS" value="{$mail['backup']['mail_name']|default='鸿蒙CMS'}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">邮件发送名称:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[backup][nick]" placeholder="发送者简称，如：鸿蒙CMS" value="{$mail['backup']['nick']|default='鸿蒙CMS'}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">发送邮件:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[backup][mail_email]" placeholder="填写完整邮箱" value="{$mail['backup']['mail_email']|default='aaaa@126.com'}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">发送邮件:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[backup][mail_email]" placeholder="填写完整邮箱" value="{$mail['backup']['mail_email']|default='aaaa@126.com'}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">邮箱账号:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[backup][mail_user]" placeholder="填写完整邮箱" value="{$mail['backup']['mail_user']|default='aaaa@126.com'}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">邮箱账号:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[backup][username]" placeholder="填写完整邮箱" value="{$mail['backup']['username']|default='aaaa@126.com'}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label layui-form-required">邮箱密码:</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="mail[backup][mail_pass]" placeholder="邮箱密码，如果是qq邮箱填写授权码,163邮箱则填安全密码" value="{$mail['backup']['mail_pass']|default=''|hm_hidden_pass}" class="layui-input"/>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">邮箱密码:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="mail[backup][password]" placeholder="邮箱密码，如果是qq邮箱填写授权码,163邮箱则填安全密码" value="{$mail['backup']['password']|default=''}" class="layui-input"/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="layui-form-item w120">
-                                    <label class="layui-form-label">SMTP验证方法:</label>
-                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
-                                        <input lay-filter="crypto" type="radio" name="mail[backup][mail_crypto]" value="" title="无" {if isset($mail['backup']['mail_crypto']) && $mail['backup']['mail_crypto'] == '' }checked{/if}>
-                                        <input lay-filter="crypto" type="radio" name="mail[backup][mail_crypto]" value="tls" title="TLS" {if isset($mail['backup']['mail_crypto']) && $mail['backup']['mail_crypto'] == 'tls' }checked{/if}>
-                                        <input lay-filter="crypto" type="radio" name="mail[backup][mail_crypto]" value="ssl" title="SSL" {if isset($mail['backup']['mail_crypto']) && $mail['backup']['mail_crypto'] == 'ssl' }checked{/if}>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label">SMTP验证方法:</label>
+                                        <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                            <input lay-filter="crypto" type="radio" name="mail[backup][secure]" value="" title="无" {if isset($mail['backup']['secure']) && $mail['backup']['secure'] == '' }checked{/if}>
+                                            <input lay-filter="crypto" type="radio" name="mail[backup][secure]" value="tls" title="TLS" {if isset($mail['backup']['secure']) && $mail['backup']['secure'] == 'tls' }checked{/if}>
+                                            <input lay-filter="crypto" type="radio" name="mail[backup][secure]" value="ssl" title="SSL" {if isset($mail['backup']['secure']) && $mail['backup']['secure'] == 'ssl' }checked{/if}>
+                                        </div>
                                     </div>
+
                                 </div>
 
                                 <div class="layui-form-item w120">
                                     <label class="layui-form-label">测试接收邮件:</label>
                                     <div class="layui-input-block">
-                                        <input id="mail_tomail" type="text" name="mail[backup][mail_demo]" placeholder="填写完整邮箱" value="{$mail['backup']['mail_demo']|default=''}" class="layui-input"/>
-                                        <div class="layui-btn layui-btn-normal" onclick="mail_demo();" style="position: absolute;top: 0px;right: 0;">发送测试邮件</div>
+                                        <input id="mail_tomail" type="text" name="mail[backup][to_mail]" placeholder="填写完整邮箱" value="{$mail['backup']['to_mail']|default=''}" class="layui-input"/>
+                                        <button class="layui-btn layui-btn-normal" style="position: absolute;top: 0px;right: 0;" lay-filter="submit_slave_test" lay-submit>发送测试邮件</button>
                                     </div>
                                 </div>
                             
@@ -298,12 +304,8 @@ form.on('radio(index-mode)', function (r) {
 });
 form.on('select(url)', function (r) {
     var _id = $(r.elem).attr('data-id');
-    console.log(_id);
     $("input[name='"+_id+"']").val(r.value);
 });
-
-
-// var editor_code_msg = layedit.build('editor_code_msg');
 
 $('.hmcms-label').click(function(){
     var id= $(this).attr('data-id');
@@ -311,6 +313,7 @@ $('.hmcms-label').click(function(){
     console.log(id,tpl);
     layedit.setContent(eval('editor'+id), tpl, true);
 });
+
 form.verify({
     editor_code_msg: function(value) {
         layedit.sync(editor_code_msg);
@@ -322,49 +325,65 @@ form.verify({
     //     layedit.sync(editor3);
     // }
 });
+
+
+form.on('submit(submit_slave_test)', function(data){
+    var post = {};
+    post['type'] = 'smtp';
+    post['req_mail_type'] = 'backup';
+    post['secure'] = data.field['mail[backup][secure]'];
+    post['host'] = data.field['mail[backup][host]'];
+    post['port'] = data.field['mail[backup][port]'];
+    post['username'] = data.field['mail[backup][username]'];
+    post['password'] = data.field['mail[backup][password]'];
+    post['form_mail'] = data.field['mail[backup][mail_email]'];
+    post['nick'] = data.field['mail[backup][nick]'];
+    post['to_mail'] = data.field['mail[backup][to_mail]'];
+
+    var index = layer.load();
+    $.post("{:url('setting/mailcheck')}", post, function(res) {
+        layer.close(index);
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+        }else{
+            layer.msg(res.msg,{icon: 2});
+        }
+    },'json');
+    return false;
+    return false;
+});
+
+//发送测试邮件
+form.on('submit(submit_master_test)', function(data){
+
+    var post = {};
+    post['type'] = 'smtp';
+    post['req_mail_type'] = 'master';
+    post['secure'] = data.field['mail[master][secure]'];
+    post['host'] = data.field['mail[master][host]'];
+    post['port'] = data.field['mail[master][port]'];
+    post['username'] = data.field['mail[master][username]'];
+    post['password'] = data.field['mail[master][password]'];
+    post['form_mail'] = data.field['mail[master][mail_email]'];
+    post['nick'] = data.field['mail[master][nick]'];
+    post['to_mail'] = data.field['mail[master][to_mail]'];
+
+
+    var index = layer.load();
+    $.post("{:url('setting/mailcheck')}", post, function(res) {
+        layer.close(index);
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+        }else{
+            layer.msg(res.msg,{icon: 2});
+        }
+    },'json');
+    return false;
+});
+
 //
 });
 
-function get_cache(sign){
-    var index = layer.load();
-   
-    var ip = $('#reads_ip').val();
-    var port = $('#reads_port').val();
-    var pass = $('#reads_pass').val(); 
-    
-    $.post("{:url('setting/checkCache')}", {'id':sign,'ip':ip,'port':port,'pass':pass}, function(res) {
-        layer.close(index);
-        if(res.code == 1){
-            layer.msg(res.msg,{icon: 1});
-        }else{
-            layer.msg(res.msg,{icon: 2});
-        }
-    },'json');
-}
-
-//发送测试邮件
-function mail_demo(){
-    var post = {
-        // type:mail_type,
-        // crypto:mail_crypto,
-        host:$('#mail_host').val(),
-        port:$('#mail_port').val(),
-        user:$('#mail_user').val(),
-        pass:$('#mail_pass').val(),
-        form_mail:$('#mail_email').val(),
-        form_name:$('#mail_name').val(),
-        to_mail:$('#mail_tomail').val()
-    };
-    var index = layer.load();
-    $.post("{:url('setting/mailadd')}", post, function(res) {
-        layer.close(index);
-        if(res.code == 1){
-            layer.msg(res.msg,{icon: 1});
-        }else{
-            layer.msg(res.msg,{icon: 2});
-        }
-    },'json');
-}
 </script>
 
 

@@ -19,8 +19,26 @@ class User extends Base {
         }
         return self::$instance;
     }
+
+    public function getDataByTel($tel){
+    	$m = $this->field('id');
+    	$row = $m->where('tel', $tel)->find();
+    	if ($row){
+    		$row = $row->toArray();
+    	}
+    	return $row;
+    }
+
+    public function getDataByMail($email){
+    	$m = $this->field('id');
+    	$row = $m->where('email', $email)->find();
+    	if ($row){
+    		$row = $row->toArray();
+    	}
+    	return $row;
+    }
     
-	 public function list($page=1, $size=10, $wh = []) {
+	public function list($page=1, $size=10, $wh = []) {
 		$list = $this->field('id')->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
 		if ($list){
 			$list = $list->toArray();

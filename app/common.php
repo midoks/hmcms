@@ -299,3 +299,50 @@ function toPinyin($name){
     return $t;
 }
 
+// 发送邮箱
+function send_mail($to, $title, $body, $conf=[])
+{
+    $pattern = '/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/';
+    if (!preg_match($pattern, $to)) {
+        return ['code'=>0, 'msg'=>'邮箱地址不合法~!'];
+    }
+    if (empty($title)) {
+        return ['code'=>0, 'msg'=>'邮件标题不能为空~!'];
+    }
+    if (empty($body)) {
+        return ['code'=>0, 'msg'=>'邮件内容不能为空~!'];
+    }
+    $cp = '\\email\\Phpmailer';
+    if (class_exists($cp)) {
+        $c = new $cp;
+        return $c->submit($to, $title, $body, $conf);
+    } else {
+        return ['code'=>0, 'msg'=>'暂不支持邮箱功能~!'];
+    }
+}
+
+// 发送短信
+function send_sms($to, $code, $type_flag, $type_des, $msg)
+{
+    if (empty($GLOBALS['config']['sms']['type'])) {
+        return ['code'=>0, 'msg'=>'暂不支持短信功能~!'];
+    }
+    $pattern = "/^1[345789][0-9]{9}$/";
+    if (!preg_match($pattern, $to)) {
+        return ['code'=>0, 'msg'=>'手机号码不合法~!'];
+    }
+    if (empty($code)) {
+        return ['code'=>0, 'msg'=>'发送验证码不能为空~!'];
+    }
+    if (empty($type_flag)) {
+        return ['code'=>0, 'msg'=>'发送样式不能为空~!'];
+    }
+    $cp = '\\sms\\' . ucfirst($GLOBALS['config']['sms']['type']);
+    if (class_exists($cp)) {
+        $c = new $cp;
+        return $c->submit($to, $code, $type_flag, $type_des, $msg);
+    } else {
+        return ['code'=>0, 'msg'=>'暂不支持短信功能~!'];
+    }
+}
+

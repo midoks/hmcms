@@ -20,6 +20,7 @@ if(!is_file('./app/data/install/install.lock')) {
 require __DIR__ . '/vendor/autoload.php';
 
 // 执行HTTP应用并响应
+// ->debug()
 $http = (new App())->debug()->http;
 $response = $http->name('v3')->run();
 $response->send();

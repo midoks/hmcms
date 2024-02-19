@@ -38,6 +38,7 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'L' => 
         array (
@@ -102,6 +103,10 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'League\\MimeTypeDetection\\' => 
         array (

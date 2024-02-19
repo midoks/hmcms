@@ -89,6 +89,15 @@ function encrypt_data($data, $key = '')
 }
 
 
+//判断email格式是否正确
+function is_email($email) {
+    return strlen($email) > 6 && preg_match("/^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/", $email);
+}
+//判断手机号码格式是否正确
+function is_tel($tel) {
+    return preg_match("/^1[3456789]\d{9}$/", $tel);
+}
+
 function getDefault($data, $key, $def = ''){
     if (empty($data)){
         return $def;

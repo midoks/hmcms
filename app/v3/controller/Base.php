@@ -8,7 +8,18 @@ use app\common\controller\Base as B;
 class Base extends B
 {
 
-    public function returnData($code, $data, $msg = 'ok'){
+    public function returnData($code, $arr, $msg = 'ok'){
+
+        if (!is_array($arr)){
+            $data['msg'] = $arr;
+            $data['code'] = $code;
+        } else {
+            $data = $arr;
+            if (!isset($data['code'])) {
+                $data['code'] = $code;
+            }
+        }
+
         $data = encrypt_data($data);
         return $this->returnJson($code, $msg, $data); 
     }
