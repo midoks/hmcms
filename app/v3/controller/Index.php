@@ -7,8 +7,5 @@ use app\common\controller\Base;
 
 class Index extends Base
 {
-    public function index()
-    {
-        return '您好！这是一个[v3]示例应用';
-    }
+    
 }

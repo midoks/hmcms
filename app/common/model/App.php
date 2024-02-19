@@ -19,6 +19,17 @@ class App extends Base {
         }
         return self::$instance;
     }
+
+    public function getDataByName($name){
+    	$m = $this->field('id');
+    	$row = $m->where('name', $name)->find();
+    	if ($row){
+    		$row = $row->toArray();
+    	}
+
+		$row = $this->getDataByID($row['id']);
+    	return $row;
+    }
     
     public function list($page=1, $size=10, $wh=[]) {
     	$m = $this->field('id');
@@ -30,7 +41,6 @@ class App extends Base {
 		$ids = $this->getFieldList($list['data'],'id');
 		$ids_data = $this->getDataByIds($ids);
 		$list['data'] = $ids_data;
-		return $list;
 		return $list;
 	}
 

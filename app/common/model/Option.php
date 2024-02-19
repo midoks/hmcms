@@ -1,7 +1,9 @@
 <?php
 
 namespace app\common\model;
+
 use think\Db;
+
 
 //配置模型
 class Option extends Base {
@@ -21,7 +23,25 @@ class Option extends Base {
         return self::$instance;
     }
 
+    public function getDefault($name, $key, $def = ''){
+        $data = $this->getValueByName($name);
+        if (empty($data)){
+            return $def;
+        }
+
+        if (!isset($data[$key])){
+            return $def;
+        }
+        return $data[$key];
+    }
+
+    // 基本方式
     public function getValueByName($name){
+
+        $key = $this->cacheKey('name|'.$name);
+        $data = $this->cacheGet($key);
+
+
     	$m = $this->field('value');
     	$one = $m->where('name', $name)->find();
 
@@ -30,20 +50,23 @@ class Option extends Base {
     	}
 
     	if(empty($one)){
-    		return json_encode([]);
+    		return [];
     	}
 
-    	return $one['value'];
+        $this->cacheSet($key, $one);
+    	return json_decode($one['value'], true);
     }
 
     public function setValueByName($data, $name){
 
     	$m = $this->field('id');
-
     	$one = $m->where('name', $name)->find();
     	if ($one){
     		$one = $one->toArray();
     	}
+
+        $key = $this->cacheKey('name|'.$name);
+        $this->cacheDelete($key);
 
     	if(!empty($one)){
     		$update_time = date('Y-m-d H:i:s');
@@ -51,7 +74,6 @@ class Option extends Base {
     	} else {
     		return $this->dataSave(['value'=>$data,'name'=>$name]);
     	}
-    	// return $m->where('name', $name)->update(['value'=>$data]);
     }
 
 }

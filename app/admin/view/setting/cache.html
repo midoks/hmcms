@@ -41,7 +41,8 @@
                 <div class="layui-tab layui-tab-brief" lay-filter="setting">
                     <ul class="layui-tab-title">
                         <li lay-id="t1" class="layui-this">基础配置</li>
-                        <li lay-id="t2">Redis配置</li>
+                        <li lay-id="t2">Redis配置(主)</li>
+                        <li lay-id="t2">Redis配置(从)</li>
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
@@ -57,7 +58,7 @@
                                 <div class="layui-form-item w120">
                                     <label class="layui-form-label layui-form-required">缓存安全字符:</label>
                                     <div class="layui-input-block">
-                                        <input id="rand" type="text" name="cache[rand]" placeholder="同台服务器多网站使用redis时需区分开" value="{$cache['rand']|default='hmcms_'}" class="layui-input" lay-verify="required" required/>
+                                        <input id="rand" type="text" name="cache[prefix]" placeholder="同台服务器多网站使用redis时需区分开" value="{$cache['prefix']|default='hmcms_'}" class="layui-input" lay-verify="required" required/>
                                         <div class="layui-btn layui-btn-danger" onclick="Admin.getRand('rand');" style="position: absolute;top: 0px;right: 0;">随机生成</div>
                                     </div>
                                 </div>
@@ -97,25 +98,78 @@
                                     <div class="layui-form-item w120">
                                         <label class="layui-form-label layui-form-required">Redis缓存主机:</label>
                                         <div class="layui-input-block">
-                                            <input id="reads_ip" type="text" name="cache[redis_ip]" placeholder="缓存主机一般为：127.0.0.1" value="{$cache['redis_ip']|default='127.0.0.1'}" class="layui-input"/>
+                                            <input id="reads_ip" type="text" name="cache[master][host]" placeholder="缓存主机一般为：127.0.0.1" value="{$cache['master']['host']|default='127.0.0.1'}" class="layui-input"/>
                                         </div>
                                     </div>
                                     <div class="layui-form-item w120">
                                         <label class="layui-form-label layui-form-required">Redis缓存端口:</label>
                                         <div class="layui-input-block">
-                                            <input id="reads_port" type="text" name="cache[redis_port]" placeholder="Redis缓存端口一般为：6379" value="{$cache['redis_port']|default='6379'}" class="layui-input"/>
+                                            <input id="reads_port" type="text" name="cache[master][port]" placeholder="Redis缓存端口一般为：6379" value="{$cache['master']['port']|default='6379'}" class="layui-input"/>
                                         </div>
                                     </div>
                                     <div class="layui-form-item w120">
                                         <label class="layui-form-label">Redis缓存密码:</label>
                                         <div class="layui-input-block">
-                                            <input id="reads_pass" type="text" name="cache[redis_pass]" placeholder="没有密码可留空" value="{$cache['redis_pass']|default=''}" class="layui-input"/>
+                                            <input id="reads_pass" type="text" name="cache[master][pass]" placeholder="没有密码可留空" value="{$cache['master']['pass']|default=''}" class="layui-input"/>
                                             <div class="layui-btn layui-btn-normal" onclick="get_cache(3);" style="position: absolute;top: 0px;right: 0;">测试链接</div>
                                         </div>
                                     </div>
-                                </div>
 
-                        
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">Redis是否长连接:</label>
+                                        <div class="layui-input-block">
+                                            <select name="cache[master][persistent]">
+                                                <option value="0" {if isset($cache['master']['persistent']) && $cache['master']['persistent'] == 0 }selected{/if}>否</option>
+                                                <option value="1" {if isset($cache['master']['persistent']) && $cache['master']['persistent'] == 1 }selected{/if}>是</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
+                                
+                                <div id="Redis">
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">Redis缓存主机:</label>
+                                        <div class="layui-input-block">
+                                            <input id="reads_ip" type="text" name="cache[slave][host]" placeholder="缓存主机一般为：127.0.0.1" value="{$cache['slave']['host']|default='127.0.0.1'}" class="layui-input"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">Redis缓存端口:</label>
+                                        <div class="layui-input-block">
+                                            <input id="reads_port" type="text" name="cache[slave][port]" placeholder="Redis缓存端口一般为：6379" value="{$cache['slave']['port']|default='6379'}" class="layui-input"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label">Redis缓存密码:</label>
+                                        <div class="layui-input-block">
+                                            <input id="reads_pass" type="text" name="cache[slave][pass]" placeholder="没有密码可留空" value="{$cache['slave']['pass']|default=''}" class="layui-input"/>
+                                            <div class="layui-btn layui-btn-normal" onclick="get_cache(3);" style="position: absolute;top: 0px;right: 0;">测试链接</div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">Redis是否长连接:</label>
+                                        <div class="layui-input-block">
+                                            <select name="cache[slave][persistent]">
+                                                <option value="0" {if isset($cache['slave']['persistent']) && $cache['slave']['persistent'] == 0 }selected{/if}>否</option>
+                                                <option value="1" {if isset($cache['slave']['persistent']) && $cache['slave']['persistent'] == 1 }selected{/if}>是</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
                                 
                                 <div class="layui-form-item w120">
                                     <div class="layui-input-block">

@@ -23,7 +23,6 @@ class Setting extends Admin
     {
         $m = $this->model('Option');
         $data = $m->getValueByName($tag);
-        $data = json_decode($data, true);
         View::assign($tag, $data);
     }
 
@@ -31,7 +30,6 @@ class Setting extends Admin
     {
         $m = $this->model('Option');
         $pay = $m->getValueByName('pay');
-        $pay = json_decode($pay, true);
 
 
         // 针对支付初始化配置
@@ -117,6 +115,10 @@ class Setting extends Admin
         }
 
         foreach ($op as $k => $v) {
+            if ($v == 'cache'){
+                $this->makeCacheCfg();
+            }
+
             $req = $this->request->param($v);
             if (!empty($req)){
                 $r = $m->setValueByName(json_encode($req), $v);
@@ -128,6 +130,56 @@ class Setting extends Admin
         }
 
         return $this->returnJson(-1, '更新失败!');
+    }
+
+    //生产配置文件
+    private function makeCacheCfg(){
+        $cache = $this->request->param('cache');
+
+        $data = config('cache');
+
+        // var_dump($data);
+        $data['default'] = 'file';
+        if ($cache['mode'] == 1){
+            $data['use_redis'] = true;
+        } else{
+            $data['use_redis'] = false;
+        }
+
+        if(isset($cache['prefix'])){
+            $data['prefix'] = $cache['prefix'];
+        }
+
+        if(isset($cache['master'])){
+            $data['stores']['master']['type'] = 'redis';
+            $data['stores']['master']['host'] = $cache['master']['host'];
+            $data['stores']['master']['port'] = $cache['master']['port'];
+            $data['stores']['master']['password'] = $cache['master']['pass'];
+
+            if ($cache['master']['persistent'] == 0){
+                $data['stores']['master']['persistent'] = false;
+            } else {
+                $data['stores']['master']['persistent'] = true;
+            }
+        }
+
+        if(isset($cache['slave'])){
+            $data['stores']['slave']['type'] = 'redis';
+            $data['stores']['slave']['host'] = $cache['slave']['host'];
+            $data['stores']['slave']['port'] = $cache['slave']['port'];
+            $data['stores']['slave']['password'] = $cache['slave']['pass'];
+
+            if ($cache['slave']['persistent'] == 0){
+                $data['stores']['slave']['persistent'] = false;
+            } else {
+                $data['stores']['slave']['persistent'] = true;
+            }
+        }
+
+        // 更新程序配置文件
+        $root_path = $this->app->getRootPath();
+        hm_arr2file($root_path . 'config/cache.php', $data);
+        return true;
     }
 
     public function multiSave(){

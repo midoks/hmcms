@@ -3,9 +3,12 @@ namespace app\common\model;
 
 use think\Model;
 use think\Db;
-use think\Cache;
+use think\facade\Cache;
+use think\facade\Config;
 
 class Base extends Model {
+
+    public $cache_prefix = 'hmcms_';
 
     //自定义初始化
     protected function initialize()
@@ -14,6 +17,51 @@ class Base extends Model {
         parent::initialize();
         //TODO:自定义的初始化
     }
+
+    // 缓存相关方法 | start
+
+    //获取缓存key
+    public function cacheKey($name){
+        $prefix = $this->cache_prefix;
+        $prefix = Config::get('cache.prefix', $prefix);
+        if ($this->table){
+            return $prefix.'|'.$this->table.'|'.$name;
+        }
+        return $prefix.'|'.$this->name.'|'.$name;
+    }
+
+    public function cacheGet($key){
+        $use_redis = Config::get('cache.use_redis',false);
+        if (!$use_redis){
+            return false;
+        }
+
+        var_dump(Cache::store('master'));
+
+        return Cache::store('slave')->get($key);
+    }
+
+    public function cacheSet($key, $data, $time = 3600){
+        $use_redis = Config::get('cache.use_redis',false);
+        // var_dump($use_redis);
+        if (!$use_redis){
+            return false;
+        }
+
+        // var_dump($key,$data);
+        $r = Cache::store('master')->set($key, $data, $time);
+        // var_dump($r);
+        return $r;
+    }
+
+    public function cacheDelete($key){
+        $use_redis = Config::get('cache.use_redis',false);
+        if (!$use_redis){
+            return false;
+        }
+        return Cache::store('master')->delete($key);
+    }
+    // 缓存相关方法 | end
 
     public function getFieldList($data, $field='id')
     {
@@ -27,22 +75,44 @@ class Base extends Model {
     }
 
     public function getDataByIds($ids = []){
-        $data = $this->field(true)->whereIn('id', $ids)->select();
-        if ($data){
-            return $data->toArray();
+        $data = [];
+        foreach ($ids as $id) {
+            $data[] = $this->getDataByID($id);
         }
-        return [];
+        return $data;
     }
 
+    // public function getDataByIds($ids = []){
+    //     $data = $this->field(true)->whereIn('id', $ids)->select();
+    //     if ($data){
+    //         return $data->toArray();
+    //     }
+    //     return [];
+    // }
+
     public function getDataByID($id){
+        $key = $this->cacheKey('id|'.$id);
+        $data = $this->cacheGet($key);
+        // var_dump($data);
+        if ($data){
+            return $data;
+        }
+
         $data = $this->field(true)->where('id', $id)->find();
         if ($data){
-            return $data->toArray();
+            $data = $data->toArray();
+            $this->cacheSet($key, $data);
+            return $data;
         }
         return [];
     }
 
     public function dataSave($data, $id=null){
+        if ($id>0){
+            $key = $this->cacheKey('id|'.$id);
+            $this->cacheDelete($key);  
+        }
+
         if ( $id > 0 ){
             $status =  $this->where('id',$id)->update($data);
             if ($status){
@@ -60,9 +130,10 @@ class Base extends Model {
     public function dataDelete($id = 0){
         if ($id < 1){
             return false;
-        } else {
-            
         }
+
+        $key = $this->cacheKey('id|'.$id);
+        $this->cacheDelete($key);
         return $this->where('id',$id)->delete();
     }
 
@@ -70,7 +141,11 @@ class Base extends Model {
         $row = $this->getDataByID($id);
         $d = $row[$field_name];
         $update_status  = $d > 0 ? 0 : 1;
-        return $this->dataSave([$field_name=> $update_status ], $id);
+        $r = $this->dataSave([$field_name=> $update_status ], $id);
+
+        $key = $this->cacheKey('id|'.$id);
+        $this->cacheDelete($key);  
+        return $r;
     }
 
     public function debugSQL($m){
@@ -78,12 +153,5 @@ class Base extends Model {
         $sql = $_m->fetchSql(true)->select();
         var_dump($sql);
         return $m;
-    }
-
-    public function  __destruct(){
-        // Db::listen(function($sql, $runtime, $master) {
-        //     // 进行监听处理
-        //     var_dump($sql);
-        // });
     }
 }

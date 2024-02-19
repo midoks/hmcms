@@ -287,6 +287,20 @@ CREATE TABLE `hm_telcode` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='手机验证码';
 
 -- -----------------------------
+-- Table structure for hm_mailcode
+-- -----------------------------
+DROP TABLE IF EXISTS `hm_mailcode`;
+CREATE TABLE `hm_mailcode` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(20) DEFAULT '' COMMENT '邮件地址',
+  `code` varchar(10) DEFAULT '' COMMENT '验证码',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `email` (`email`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='邮件验证码';
+
+-- -----------------------------
 -- Table structure for hm_sms_logs
 -- -----------------------------
 DROP TABLE IF EXISTS `hm_sms_logs`;

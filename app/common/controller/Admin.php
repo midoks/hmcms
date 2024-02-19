@@ -15,9 +15,9 @@ class Admin extends Base
         //权限验证
         $this->auth();
 
+        $m = $this->model('AdminMenu');
         //菜单
-        $list = AdminMenu::getInstance()->list();
-        // var_dump($list);  
+        $list = $m->list();
 
         $controller = $this->request->controller();
         $action = $this->request->action();
