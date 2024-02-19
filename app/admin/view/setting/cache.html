@@ -94,24 +94,24 @@
                         <div class="layui-tab-item">
                             <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
                                 
-                                <div id="Redis">
+                                <div id="redis_master">
                                     <div class="layui-form-item w120">
                                         <label class="layui-form-label layui-form-required">Redis缓存主机:</label>
                                         <div class="layui-input-block">
-                                            <input id="reads_ip" type="text" name="cache[master][host]" placeholder="缓存主机一般为：127.0.0.1" value="{$cache['master']['host']|default='127.0.0.1'}" class="layui-input"/>
+                                            <input type="text" name="cache[master][host]" placeholder="缓存主机一般为：127.0.0.1" value="{$cache['master']['host']|default='127.0.0.1'}" class="layui-input host"/>
                                         </div>
                                     </div>
                                     <div class="layui-form-item w120">
                                         <label class="layui-form-label layui-form-required">Redis缓存端口:</label>
                                         <div class="layui-input-block">
-                                            <input id="reads_port" type="text" name="cache[master][port]" placeholder="Redis缓存端口一般为：6379" value="{$cache['master']['port']|default='6379'}" class="layui-input"/>
+                                            <input  type="number" name="cache[master][port]" placeholder="Redis缓存端口一般为：6379" value="{$cache['master']['port']|default='6379'}" class="layui-input port"/>
                                         </div>
                                     </div>
                                     <div class="layui-form-item w120">
                                         <label class="layui-form-label">Redis缓存密码:</label>
                                         <div class="layui-input-block">
-                                            <input id="reads_pass" type="text" name="cache[master][pass]" placeholder="没有密码可留空" value="{$cache['master']['pass']|default=''}" class="layui-input"/>
-                                            <div class="layui-btn layui-btn-normal" onclick="get_cache(3);" style="position: absolute;top: 0px;right: 0;">测试链接</div>
+                                            <input type="text" name="cache[master][pass]" placeholder="没有密码可留空" value="{$cache['master']['pass']|default=''}" class="layui-input pass"/>
+                                            <div class="layui-btn layui-btn-normal" onclick="get_cache(3,'redis_master');" style="position: absolute;top: 0px;right: 0;">测试链接</div>
                                         </div>
                                     </div>
 
@@ -137,24 +137,24 @@
                         <div class="layui-tab-item">
                             <div class="layui-text" style="max-width: 700px;padding-top: 25px;">
                                 
-                                <div id="Redis">
+                                <div id="redis_slave">
                                     <div class="layui-form-item w120">
                                         <label class="layui-form-label layui-form-required">Redis缓存主机:</label>
                                         <div class="layui-input-block">
-                                            <input id="reads_ip" type="text" name="cache[slave][host]" placeholder="缓存主机一般为：127.0.0.1" value="{$cache['slave']['host']|default='127.0.0.1'}" class="layui-input"/>
+                                            <input type="text" name="cache[slave][host]" placeholder="缓存主机一般为：127.0.0.1" value="{$cache['slave']['host']|default='127.0.0.1'}" class="layui-input host"/>
                                         </div>
                                     </div>
                                     <div class="layui-form-item w120">
                                         <label class="layui-form-label layui-form-required">Redis缓存端口:</label>
                                         <div class="layui-input-block">
-                                            <input id="reads_port" type="text" name="cache[slave][port]" placeholder="Redis缓存端口一般为：6379" value="{$cache['slave']['port']|default='6379'}" class="layui-input"/>
+                                            <input type="number" name="cache[slave][port]" placeholder="Redis缓存端口一般为：6379" value="{$cache['slave']['port']|default='6379'}" class="layui-input port"/>
                                         </div>
                                     </div>
                                     <div class="layui-form-item w120">
                                         <label class="layui-form-label">Redis缓存密码:</label>
                                         <div class="layui-input-block">
-                                            <input id="reads_pass" type="text" name="cache[slave][pass]" placeholder="没有密码可留空" value="{$cache['slave']['pass']|default=''}" class="layui-input"/>
-                                            <div class="layui-btn layui-btn-normal" onclick="get_cache(3);" style="position: absolute;top: 0px;right: 0;">测试链接</div>
+                                            <input type="text" name="cache[slave][pass]" placeholder="没有密码可留空" value="{$cache['slave']['pass']|default=''}" class="layui-input pass"/>
+                                            <div class="layui-btn layui-btn-normal" onclick="get_cache(3,'redis_slave');" style="position: absolute;top: 0px;right: 0;">测试链接</div>
                                         </div>
                                     </div>
 
@@ -197,28 +197,28 @@ var form = layui.form,
 form.on('radio(index-mode)', function (r) {
     if(r.value == '1'){
         $('blockquote').show();
-    }else{
+    } else {
         $('blockquote').hide();
     }
 });
 form.on('select(url)', function (r) {
     var _id = $(r.elem).attr('data-id');
-    console.log(_id);
+    // console.log(_id);
     $("input[name='"+_id+"']").val(r.value);
 });
-
 
 //
 });
 
-function get_cache(sign){
+function get_cache(sign,id){
+
+    var ip = $('#' + id +' .host').val();
+    var port = $('#' + id +' .port').val();
+    var pass = $('#' + id +' .pass').val();
+
     var index = layer.load();
-   
-    var ip = $('#reads_ip').val();
-    var port = $('#reads_port').val();
-    var pass = $('#reads_pass').val(); 
-    
     $.post("{:url('setting/checkCache')}", {'id':sign,'ip':ip,'port':port,'pass':pass}, function(res) {
+        console.log(res);
         layer.close(index);
         if(res.code == 1){
             layer.msg(res.msg,{icon: 1});

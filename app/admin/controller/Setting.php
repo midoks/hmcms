@@ -199,9 +199,9 @@ class Setting extends Admin
 
     public function checkCache(){
         $id = (int) $this->request->post('id');
-        $ip = $this->request->post('ip', true);
+        $ip = $this->request->post('ip');
         $port = (int) $this->request->post('port');
-        $pass = $this->request->post('pass', true);
+        $pass = $this->request->post('pass');
         if (empty($ip) || $port == 0) {
             return $this->returnJson(-1, '缺少参数');
         }
@@ -223,19 +223,32 @@ class Setting extends Admin
                 return $this->returnJson(-1, '发生错误，请检查是否开启相应扩展库!');
             }
 
-            //创建对象
-            $redis = new \Redis();
-            $res = $redis->connect($ip, $port);
-            if (!$res) {
-                return $this->returnJson(-1, '链接失败，请检查主机地址或者端口是否有误!');
-            }
+                try {
+                    //创建对象
+                    $redis = new \Redis();
+                    $res = $redis->connect($ip, $port);
+                    if (!$res) {
+                        return $this->returnJson(-1, '链接失败，请检查主机地址或者端口是否有误!');
+                    }
 
+                    if(!empty($pass)){
+                        $res = $redis->auth($pass);
+                    }
+
+                    if(!$redis->ping()) {
+                        return $this->returnJson(-1, '链接失败，请检查主机地址或者端口是否有误.');
+                    }
+                } catch (RedisException $ex) {
+                    return $this->returnJson(-1, $ex->getMessage());
+                }
+                
+            
         }
         return $this->returnJson(1, '链接成功');
     }
 
     //测试邮件
-    public function mailadd()
+    public function mailcheck()
     {
         $arr = array(
             'type' => $this->request->post('type'),
