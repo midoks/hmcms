@@ -47,7 +47,7 @@ class AutoUpdate extends Command
     }
 
     public function cacheATable(Input $input, Output $output){
-        $output->writeln('缓存通用数据|start');
+        $this->write('缓存通用数据|start',$output);
 
         $model_list = [
             'Comic','ComicChapter','ComicClass','ComicComment','ComicCommentReply','ComicCommentZan',
@@ -60,11 +60,7 @@ class AutoUpdate extends Command
             $this->cacheTable($model_name, 0);
             $this->write('模型['.$model_name.']结束执行',$output);
         }
-        
-        
-        // var_dump($data);
-
-        $output->writeln('缓存通用数据|end');
+        $this->write('缓存通用数据|end',$output);
     }
 
     public function cacheTable($name, $pos = 0){
