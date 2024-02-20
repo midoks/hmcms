@@ -21,7 +21,7 @@ class TelCode extends Base {
     }
 
     public function getDataByTel($tel){
-    	$m = $this->field('id,tel,code');
+    	$m = $this->field('id,tel,code,create_time,update_time');
     	$row = $m->where('tel', $tel)->find();
     	if ($row){
     		$row = $row->toArray();

@@ -18,7 +18,7 @@ if(!is_file('./app/data/install/install.lock')) {
 }
 
 require __DIR__ . '/vendor/autoload.php';
-
+// ini_set('memory_limit', '1G');
 // 执行HTTP应用并响应
 // ->debug()
 $http = (new App())->http;

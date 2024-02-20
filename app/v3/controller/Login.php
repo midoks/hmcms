@@ -146,6 +146,60 @@ class Login extends Base
         }
         
         return $this->returnData(1, '发送成功!');
+    }
 
+
+    public function telcode(){
+        $tel = $this->request->post('tel');
+        $op = $this->request->post('op');
+        if (!is_tel($tel)) {
+            return $this->returnData(0, '手机号码格式错误!');
+        }
+
+        $telcode = $this->model('TelCode');
+        $row = $telcode->getDataByTel($tel);
+        
+        if ($op == 'reg') { //注册
+            //判断手机是否注册
+            if ($row) {
+                return $this->returnData(0, '该手机已注册!');
+            }
+        }
+
+        if ($op == 'pass') { //修改密码
+            //判断手机是否注册
+            if ($row) {
+                return $this->returnData(0, '该手机已注册。');
+            }
+        }
+
+        //判断发送时间
+        if ($row) {
+            $utime = strtotime($row['update_time']);
+            if ($utime + 300 > time()) {
+                return $this->returnData(0, '操作太频繁!');
+            }
+        }
+
+        //验证码
+        $tcode = rand(111111, 999999);
+        $res = $this->logic('Tel')->send($tel, $tcode, $op);
+        if ($res['code'] == 1){
+            if ($row){
+                $update = [
+                    'code'=>$code,
+                    'update_time'=>date('Y-m-d H:i:s')
+                ];
+                $telcode->where('tel', $tel)->update($update);
+            } else{
+                $add = [];
+                $add['code'] = $code;
+                $add['tel'] = $tel;
+                $telcode->dataSave($add);
+            }
+
+            return $this->returnData(1, '验证码发送成功!');
+        }
+        return $this->returnData(0, '发送失败，稍后再试!');
     }
 }
