@@ -40,6 +40,9 @@ class Option extends Base {
 
         $key = $this->cacheKey('name|'.$name);
         $data = $this->cacheGet($key);
+        if ($data){
+            return $data;
+        }
 
 
     	$m = $this->field('value');
@@ -53,8 +56,9 @@ class Option extends Base {
     		return [];
     	}
 
-        $this->cacheSet($key, $one);
-    	return json_decode($one['value'], true);
+    	$data = json_decode($one['value'], true);
+        $this->cacheSet($key, $data);
+        return $data;
     }
 
     public function setValueByName($data, $name){

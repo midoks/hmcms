@@ -317,20 +317,20 @@ function send_mail($to, $title, $body, $conf=[])
 {
     $pattern = '/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/';
     if (!preg_match($pattern, $to)) {
-        return ['code'=>0, 'msg'=>'邮箱地址不合法~!'];
+        return ['code'=>-1, 'msg'=>'邮箱地址不合法~!'];
     }
     if (empty($title)) {
-        return ['code'=>0, 'msg'=>'邮件标题不能为空~!'];
+        return ['code'=>-2, 'msg'=>'邮件标题不能为空~!'];
     }
     if (empty($body)) {
-        return ['code'=>0, 'msg'=>'邮件内容不能为空~!'];
+        return ['code'=>-3, 'msg'=>'邮件内容不能为空~!'];
     }
     $cp = '\\email\\Phpmailer';
     if (class_exists($cp)) {
         $c = new $cp;
         return $c->submit($to, $title, $body, $conf);
     } else {
-        return ['code'=>0, 'msg'=>'暂不支持邮箱功能~!'];
+        return ['code'=>-4, 'msg'=>'暂不支持邮箱功能~!'];
     }
 }
 

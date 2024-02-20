@@ -110,44 +110,42 @@ class Login extends Base
             return $this->returnData(0, '非法邮箱格式');
         }
 
-
         $code = rand(111111, 999999);
 
-        $content = '验证码为：{code}，您正在进行验证码操作
-验证码将在5分钟后失效。请及时使用。
-如果非本人操作请忽略,有任何疑问与我们联系。';
 
-        $content = str_replace('{code}', "$code", $content);
-        $arr = array(
-            'to_mail' => $email,
-            'title' => '51官方-验证码',
-            'html' => $content,
-        );
+        $mailcode = $this->model('MailCode');
 
-        $res = $this->logic('Email')->send('51官方-验证码', $content, $email);
+        $row = $mailcode->field('id,code,update_time')->where('email', $email)->find();
+        if ($row){
+            $row = $row->toArray();
+            $utime = strtotime($row['update_time']);
+            // var_dump($utime+300,time());
+            if ($utime+300>time()){
+                return $this->returnData(0, '操作太频繁!');
+            }
+        }
 
-        var_dump($res);
+        $title = $this->logic('Email')->getTitle($code);
+        $content = $this->logic('Email')->getContent($code);
+        $res = $this->logic('Email')->send($title, $content, $email);
+        if ($res['code'] <= 0){
+            return $this->returnData(0, '邮件发送失败!');
+        }
+    
+        if ($row){
+            $update = [
+                'code'=>$code,
+                'update_time'=>date('Y-m-d H:i:s')
+            ];
+            $mailcode->where('email', $email)->update($update);
+        } else{
+            $add = [];
+            $add['code'] = $code;
+            $add['email'] = $email;
+            $mailcode->dataSave($add);
+        }
+        
+        return $this->returnData(1, '发送成功!');
 
-//         $row = $this->mcdb->get_row_arr('mailcode', '*', array('email' => $email));
-//         if ($row) {
-//             if ($row['addtime'] + 300 > time()) {
-//                 get_json_encrypt('操作太频繁', 0);
-//             }
-//         }
-
-//         $this->load->model('mail');
-//         $res = $this->mail->send($arr);
-//         if ($res) {
-//             get_json_encrypt('邮件发送失败!', -1);
-//         } else {
-
-//             if ($row) {
-//                 $this->mcdb->get_update('mailcode', $row['id'], array('code' => $tcode, 'addtime' => time()));
-//             } else {
-//                 $this->mcdb->get_insert('mailcode', array('email' => $email, 'code' => $tcode, 'addtime' => time()));
-//             }
-
-//             get_json_encrypt('邮件发送成功...', 1);
-//         }
     }
 }
