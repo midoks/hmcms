@@ -252,14 +252,14 @@
                                     <label class="layui-form-label">验证码发送标题:</label>
                                     <div class="layui-input-block">
                                         <!-- 您正在{site_name}操作的验证码 -->
-                                        <input type="text" name="mail['tpl']['code_title']" placeholder="验证码发送邮件标题" value="{$mail['tpl']['code_title']|default=''}" class="layui-input"/>
+                                        <input type="text" name="mail[tpl][code_title]" placeholder="验证码发送邮件标题" value="{$mail['tpl']['code_title']|default=''}" class="layui-input"/>
                                     </div>
                                 </div>
 
                                 <div class="layui-form-item w120">
                                     <label class="layui-form-label">验证码发送内容:</label>
                                     <div class="layui-input-block">
-                                        <textarea lay-verify="editor1" id="editor_code_msg" name="mail['tpl']['code_msg']" placeholder="验证码发送内容" class="layui-textarea">{$mail['tpl']['code_msg']|default=''}</textarea>
+                                        <textarea lay-verify="editor1" id="editor_code_msg" name="mail[tpl][code_msg]" placeholder="验证码发送内容" class="layui-textarea">{$mail['tpl']['code_msg']|default=''}</textarea>
                                         <div class="layui-form-mid layui-word-aux">
                                             网站名称：<a class="hmcms-label" href="javascript:" data-id="1" data-name="{site_name}" title="网站名称">{web_name}</a> 
                                             网站地址：<a class="hmcms-label" href="javascript:" data-id="1" data-name="{web_url}" title="网站地址">{web_url}</a> 
