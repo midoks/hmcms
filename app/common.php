@@ -275,6 +275,19 @@ function hm_hidden_pass($pass, $len = 2, $x = 6)
     return substr($pass, 0, $len) . $xh . substr($pass, -$len);
 }
 
+
+function getDefault($data, $key, $def = ''){
+    if (empty($data)){
+        return $def;
+    }
+
+    if (!isset($data[$key])){
+        return $def;
+    }
+    return $data[$key];
+}
+
+
 /**
  *  多位字段排序
  *  @param &$array 数组

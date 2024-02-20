@@ -117,20 +117,16 @@ class Login extends Base
 验证码将在5分钟后失效。请及时使用。
 如果非本人操作请忽略,有任何疑问与我们联系。';
 
-        $content = str_replace('{code}', $tcode, $content);
+        $content = str_replace('{code}', "$code", $content);
         $arr = array(
             'to_mail' => $email,
             'title' => '51官方-验证码',
             'html' => $content,
-            'user' => Mail_User,
-            'pass' => Mail_Pass,
-            // 'crypto' => 'ssl',
-            // 'form_mail'=> Mail_User,
-            // 'port' => 465,
-            // 'form_name' => '51官方',
-            // 'host'=>'smtp.gmail.com',
-            // 'type'=>'smtp',
         );
+
+        $res = $this->logic('Email')->send('51官方-验证码', $content, $email);
+
+        var_dump($res);
 
 //         $row = $this->mcdb->get_row_arr('mailcode', '*', array('email' => $email));
 //         if ($row) {

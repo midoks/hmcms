@@ -74,6 +74,18 @@ abstract class Base
         }
     }
 
+
+    public function logic($name){
+        if (isset($__cacheLogic[$name])){
+            return $__cacheLogic[$name];
+        } else{
+            $className = "app\common\logic\\".$name;
+            $instance = $className::getInstance();
+            $__cacheLogic[$name] = $instance;
+            return $instance;
+        }
+    }
+
     // 初始化
     protected function initialize()
     {}

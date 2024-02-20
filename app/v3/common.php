@@ -98,13 +98,3 @@ function is_tel($tel) {
     return preg_match("/^1[3456789]\d{9}$/", $tel);
 }
 
-function getDefault($data, $key, $def = ''){
-    if (empty($data)){
-        return $def;
-    }
-
-    if (!isset($data[$key])){
-        return $def;
-    }
-    return $data[$key];
-}
