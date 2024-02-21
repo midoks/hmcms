@@ -1,0 +1,59 @@
+{include file="app/admin/view/common/header_head.html" /}
+<!-- start -->
+
+<div class="layui-fluid">
+    <form class="layui-form" action="{:url('adminmenu/save')}">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">API名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" autocomplete="off" class="layui-input" value="{$data['name']|default=''}" placeholder="API名称">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">备注</label>
+            <div class="layui-input-block">
+                <input type="text" name="remark" autocomplete="off" class="layui-input" value="{$data['remark']|default='接口'}" placeholder="备注">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">路由</label>
+            <div class="layui-input-block">
+                <input type="text" name="route" autocomplete="off" class="layui-input" value="{$data['route']|default=''}" placeholder="路由">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">排序</label>
+            <div class="layui-input-block">
+                <input type="text" name="sort" autocomplete="off" class="layui-input" value="{$data['sort']|default='99'}" placeholder="排序">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">状态</label>
+            <div class="layui-input-block">
+                <select name="status">
+                    <option value="1" {if isset($data['status']) && $data['status'] == 1 }selected{/if}>启用</option>
+                    <option value="0" {if isset($data['status']) && $data['status'] == 0 }selected{/if}>禁用</option>
+                </select>
+            </div>
+        </div>
+        <input type="hidden" name="type" value="api">
+        <input type="hidden" name="alias" value="">
+        <input type="hidden" name="icon" value="">
+        <input type="hidden" name="pid" value="{$pid}">
+        <div class="layui-form-item" style="text-align: center;">
+            <input type="hidden" name="id" value="{$data['id']|default='0'}">
+            <button class="layui-btn layui-btn-sm" lay-filter="submit_save" lay-submit>保存</button>
+            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+
+<!-- end -->
+</body>
+</html>
+
+

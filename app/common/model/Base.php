@@ -60,6 +60,12 @@ class Base extends Model {
         }
         return Cache::store('master')->delete($key);
     }
+
+
+    protected function cacheDeleteByID($id){
+        $key = $this->cacheKey('id|'.$id);
+        return $this->cacheDelete($key); 
+    }
     // 缓存相关方法 | end
 
     public function getFieldList($data, $field='id')
@@ -108,8 +114,7 @@ class Base extends Model {
 
     public function dataSave($data, $id=null){
         if ($id>0){
-            $key = $this->cacheKey('id|'.$id);
-            $this->cacheDelete($key);  
+            $this->cacheDeleteByID($id);
         }
 
         if ( $id > 0 ){
@@ -118,6 +123,7 @@ class Base extends Model {
                 return $status;
             }
         } else{
+
             $status = $this->save($data);
             if ($status){
                 return $this->id;
@@ -131,8 +137,7 @@ class Base extends Model {
             return false;
         }
 
-        $key = $this->cacheKey('id|'.$id);
-        $this->cacheDelete($key);
+        $this->cacheDeleteByID($id);
         return $this->where('id',$id)->delete();
     }
 
@@ -142,8 +147,7 @@ class Base extends Model {
         $update_status  = $d > 0 ? 0 : 1;
         $r = $this->dataSave([$field_name=> $update_status ], $id);
 
-        $key = $this->cacheKey('id|'.$id);
-        $this->cacheDelete($key);  
+        $this->cacheDeleteByID($id);
         return $r;
     }
 

@@ -1,0 +1,92 @@
+{include file="app/admin/view/common/header_head.html" /}
+<!-- start -->
+<div class="layui-fluid">
+    <div class="layui-col-md12" style="padding: 5px;">
+        <div class="layui-card">
+            
+            <div class="layui-card-body">
+                <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('adminmenu/batchDel')}','api')">批量删除</button>
+                    </div>
+
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm" onclick="Admin.open('添加API','{:url('adminmenu/apiedit')}?pid={$pid}&id=0',400,400)">添加</button>
+                    </div>
+
+                </div>
+                <div id="api"></div>
+            </div>
+            <!--  -->
+        </div>
+    </div>
+</div>
+
+<!-- end -->
+
+<script type="text/javascript">
+
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+table.render({
+    elem: '#api',
+    url: '{:url("adminmenu/listpid")}?pid={$pid}',
+    defaultToolbar: [],
+    title: '数据表',
+    cols: [[
+        {type: 'checkbox', fixed: 'left'},
+        {field:'id', title:'ID',width:100},
+        {field:'name', title:'名称',width:100},
+        {field:'remark', title:'备注'},
+        {field:'route', title:'路由',width:200},
+        {field:'type', title:'类型',width:80},
+        {field:'status', title:'是否开启',width:86,toolbar: '#statusTpl'},
+        {title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right'}
+     ]],
+    page: true
+});
+
+table.on('tool(api)', function(obj){
+    switch(obj.event){
+        case 'status':menuStatus(obj);break;
+    };
+});
+
+
+function menuStatus(obj){
+    layer.confirm('你真的更改显示吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('{:url("adminmenu/triggerStatus")}', {'id':obj.data.id}, function(data) {
+            showMsg(data.msg,function(){
+                if (data.code>-1){
+                    location.reload();
+                }
+            },{icon:data.code>-1?1:2});
+        },'json');
+    });
+}
+
+///
+});
+</script>
+
+<script type="text/html" id="statusTpl">
+    {{# if (d.status == 1){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="status">开启</a>
+    {{# } else if (d.status == 0) { }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">关闭</a>
+    {{# } }}
+</script>
+
+
+<script type="text/html" id="cmdTpl">
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('添加API','{:url('adminmenu/apiedit')}?pid={$pid}&id={{d.id}}',400,400)"><i class="layui-icon">&#xe642;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('adminmenu/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
+</script>
+
+</body>
+</html>

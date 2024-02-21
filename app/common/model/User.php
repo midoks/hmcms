@@ -39,10 +39,34 @@ class User extends Base {
     }
     
 	public function list($page=1, $size=10, $wh = []) {
-		$list = $this->field('id')->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
+		$m = $this->field('id');
+
+		if (!empty($wh['zd']) && !empty($wh['key'])) {
+		 	$zd = $wh['zd'];
+		 	$key = $wh['key'];
+		 	
+            $m->where($zd, $key);
+        }
+
+        if (isset($wh['sid'])) {
+            $m->where('sid', $wh['sid']);
+        }
+
+		if (!empty($wh['kstime'])) {
+            $m->whereTime('addtime', '>=', strtotime($wh['kstime']));
+        }
+        if (!empty($wh['jstime'])) {
+        	$m->whereTime('addtime', '<=', strtotime($wh['jstime']));
+        }
+
+
+		$list = $m->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
 		if ($list){
 			$list = $list->toArray();
 		}
+		$ids = $this->getFieldList($list['data'],'id');
+		$ids_data = $this->getDataByIds($ids);
+		$list['data'] = $ids_data;
 		return $list;
 	}
 

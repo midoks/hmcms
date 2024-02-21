@@ -40,7 +40,7 @@ class Tel extends Base {
 
         $dst_sms = '';
         $method = getDefault($data, 'method', 0);
-        if (0 == $method ){
+        if ( '0' == $method ){
             $count = count($sms_list);
             $index = mt_rand(0, $count-1);
             $dst_sms = $sms_list[$index];
@@ -51,7 +51,7 @@ class Tel extends Base {
         }
 
         $config = $data[$dst_sms];
-        
+
         $mapping = [
             'tx' => 'Tencent',
             'hx' => 'Huanxun',

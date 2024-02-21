@@ -134,6 +134,7 @@ class Tencent {
 
         try {
             $result = $this->tencent($phone, $code, $type);
+            // var_dump($result);
             if (isset($result['Response']['Error'])){
                 return ['code'=>-101,'msg'=>$result['Response']['Error']['Message']];
             }
@@ -143,7 +144,7 @@ class Tencent {
                 return ['code'=>1,'msg'=>'ok'];
             }
 
-            return ['code'=>-101,'msg'=>"未知错误"];
+            return ['code'=>-101,'msg'=>$rdata['Message']];
         }
         catch(\Exception $e) {
             return ['code'=>-102,'msg'=>'发生异常请重试'];

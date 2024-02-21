@@ -16,6 +16,10 @@ class User extends AdminBase
         return $this->fetch('user/index');
     }
 
+    public function edit(){
+        return $this->fetch('user/edit');
+    }
+
 
     public function list(){
         $page = $this->request->param('page');

@@ -66,11 +66,10 @@ class Login extends Base
         }
 
         $optionM = $this->model('Option');
-
+        $time = strval(time());
         // 注册
         $add = [];
-        $add['addtime'] = time();
-        $add['name'] = 'T-' . substr(md5($add['addtime']), 8, -8);
+        $add['name'] = 'T-' . substr(md5($time), 8, -8);
         $add['sid'] = 0;
         $add['vip'] = 0;
         $add['viptime'] = 0;
@@ -184,6 +183,7 @@ class Login extends Base
         //验证码
         $tcode = rand(111111, 999999);
         $res = $this->logic('Tel')->send($tel, $tcode, $op);
+        // var_dump($res);
         if ($res['code'] == 1){
             if ($row){
                 $update = [

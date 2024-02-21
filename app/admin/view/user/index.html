@@ -10,6 +10,10 @@
                         <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('user/batchDel')}','user')">批量删除</button>
                     </div>
 
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('新增','{:url('user/edit')}?id=0',1200,480)">添加</button>
+                    </div>
+
                     <div class="layui-inline mr0">
                         <div class="layui-input-inline mr0">
                             <input name="times" class="layui-input date-icon h30" type="text" placeholder="请选择日期范围" autocomplete="off" lay-key="1">
@@ -18,12 +22,16 @@
 
                     <div class="layui-inline select100 mr0">
                         <div class="layui-input-inline h30">
-                            <select name="zd" class="h30">
-                                <option value="0">无</option>
-                                <option value="text">评论内容</option>
-                                <option value="mid">漫画ID</option>
-                                <option value="uid">会员ID</option>
-                                <option value="ip">评论IP</option>
+                            <select name="zd">
+                                <option value="name">会员账号</option>
+                                <option value="nichen">会员昵称</option>
+                                <option value="id">会员ID</option>
+                                <option value="tel">联系手机</option>
+                                <option value="qq">联系QQ</option>
+                                <option value="email">联系邮箱</option>
+                                <option value="city">城市地区</option>
+                                <option value="text">用户介绍</option>
+                                <option value="channel">渠道</option>
                             </select>
                         </div>
                     </div>
@@ -31,6 +39,38 @@
                     <div class="layui-inline mr0">
                         <div class="layui-input-inline mr0">
                             <input type="text" name="key" placeholder="请输入关键字" autocomplete="off" class="layui-input h30" value="">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline select70 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="vip">
+                                <option value="">VIP</option>
+                                <option value="2">是</option>
+                                <option value="1">否</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline select70 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="sid">
+                                <option value="">锁定</option>
+                                <option value="2">是</option>
+                                <option value="1">否</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline select100 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="cid">
+                                <option value="">认证状态</option>
+                                <option value="1">未认证</option>
+                                <option value="2">待审核</option>
+                                <option value="3">审核失败</option>
+                                <option value="4">个人认证</option>
+                                <option value="5">企业认证</option>
+                            </select>
                         </div>
                     </div>
 
@@ -63,16 +103,16 @@ table.render({
     cols: [[
         {type: 'checkbox', fixed: 'left'},
         {field:'id', title:'ID', width:30},
-        {field:'name', title:'用户名',width:80},
-        {field:'tel', title:'手机'},
-        {field:'email', title:'邮件'},
-        {field:'nick', title:'昵称'},
+        {field:'name', title:'用户名',width:180},
+        {field:'tel', title:'手机',width:180},
+        {field:'email', title:'邮件',width:200},
+        {field:'nick', title:'昵称', width:100},
         {field:'vip', title:'是否VIP',width:100},
-        {field:'rmb', title:'rmb'},
+        {field:'rmb', title:'余额'},
         {field:'cion', title:'金币'},
         {field:'ticket', title:'月票'},
-        {field:'viptime', title:'VIP到期', width:100},
-        {field:'create_time', title:'评论时间',width:162,},
+        {field:'viptime', title:'VIP到期', width:120},
+        {field:'create_time', title:'注册时间',width:162,},
         {title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right'}
      ]],
     page: true
@@ -84,7 +124,7 @@ table.render({
 
 
 <script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('user/del')}','{{d.id}}')">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('user/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
 </script>
 
 

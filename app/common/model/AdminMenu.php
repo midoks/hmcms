@@ -20,15 +20,25 @@ class AdminMenu extends Base {
         return self::$instance;
     }
 
-   	public function submenu($pid, $recursion = false){
-   		$list = $this->where('pid', $pid)->order('sort')->select();
+   	public function submenu($pid, $recursion = false, $wh = [] ){
+   		$m = $this->where('pid', $pid);
+
+   		if (isset($wh['status'])){
+   			$m->where('status', $wh['status']);
+   		}
+
+   		if (isset($wh['display'])){
+   			$m->where('display', $wh['display']);
+   		}
+
+   		$list = $m->order('sort')->select();
    		if ($list){
 			$list = $list->toArray();
 		}
 
 		if (!empty($list) && $recursion){
 			foreach ($list as $key => $value) {
-				$list[$key]['submenu'] = $this->submenu($value['id'], $recursion);
+				$list[$key]['submenu'] = $this->submenu($value['id'], $recursion, $wh);
 			}
 		}
 		return $list;

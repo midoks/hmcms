@@ -9,6 +9,8 @@ CREATE TABLE `hm_admin` (
   `password` char(32) NOT NULL DEFAULT '' COMMENT '密码',
   `random` char(32) NOT NULL DEFAULT '' COMMENT '随机',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+  `email` varchar(128) DEFAULT '' COMMENT '邮箱',
+  `tel` varchar(15) DEFAULT '' COMMENT '手机',
   `role_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '角色ID',
   `login_time` int(10) unsigned NOT NULL DEFAULT '0',
   `login_ip` int(10) unsigned NOT NULL DEFAULT '0',
@@ -44,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `hm_admin_menu` (
   `name` varchar(20) NOT NULL COMMENT '名称',
   `icon` varchar(50) DEFAULT NULL COMMENT '图片',
   `alias` varchar(50) DEFAULT '' COMMENT '别名',
-  `status` tinyint(1) DEFAULT '0' COMMENT '状态',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态',
   `route` varchar(255) DEFAULT NULL COMMENT '路由',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `sort` smallint(6) unsigned DEFAULT NULL COMMENT '排序',
@@ -77,9 +79,12 @@ CREATE TABLE IF NOT EXISTS `hm_admin_access` (
 DROP TABLE IF EXISTS `hm_admin_role`;
 CREATE TABLE IF NOT EXISTS `hm_admin_role` (
   `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
-  `status` tinyint(1) unsigned DEFAULT NULL,
-  `remark` varchar(255) DEFAULT NULL,
+  `name` varchar(20) NOT NULL COMMENT '角色名称',
+  `remark` text COMMENT '备注',
+  `status` tinyint(1) unsigned DEFAULT '1' COMMENT '状态',
+  `pid` smallint(6) unsigned DEFAULT '0' COMMENT '上一级ID',
+  `create_time` datetime NOT NULL COMMENT '注册时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`),
   KEY `status` (`status`)
@@ -91,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `hm_admin_role` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_user`;
 CREATE TABLE `hm_user` (
-  `id` int NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) DEFAULT '' COMMENT '用户名',
   `tel` varchar(15) DEFAULT '' COMMENT '手机',
   `email` varchar(128) DEFAULT '' COMMENT '邮箱',
@@ -122,7 +127,8 @@ CREATE TABLE `hm_user` (
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `name` (`name`) USING BTREE,
-  KEY `email` (`email`) USING BTREE
+  KEY `email` (`email`) USING BTREE,
+  KEY `tel` (`tel`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='用户';
 
 
