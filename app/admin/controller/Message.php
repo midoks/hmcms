@@ -16,6 +16,32 @@ class Message extends AdminBase
         return $this->fetch('message/index');
     }
 
+    public function reply($uid){
+        View::assign("uid", $uid);
+        return $this->fetch('message/reply');
+    }
+
+    public function save()
+    {
+        $m = $this->model('message');
+
+        $data = [];
+        $data['uid'] = $this->request->param('uid');
+        $data['name'] = $this->request->param('name');
+        $data['text'] = $this->request->param('text');
+        $data['did'] = 0;
+
+        if($data['uid']<1){
+            return $this->returnJson(-1, '用户ID不能空!');
+        }
+
+        $r = $m->dataSave($data);
+        if ($r > 0){
+            return $this->returnJson(1, '消息发送成功!');
+        }
+        return $this->returnJson(-1, '异常,联系管理员!');
+    }
+
 
     public function list(){
         $page = $this->request->param('page');

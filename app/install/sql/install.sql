@@ -123,6 +123,7 @@ CREATE TABLE `hm_user` (
   `pass_err_nums` int DEFAULT '0' COMMENT '密码错误次数',
   `rz_type` tinyint(1) DEFAULT '1' COMMENT '认证方式，1个人，2企业',
   `rz_msg` varchar(128) DEFAULT '' COMMENT '认证失败原因',
+  `channel` varchar(200) NOT NULL DEFAULT '' COMMENT '渠道',
   `create_time` datetime NOT NULL COMMENT '注册时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),

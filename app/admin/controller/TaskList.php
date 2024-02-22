@@ -32,11 +32,19 @@ class TaskList extends AdminBase
         $wh = [];
 
         $m = $this->model('TaskList');
+        $task = $this->model('Task');
 
         $data = $m->list($page, $limit, $wh);
 
         $count = $data['total'];
         $list = $data['data'];
+
+
+        foreach ($list as $k => $v) {
+            $t = $task->getDataByID($v['tid']);
+            $list[$k]['tname'] = $t['name'];
+        }
+
 
         return $this->layuiJson(0, 'ok', $list, $count);
     }

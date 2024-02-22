@@ -8,6 +8,10 @@ use app\common\controller\Base as B;
 class Base extends B
 {
 
+    protected $middleware = [
+        \app\middleware\v3::class,
+    ];
+
     public function returnData($code, $arr, $msg = 'ok'){
 
         if (!is_array($arr)){

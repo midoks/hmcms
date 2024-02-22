@@ -21,7 +21,8 @@ require __DIR__ . '/vendor/autoload.php';
 // ini_set('memory_limit', '1G');
 // 执行HTTP应用并响应
 // ->debug()
-$http = (new App())->http;
+// $http = (new App())->http;
+$http = (new App())->debug()->http;
 $response = $http->name('v3')->run();
 $response->send();
 $http->end($response);

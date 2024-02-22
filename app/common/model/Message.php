@@ -56,6 +56,14 @@ class Message extends Base {
 		return $list;
 	}
 
+	public function send($uid, $text, $name = '系统消息'){
+		$data = [];
+		$data['uid'] = $uid;
+		$data['name'] = $name;
+		$data['text'] = $text;
+		return $this->dataSave($data);
+	}
+
 
 
 }

@@ -26,17 +26,38 @@ table.render({
     defaultToolbar: [],
     title: '数据表',
     cols: [[
+        {field:'id', title:'ID',width:20},
         {field:'name', title:'任务标题',width:100},
         {field:'text', title:'任务内容',width:230},
-        {field:'cion', title:'奖励金币数量'},
-        {field:'vip', title:'奖励VIP天数'},
+        {field:'cion', title:'奖励金币数量',width:120},
+        {field:'vip', title:'奖励VIP天数',width:120},
         {field:'daynum', title:'每日上限次数',width:130},
         {field:'status', title:'是否开启',width:86,toolbar: '#statusTpl'},
         {field:'type', title:'模式',toolbar: '#typeTpl',width:86},
-        {title:'操作', toolbar: '#cmdTpl', width:140, fixed: 'right'}
+        {title:'操作', toolbar: '#cmdTpl', width:128, fixed: 'right'}
      ]],
     page: true
 });
+
+table.on('tool(task)', function(obj){
+    switch(obj.event){
+        case 'status':triggerStatus(obj);break;
+    };
+});
+
+
+function triggerStatus(obj){
+    layer.confirm('你真的要更改状态吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('{:url("task/triggerStatus")}', {'id':obj.data.id}, function(data) {
+            showMsg(data.msg,function(){
+                if (data.code>-1){
+                    location.reload();
+                }
+            },{icon:data.code>-1?1:2});
+        },'json');
+    });
+}
+
 
 ///
 });
@@ -44,11 +65,11 @@ table.render({
 
 
 <script type="text/html" id="statusTpl">
-    {{#  if(d.status == 0){ }}
-    <span class="layui-btn layui-btn-xs layui-btn-normal">已开启</span>
-    {{#  } else { }}
-    <span class="layui-btn layui-btn-xs layui-btn-danger">已暂停</span>
-    {{#  } }}
+    {{# if (d.status == 1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="status">已开启</a>
+    {{# } else if (d.status == 0) { }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">已暂停</a>
+    {{# } }}
 </script>
 
 <script type="text/html" id="typeTpl">

@@ -94,6 +94,15 @@ class Login extends Base
             return $this->returnData(0, '注册失败');
         }
 
+        // 邀请奖励执行
+        if ($inviteid > 0) {
+            // 添加邀请记录
+            $m = $this->model('UserInvite');
+            $m->dataSave('uid'=>$res,'inviteid'=>$inviteid, 'deviceid'=>$deviceid);
+            $this->logic('Task')->doTaskReward(2, $inviteid);
+        }
+
+
         //输出
         $d = [];
         $d['code'] = 1;
@@ -104,9 +113,15 @@ class Login extends Base
 
 
     public function mailcode(){
+
         $email = $this->request->post('email');
+
+        if (empty($email)) {
+            return $this->returnData(0, '邮件地址不能空!');
+        }
+
         if (!is_email($email)) {
-            return $this->returnData(0, '非法邮箱格式');
+            return $this->returnData(0, '非法邮箱格式!');
         }
 
         $code = rand(111111, 999999);

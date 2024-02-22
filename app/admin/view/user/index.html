@@ -107,13 +107,14 @@ table.render({
         {field:'tel', title:'手机',width:180},
         {field:'email', title:'邮件',width:200},
         {field:'nick', title:'昵称', width:100},
-        {field:'vip', title:'是否VIP',width:100},
+        {field:'vip', title:'是否VIP',width:100,toolbar: '#vipTpl',},
         {field:'rmb', title:'余额'},
         {field:'cion', title:'金币'},
         {field:'ticket', title:'月票'},
+        {field:'channel', title:'渠道', toolbar: '#channelTpl'},
         {field:'viptime', title:'VIP到期', width:120},
         {field:'create_time', title:'注册时间',width:162,},
-        {title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right'}
+        {title:'操作', toolbar: '#cmdTpl', width:240, fixed: 'right'}
      ]],
     page: true
 });
@@ -122,8 +123,24 @@ table.render({
 });
 </script>
 
+<script type="text/html" id="channelTpl">
+    {{#  if(d.channel == ""){ }} 无
+    {{#  } else { }} {{d.channel}}
+    {{#  } }}
+</script>
+
+<script type="text/html" id="vipTpl">
+    {{#  if(d.vip == 1){ }}
+        <span class="layui-btn layui-btn-danger layui-btn-xs" title="到期时间：{{util.toDateString(d.viptime)}}">是</span>
+    {{#  } else { }}
+        <span class="layui-btn layui-btn-normal layui-btn-xs">否</span>
+    {{#  } }}
+</script>
 
 <script type="text/html" id="cmdTpl">
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('消息回复','{:url('message/reply')}?uid={{d.id}}',600,420)">消息回复<i class="layui-icon">&#xe642;</i></a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" onclick="Admin.open('用户详细信息','{:url('user/show')}?id={{d.id}}')"><i class="layui-icon">&#xe615;</i></a>
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('【{{d.name}}】'+'编辑','{:url('user/edit')}?id={{d.id}}',1200,480)"><i class="layui-icon">&#xe642;</i></a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('user/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
 </script>
 

@@ -18,7 +18,7 @@
                     {volist name="hm_nav_list" id="v" key="k"}
                     
                     {if $v["display"]}
-                    <li class="layui-nav-item layui-hide-xs {if $Request.session.hm_nav_cur == $v['alias']}layui-this{/if}" lay-unselect ><a href="{:url('index/index',['view'=>$v['alias']])}">{$v["name"]}</a></li>
+                    <li class="layui-nav-item layui-hide-xs {if $hm_nav_cur == $v['alias']}layui-this{/if}" lay-unselect ><a href="{:url('index/index',['view'=>$v['alias']])}">{$v["name"]}</a></li>
                     {/if}
 
                     {/volist}
@@ -97,10 +97,10 @@
                     </li>
                     {else}
                         {volist name="hm_nav_list" id="v" key="k"}
-                        {if $Request.session.hm_nav_cur == $v['alias'] && !empty($v['submenu'])}
+                        {if $hm_nav_cur == $v['alias'] && !empty($v['submenu'])}
 
                         {volist name="$v['submenu']" id="menu_v" key="k1"}
-                        <!-- {$k1} {$menu_v['name']} {if isset($menu_v['selected']) && $menu_v['selected'] == true }layui-nav-itemed{/if} -->
+        
                         <li data-name="{$menu_v['name']}" class="layui-nav-item {if isset($menu_v['selected']) && $menu_v['selected'] == true }layui-nav-itemed{/if}">
                             <a href="javascript:;" lay-tips="{$menu_v['name']}" lay-direction="2">
                                 <i class="layui-icon {$menu_v['icon']}"></i>
@@ -140,7 +140,7 @@
             <div class="layui-card layadmin-header" style="display: block; line-height: 40px;height: 40px;">
                 <div class="layui-breadcrumb" lay-filter="breadcrumb">
                     {volist name="hm_nav_list" id="v" key="k"}
-                        {if $Request.session.hm_nav_cur == $v['alias'] && !empty($v['submenu'])}
+                        {if $hm_nav_cur == $v['alias'] && !empty($v['submenu'])}
 
                         <a lay-href="">{$v["name"]}</a>
                         {volist name="$v['submenu']" id="menu_v" key="k1"}

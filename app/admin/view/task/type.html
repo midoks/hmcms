@@ -45,7 +45,6 @@ table.on('edit(task_type)', function(obj){
     var value = obj.value //得到修改后的值
     var data = obj.data //得到所在行所有键值
     var field = obj.field; //得到字段
-    // layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改值为：'+ util.escape(value));
 
     $.post('{:url("task/update")}', {'id':data.id,'zd':field,'val': util.escape(value)}, function(res) {
         showMsg(res.msg, function(){

@@ -91,6 +91,10 @@ class Task extends AdminBase
             return $this->returnJson(-1, '值不能为空~!');
         }
 
+        if(!is_numeric($val)) {
+            return $this->returnJson(-1, '请输入正确数字~!');
+        }
+
         $m = $this->model('task');
         $r = $m->dataSave([$zd => $val], $id);
         if ($r){
@@ -99,21 +103,16 @@ class Task extends AdminBase
         return $this->returnJson(-1, '更新失败!');
     }
 
+    public function triggerStatus(){
+        $id = $this->request->post('id');
+        if (empty($id)){
+            return $this->returnJson(-1, '设置ID不能空!');
+        }
 
-    // public function del(){
-    //     $id = $this->request->param('id');
-    //     if (empty($id)){
-    //         return $this->returnJson(-1, '删除ID不能空!');
-    //     }
-
-    //     $m = $this->model('task');
-    //     $res = $m->dataDelete($id);
-    //     if (!$res){
-    //         return $this->returnJson(-1, '删除失败!');
-    //     }
-
-    //     return $this->returnJson(1, '删除成功!');
-    // }
+        $m = $this->model('task');
+        $m->dataTriggerField($id,'status');
+        return $this->returnJson(1, '设置成功!');
+    }
 
 
     public function save(){

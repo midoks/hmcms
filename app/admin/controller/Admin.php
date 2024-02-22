@@ -9,6 +9,7 @@ use think\helper\Str;
 
 class Admin extends AdminBase
 {
+    
 
     public function index()
     {

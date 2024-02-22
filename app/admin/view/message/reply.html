@@ -1,0 +1,38 @@
+{include file="app/admin/view/common/header_head.html" /}
+<!-- start -->
+
+<div class="layui-fluid">
+    <form class="layui-form" action="{:url('message/save')}">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">用户ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="uid" autocomplete="off" class="layui-input" value="{$uid|default=''}" placeholder="用户ID">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">消息内容</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input" value="系统信息" placeholder="消息内容">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">回复消息</label>
+            <div class="layui-input-block">
+                <textarea style="min-height:150px;" name="text" placeholder="内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        
+        <div class="layui-form-item" style="text-align: center;">
+            <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+
+<!-- end -->
+</body>
+</html>
+
+

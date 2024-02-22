@@ -9,16 +9,18 @@ use app\common\model\AdminMenu;
 class Admin extends Base
 {
 
+    public $menu_list = [];
+
+
+    // 全局变量
     private function initVar(){
-        // 全局变量
         View::assign("version", time());
     }
-	// 初始化
-    protected function initialize()
-    {
-        $this->initVar();
-        //权限验证
-        $this->auth();
+
+    public function initGlobalList(){
+        $adminmenu = $this->model('AdminMenu');
+        $this->menu_list = $adminmenu->list();
+
 
         $login_id = session('login_id');
         if (!$login_id){
@@ -26,15 +28,27 @@ class Admin extends Base
             return redirect($url)->send();
         }
 
+        
+    }
+
+	// 初始化
+    protected function initialize()
+    {
+        $this->initVar();
+        $this->initGlobalList();
+        //权限验证
+        $this->auth();
+
+        
+        $login_id = session('login_id');
         $admin = $this->model('Admin');
         $row = $admin->getDataByID($login_id);
         if ($row['id'] != 1 && $row['role_id']<1){
             echo $this->fetch('login/noacl');exit;
         }
 
-        $m = $this->model('AdminMenu');
         //菜单
-        $list = $m->list();
+        $list = $this->menu_list;
         if ($row['id'] != 1){
             $list = $this->getValidMenu($list, $row['role_id']);
         }
@@ -43,19 +57,59 @@ class Admin extends Base
         $action = $this->request->action();
         $list = $this->selectdMenu($list, $controller, $action);
 
-        
         View::assign("hm_nav_list", $list);
-        // if(!empty($list)){
-        //     $alias = $list[0]['alias'];
-        //     View::assign("hm_nav_cur", $alias); 
-        //     session('hm_nav_cur', $alias);
-        // }
+        $select_nav = $this->findMenuNav($list, $controller, $action);
+        
+        if ($select_nav != ''){
+            View::assign('hm_nav_cur',$select_nav);
+            // session('hm_nav_cur', $select_nav);
+        } else {
+            View::assign('hm_nav_cur', $list[0]['alias']);
+        }
+
+        // var_dump($controller, $action);
+    }
+
+    public function findMenuNav($list, $controller, $action){
+        $route_url = strtolower($controller).'/'.strtolower($action);
+
+        foreach ($list as $k => $v) {
+
+            $status = false;
+            if (!empty($v['submenu'])){
+                $status =  $this->findMenuNavRecursion($v['submenu'], $controller, $action);
+            }
+
+            if ($status){
+                return $v['alias'];
+            }
+        }
+        return '';
+    }
+
+    private function findMenuNavRecursion($list, $controller, $action){
+        foreach($list as $k=>$v){
+            $status = false;
+
+            $route_url = strtolower($controller).'/'.strtolower($action);
+            if ($route_url == strtolower($v['route'])){
+                return true;
+            }
+
+            if (!empty($v['submenu'])){
+                $status =  $this->findMenuNavRecursion($v['submenu'], $controller, $action);
+            }
+
+            if ($status){
+                return $status;
+            }
+        }
+        return false;
     }
 
 
     public function selectdMenu($list, $controller, $action){
         $route_url = strtolower($controller).'/'.strtolower($action);
-        // var_dump($route_url);
         // 一级栏目
         foreach ($list as $k => $v) {
             // 二级菜单

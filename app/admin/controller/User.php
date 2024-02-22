@@ -17,6 +17,20 @@ class User extends AdminBase
     }
 
     public function edit(){
+        $id = $this->request->param('id');
+        $m = $this->model('user');
+        
+        if (!empty($id)){
+            $data = $m->getDataByID($id);
+        } else {
+            $data = [
+                'id' => 0,
+                'viptime'=>0,
+                'rz_type' =>1,
+                'bank'=>'',
+            ];
+        }
+        View::assign("data", $data);
         return $this->fetch('user/edit');
     }
 
