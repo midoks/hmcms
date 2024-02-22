@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无权访问</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="icon" href="/static/admin/images/logo.png"/>
+    <link rel="stylesheet" href="{__STATIC__}/admin/layuiadmin/layui/css/layui.css?v={$version}" media="all">
+    <link rel="stylesheet" href="{__STATIC__}/admin/layuiadmin/style/admin.css?v={$version}" media="all">
+    <link rel="stylesheet" href="{__STATIC__}/admin/layuiadmin/style/login.css?v={$version}" media="all">
+</head>
+<body>
+
+<div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+
+    <div class="layadmin-user-login-main">
+        <div class="layadmin-user-login-box layadmin-user-login-header">
+            <h2>鸿蒙CMS</h2>
+        </div>
+        
+        <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+            
+        
+            <div class="layui-form-item">
+                <div style="text-align: center;">无法访问</div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="layui-trans layadmin-user-login-footer">
+        <p>© 2023 HMCMS</p>
+        <p>
+            <span><a href="//github.com/midoks/hmcms" target="_blank">源码</a></span>
+            <span><a href="//github.com/midoks/hmcms/wiki" target="_blank">Wiki</a></span>
+        </p>
+    </div>
+    
+</div>
+
+<script src="{__STATIC__}/admin/layuiadmin/layui/layui.js?v={$version}"></script>  
+<script>
+layui.config({
+    base: '{__STATIC__}/admin/layuiadmin/'
+}).extend({
+    index: 'lib/index'
+}).use(['index', 'user'], function(){
+///
+var $ = layui.$
+,setter = layui.setter
+,admin = layui.admin
+,form = layui.form
+,router = layui.router()
+,search = router.search;
+
+///
+});
+</script>
+</body>
+</html>

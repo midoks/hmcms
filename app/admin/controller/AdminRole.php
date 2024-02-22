@@ -36,8 +36,11 @@ class AdminRole extends AdminBase
             $t['id'] = $v['id'];
 
             if (in_array($t['id'], $aa_ids)){
-                $t['checked'] = true;
                 $t['spread'] = true;
+            }
+
+            if (in_array($t['id'], $aa_ids) && $dep == 3){
+                $t['checked'] = true;
             }
 
             if (!empty($v['submenu'])){
@@ -54,12 +57,8 @@ class AdminRole extends AdminBase
         $aa = $this->model('AdminAccess');
         $aa_list =$aa->list($role_id);
 
-
         //重新组装节点ID
-        $aa_ids = [];
-        for ($i=0; $i < count($aa_list); $i++) { 
-            $aa_ids[] = $aa_list[$i]['node_id'];
-        }
+        $aa_ids = $aa->getFieldList($aa_list,'node_id');
 
         //获取所有菜单及权限
         $am = $this->model('AdminMenu');

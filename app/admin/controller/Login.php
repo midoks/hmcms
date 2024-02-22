@@ -42,9 +42,8 @@ class Login extends Base
         $username = $this->request->param('username');
         $password = $this->request->param('password');
 
-        $admin_model = new Admin();
-        $data = $admin_model->verifyLogin($username,$password);
-
+        $m = $this->model('Admin');
+        $data = $m->verifyLogin($username,$password);
 
         if ($data['status']){
             $time = time();
@@ -68,14 +67,4 @@ class Login extends Base
         }
     }
 
-
-    public function test3()
-    {
-
-        $comic_model = new Comic();
-
-        $data = $comic_model->getDataByID('1');
-        var_dump($data);
-
-    }
 }

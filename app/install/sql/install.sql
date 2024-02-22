@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `hm_admin_role` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_user`;
 CREATE TABLE `hm_user` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) DEFAULT '' COMMENT '用户名',
   `tel` varchar(15) DEFAULT '' COMMENT '手机',
   `email` varchar(128) DEFAULT '' COMMENT '邮箱',
@@ -104,9 +104,9 @@ CREATE TABLE `hm_user` (
   `nick` varchar(64) DEFAULT '' COMMENT '昵称',
   `vip` tinyint(1) DEFAULT '0' COMMENT '是否VIP',
   `rmb` decimal(6,2) DEFAULT '0.00' COMMENT '金额',
-  `cion` int DEFAULT '0' COMMENT '金币',
+  `cion` bigint(20) DEFAULT '0' COMMENT '金币',
   `ticket` int DEFAULT '0' COMMENT '月票',
-  `viptime` int DEFAULT '0' COMMENT 'vip到期时间',
+  `viptime` bigint(20) DEFAULT '0' COMMENT 'vip到期时间',
   `pic` varchar(255) DEFAULT '' COMMENT '头像地址',
   `qq` varchar(20) DEFAULT '' COMMENT 'QQ',
   `city` varchar(128) DEFAULT '' COMMENT '地区',
@@ -137,7 +137,7 @@ CREATE TABLE `hm_user` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_order`;
 CREATE TABLE `hm_order` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0' COMMENT '用户ID',
   `dd` varchar(64) DEFAULT '' COMMENT '订单号',
   `rmb` decimal(6,2) DEFAULT '0.00' COMMENT '金额',
@@ -158,7 +158,7 @@ CREATE TABLE `hm_order` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_message`;
 CREATE TABLE `hm_message` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0' COMMENT '用户ID',
   `name` varchar(64) DEFAULT '' COMMENT '标题',
   `text` varchar(255) DEFAULT '' COMMENT '内容',
@@ -175,7 +175,7 @@ CREATE TABLE `hm_message` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_feedback`;
 CREATE TABLE `hm_feedback` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL COMMENT '用户ID',
   `name` varchar(100) NOT NULL COMMENT '类型名称',
   `text` text NOT NULL COMMENT '内容',
@@ -192,7 +192,7 @@ CREATE TABLE `hm_feedback` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_task`;
 CREATE TABLE `hm_task` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) DEFAULT '' COMMENT '任务标题',
   `text` varchar(64) DEFAULT '' COMMENT '任务内容',
   `cion` int(11) DEFAULT '0' COMMENT '奖励金币',
@@ -213,7 +213,7 @@ CREATE TABLE `hm_task` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_task_list`;
 CREATE TABLE `hm_task_list` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0' COMMENT '用户ID',
   `tid` int(11) DEFAULT '0' COMMENT '任务ID',
   `vip` int(11) DEFAULT '0' COMMENT '奖励VIP天数',
@@ -233,7 +233,7 @@ CREATE TABLE `hm_task_list` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_user_invite`;
 CREATE TABLE `hm_user_invite` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0' COMMENT '用户ID',
   `inviteid` int(11) DEFAULT '0' COMMENT '邀请人ID',
   `deviceid` varchar(128) DEFAULT '' COMMENT '设备ID',
@@ -401,7 +401,7 @@ CREATE TABLE `hm_comic` (
 -- Table structure for hm_comic_chapter
 -- ------------------------------------
 CREATE TABLE `hm_comic_chapter` (
- `id` int(11) NOT NULL AUTO_INCREMENT,
+ `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
  `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
  `xid` int(11) DEFAULT '0' COMMENT '排序ID',
  `image` varchar(255) DEFAULT '' COMMENT '图片',
@@ -421,7 +421,7 @@ CREATE TABLE `hm_comic_chapter` (
 -- Table structure for hm_comic_pic
 -- ------------------------------------
 CREATE TABLE `hm_comic_pic` (
- `id` int(11) NOT NULL AUTO_INCREMENT,
+ `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
  `cid` int(11) DEFAULT '0' COMMENT '章节ID',
  `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
  `img` varchar(255) DEFAULT '' COMMENT '图片url地址',
@@ -442,7 +442,7 @@ CREATE TABLE `hm_comic_pic` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_comic_class`;
 CREATE TABLE `hm_comic_class` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(128) DEFAULT '' COMMENT '名称',
   `yname` varchar(255) DEFAULT '' COMMENT '英文名称',
   `sort` int DEFAULT '0' COMMENT '排序ID',
@@ -457,7 +457,7 @@ CREATE TABLE `hm_comic_class` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_comic_type`;
 CREATE TABLE `hm_comic_type` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) DEFAULT '' COMMENT '名称',
   `pid` int DEFAULT '0' COMMENT '上级ID',
   `field` varchar(64) DEFAULT '' COMMENT '字段',
@@ -472,7 +472,7 @@ CREATE TABLE `hm_comic_type` (
 -- Table structure for hm_comic_type_related
 -- -----------------------------------------
 CREATE TABLE `hm_comic_type_related` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `tid` int(11) DEFAULT '0' COMMENT '类别ID',
   `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
   `create_time` datetime NOT NULL COMMENT '创建时间',
@@ -488,7 +488,7 @@ CREATE TABLE `hm_comic_type_related` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_comic_comment`;
 CREATE TABLE `hm_comic_comment` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `mid` int DEFAULT '0' COMMENT '漫画ID',
   `uid` int DEFAULT '0' COMMENT '用户ID',
   `text` varchar(500) DEFAULT '' COMMENT '评论内容',
@@ -507,7 +507,7 @@ CREATE TABLE `hm_comic_comment` (
 -- Table structure for hm_comic_comment_reply
 -- ----------------------------
 CREATE TABLE `hm_comic_comment_reply` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `cid` int DEFAULT '0' COMMENT '评论ID',
   `fid` int DEFAULT '0' COMMENT '上级ID',
   `mid` int DEFAULT '0' COMMENT '漫画ID',
@@ -529,7 +529,7 @@ CREATE TABLE `hm_comic_comment_reply` (
 -- Table structure for hm_comic_comment_zan
 -- ----------------------------
 CREATE TABLE `hm_comic_comment_zan` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `cid` int DEFAULT '0' COMMENT '评论ID',
   `fid` tinyint(1) DEFAULT '0' COMMENT '0评论，1回复',
   `uid` int DEFAULT '0' COMMENT '用户ID',

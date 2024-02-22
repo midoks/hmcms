@@ -69,9 +69,9 @@ class AdminMenu extends Admin
             return $this->returnJson(-1, '删除ID不能空!');
         }
 
-        // if ($id<100){
-        //     return $this->returnJson(-1, '不能删除!');
-        // }
+        if ($id<100){
+            return $this->returnJson(-1, '不能删除!');
+        }
 
         $m = $this->model('AdminMenu');
         $r = $m->recursionDelete($id);
