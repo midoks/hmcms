@@ -251,7 +251,7 @@ abstract class Base
             return [false,[]];
         }
         try{
-            $jwt_key = 'sdadsfasdfa';
+            $jwt_key = 'hmcms';
             $data = new \Firebase\JWT\Key($jwt_key, 'HS256');
             $jwt = \Firebase\JWT\JWT::decode($token, $data);
             return [true,$jwt->data];
@@ -268,7 +268,7 @@ abstract class Base
         if(empty($data)){
             return false;
         }
-        $jwt_key = 'sdadsfasdfa';
+        $jwt_key = 'hmcms';
         $jwt = \Firebase\JWT\JWT::encode($data, $jwt_key, 'HS256');
         return $jwt;
     }
