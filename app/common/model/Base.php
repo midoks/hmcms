@@ -9,6 +9,7 @@ use think\facade\Config;
 class Base extends Model {
 
     public $cache_prefix = 'hmcms_';
+    private $default_cache_time = 3600;
 
     //自定义初始化
     protected function initialize()
@@ -20,14 +21,19 @@ class Base extends Model {
 
     // 缓存相关方法 | start
 
+    private function getTableName(){
+        if ($this->table){
+            return $this->table;
+        }
+        return $this->name;
+    }
+
     //获取缓存key
     public function cacheKey($name){
         $prefix = $this->cache_prefix;
         $prefix = Config::get('cache.prefix', $prefix);
-        if ($this->table){
-            return $prefix.'|'.$this->table.'|'.$name;
-        }
-        return $prefix.'|'.$this->name.'|'.$name;
+        $table_name = $this->getTableName();
+        return $prefix.'|'.$table_name.'|'.$name;
     }
 
     public function cacheGet($key){
@@ -157,4 +163,134 @@ class Base extends Model {
         var_dump($sql);
         return $m;
     }
+
+    public function cacheTag($tag = ''){
+        $this->default_cache_tag = $tag;
+        return $this;
+    }
+
+    public function cache($key='', $time = 3600){
+        $this->default_cache_key = $key;
+        $this->default_cache_time = $time;
+        return $this;
+    }
+
+    public function findCacheOne($model){
+        $use_redis = Config::get('cache.use_redis',false);
+        if (!$use_redis){
+            $data = $model->find();
+            if ($data){
+                $data = $data->toArray();
+            }
+            return $data;
+        }
+
+        $table_name = $this->getTableName();
+        $cache_tag = $this->default_cache_tag;
+
+        // $l = Cache::store('slave')->getTagItems($table_name);
+        // var_dump($l);
+
+        $default_cache_key = $this->default_cache_key;
+        if(empty($default_cache_key)){
+            $sql = $model->fetchSql(true)->find();
+            $default_cache_key = md5($sql);
+        }
+
+        $cache_key = $this->cacheKey($default_cache_key);
+        $data = Cache::store('slave')->get($cache_key);
+        if ($data){
+            return $data;
+        }
+
+        $cache_time = $this->default_cache_time;
+
+        $data = $model->find();
+        if ($data){
+            $data = $data->toArray();
+        }
+
+        if (empty($cache_tag)){
+            Cache::store('master')->tag($table_name)->set($cache_key,$data,$cache_time);
+        } else {
+            Cache::store('master')->tag($cache_tag)->set($cache_key,$data,$cache_time);
+        }
+        return $data;
+    }
+
+    public function findCacheSelect($model){
+        $use_redis = Config::get('cache.use_redis',false);
+        if (!$use_redis){
+            $data = $model->select();
+            if ($data){
+                $data = $data->toArray();
+            }
+            return $data;
+        }
+
+        $table_name = $this->getTableName();
+        $cache_tag = $this->default_cache_tag;
+
+        // $l = Cache::store('slave')->getTagItems($table_name);
+        // var_dump($l);
+
+        $default_cache_key = $this->default_cache_key;
+        if(empty($default_cache_key)){
+            $sql = $model->fetchSql(true)->select();
+            $default_cache_key = md5($sql);
+        }
+
+        $cache_key = $this->cacheKey($default_cache_key);
+        $data = Cache::store('slave')->get($cache_key);
+        if ($data){
+            return $data;
+        }
+
+        $cache_time = $this->default_cache_time;
+
+        $data = $model->select();
+        if ($data){
+            $data = $data->toArray();
+        }
+
+        if (empty($cache_tag)){
+            Cache::store('master')->tag($table_name)->set($cache_key,$data,$cache_time);
+        } else {
+            Cache::store('master')->tag($cache_tag)->set($cache_key,$data,$cache_time);
+        }
+        return $data;
+    }
+
+    // public function __call($func, $args)
+    // {
+    //     $func_len = strlen($func);
+    //     $suffix_func = substr($func, $func_len - 6);
+    //     //仅对查询有效[MM]
+    //     if ($suffix_func == '_cache') {
+    //         $real_func = substr($func, 0, $func_len - 6);
+
+    //         $key = $func . http_build_query($args);
+    //         $md5_key = md5($key);
+
+    //         $cdata = Caches::getInstance()->getByKey($md5_key);
+    //         if ($cdata) {
+    //             return $cdata;
+    //         }
+
+    //         //防穿透
+    //         if (Caches::getInstance()->lock($md5_key)) {
+    //             $data = call_user_func_array([$this, $real_func], $args);
+    //             Caches::getInstance()->saveByKey($md5_key, $data);
+    //             Caches::getInstance()->unlock($md5_key);
+    //             return $data;
+    //         } else {
+    //             usleep(200);
+    //             $cdata = Caches::getInstance()->getByKey($md5_key);
+    //             if ($cdata) {
+    //                 return $cdata;
+    //             }
+    //         }
+    //         return false;
+    //     }
+    // }
 }

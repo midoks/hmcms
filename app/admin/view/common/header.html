@@ -55,12 +55,12 @@
 
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;">
-                        <cite>admin</cite>
+                        <cite>{$admin_data['username']}</cite>
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a onclick="Admin.updatePwd();">修改密码</a></dd>
                         <hr>
-                        <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
+                        <dd style="text-align: center;"> <a href="{:url('login/out')}">退出</a></dd>
                     </dl>
                 </li>
               

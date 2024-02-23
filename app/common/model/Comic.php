@@ -92,5 +92,44 @@ class Comic extends Base {
 		return $list;
 	}
 
+    public function dataListPos($pos = 0, $wh = [], $size = 10, $order = ['id'=>'desc']){
+
+        $args = get_defined_vars();
+        // var_dump($args);
+        $key = http_build_query($args);
+        $key = md5($key);
+
+        $m = $this->field('id');
+
+        if (isset($wh['tid'])) {
+            $m->where('tid', $wh['tid']);
+        }
+        if (isset($wh['ttid'])) {
+            $m->where('ttid', $wh['ttid']);
+        }
+
+        if (isset($wh['pay'])) {
+            $m->where('pay', $wh['pay']);
+        }
+
+        if (!empty($wh['kstime'])) {
+            $m->whereTime('addtime', '>=', strtotime($wh['kstime']));
+        }
+        if (!empty($wh['jstime'])) {
+            $m->whereTime('addtime', '<=', strtotime($wh['jstime']));
+        }
+
+        if (!empty($order)){
+            $m->order($order);
+        }
+
+        $m->limit($size);
+
+        // $this->debugSQL($m);
+        $list = $this->cache($key)->findCacheSelect($m);
+        $ids = $this->getFieldList($list,'id');
+        return $this->getDataByIds($ids);
+    }
+
 
 }

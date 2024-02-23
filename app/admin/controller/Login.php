@@ -5,7 +5,7 @@ namespace app\admin\controller;
 use app\common\controller\Base;
 use think\facade\View;
 use think\facade\Db;
-
+use think\facade\Session;
 use think\captcha\facade\Captcha;
 
 use app\common\model\Admin;
@@ -36,6 +36,11 @@ class Login extends Base
         return Captcha::create();
     }
 
+    public function out(){
+        Session::clear();
+        $this->success("退出成功!",url('/login/index'));
+    }
+
     // 登录
     public function in()
     {
@@ -59,11 +64,10 @@ class Login extends Base
             session('login_id', $data['data']['id']);
             session('login_timeout', $time + 7*24*60*60);
             $access_token = $this->createJWT($make_token_args);
-            $retdata =  $this->returnJson(0,'登录成功',['access_token'=>$access_token]);
-            
-            return $retdata;
+            return  $this->returnJson(0,'登录成功',['access_token'=>$access_token]);
+            // return $retdata;
         } else{
-            return $this->returnJson(0,'登录失败');
+            return $this->returnJson(-1,'登录失败');
         }
     }
 

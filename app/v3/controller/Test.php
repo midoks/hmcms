@@ -10,8 +10,13 @@ class Test extends Base
 
 	public function index(){
 
+		$m = $this->model('Comic');
 
-		$title = $this->logic('Task')->doTaskReward(2,1);
+        $data = $m->dataListPos(10);
+
+        // var_dump($data);
+
+		// $title = $this->logic('Task')->doTaskReward(2,1);
 		return '1';
 	}
     

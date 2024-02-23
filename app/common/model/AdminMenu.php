@@ -78,7 +78,7 @@ class AdminMenu extends Base {
    	}
 
 	public function list() {
-		$list = $this->where('pid', '0')->order('sort')->select();
+		$list = $this->where('pid', '0')->order('sort','asc')->select();
 		if ($list){
 			$list = $list->toArray();
 		}

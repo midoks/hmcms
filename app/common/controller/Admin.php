@@ -10,6 +10,7 @@ class Admin extends Base
 {
 
     public $menu_list = [];
+    public $admin_data = [];
 
 
     // 全局变量
@@ -28,7 +29,15 @@ class Admin extends Base
             return redirect($url)->send();
         }
 
-        
+        $admin = $this->model('Admin');
+        $row = $admin->getDataByID($login_id);
+
+        if (!$row){
+            $url = $this->makeUrl('login/index');
+            return redirect($url)->send();
+        }
+        $this->admin_data = $row;
+        View::assign("admin_data", $row);
     }
 
 	// 初始化
@@ -62,12 +71,9 @@ class Admin extends Base
         
         if ($select_nav != ''){
             View::assign('hm_nav_cur',$select_nav);
-            // session('hm_nav_cur', $select_nav);
         } else {
             View::assign('hm_nav_cur', $list[0]['alias']);
         }
-
-        // var_dump($controller, $action);
     }
 
     public function findMenuNav($list, $controller, $action){
