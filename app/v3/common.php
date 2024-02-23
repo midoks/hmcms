@@ -1,6 +1,9 @@
 <?php
 // 这是系统自动生成的公共文件
 
+//默认变量
+define('Mc_Encryption_Key','ZSdcrqIb8pY9sT2');
+
 // 随机字符串
 function get_rndstr($len = 32, $type = 'alpha')
 {

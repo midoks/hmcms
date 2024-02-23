@@ -64,6 +64,49 @@ class Message extends Base {
 		return $this->dataSave($data);
 	}
 
+	//根据条件统计总数
+	public function dataCount($wh = []){
+		// var_dump($wh);
+		$m = $this->field('id');
+		if (isset($wh['uid'])){
+			$m->where('uid', $wh['uid']);
+		}
+
+		if (isset($wh['did'])){
+			$m->where('did', $wh['did']);
+		}
+		return $m->count();;
+	}
+
+
+	public function dataListPos($pos = 0, $wh = [], $size = 10, $order = ['id'=>'desc']){
+
+		$m = $this->field('id');
+
+		if (isset($wh['uid'])){
+			$m->where('uid', $wh['uid']);
+		}
+
+		if (isset($wh['did'])){
+			$m->where('did', $wh['did']);
+		}
+
+		if (!empty($order)){
+			$m->order($order);
+		}
+
+		$data = $m->limit($size)->select();
+		if ($data){
+			$data = $data->toArray();
+		}
+
+		$ids = $this->getFieldList($data,'id');
+		$data = $this->getDataByIds($ids);
+		return $data;
+	}
+
+
+
 
 
 }

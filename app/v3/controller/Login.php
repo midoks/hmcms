@@ -6,6 +6,74 @@ namespace app\v3\controller;
 class Login extends Base
 {
 
+    public function index(){
+        $name = $this->request->post('name');
+        $pass = $this->request->post('pass');
+
+        if (empty($name)){
+            return $this->returnData(0, '用户名不能为空!');
+        }
+
+        if (empty($pass)){
+            return $this->returnData(0, '密码不能为空!');
+        }
+
+        $m = $this->model('User');
+        if (is_email($name)){
+            $row = $m->where('email', $name)->find();
+            if ($row){
+                $row->toArray();
+            }
+        } else if (is_tel($name)){
+            $row = $m->where('tel', $name)->find();
+            if ($row){
+                $row->toArray();
+            }
+        } else {
+            $row = $m->where('name', $name)->find();
+            if ($row){
+                $row->toArray();
+            }
+        }
+
+        if (!$row){
+            return $this->returnData(0, '手机/邮件/用户名不存在，请注册~');
+        }
+
+        if ($row['sid'] == 1) {
+            return $this->returnData(0, '账户已被锁定~');
+        }
+
+        if ($row['pass_err_nums'] > 10) {
+            return $this->returnData(0, '密码错误次数太多，请找回密码~');
+        }
+
+
+        if (strtolower(md5($pass)) != $row['pass']) {
+            if ($row['id']>0){
+               $m->where('id', $row['id'])->update(['pass_err_nums' => $row['pass_err_nums']+1]); 
+            }
+            return $this->returnData(0, '密码不正确，可以下方找回密码~');
+        }
+
+        //重置登录vip状态/错误次数
+        $edit = [];
+        if ($row['vip'] > 0 && $row['viptime'] < time()) {
+            $edit['vip'] = 0;
+            $edit['viptime'] = 0;
+        }
+
+        $edit['pass_err_nums'] = 0;
+        $m->where('id', $row['id'])->update($edit);
+
+        //输出
+        $d['code'] = 1;
+        $d['msg'] = '登陆成功~';
+        $d['uid'] = $row['id'];
+        $d['token'] = md5('mccms_app' . $row['id']  . $row['pass'] . Mc_Encryption_Key);
+        return $this->returnData(1,$d);
+    }
+    
     public function reg(){
 
         $type = $this->request->post('type');
@@ -98,7 +166,7 @@ class Login extends Base
         if ($inviteid > 0) {
             // 添加邀请记录
             $m = $this->model('UserInvite');
-            $m->dataSave('uid'=>$res,'inviteid'=>$inviteid, 'deviceid'=>$deviceid);
+            $m->dataSave(['uid'=>$res,'inviteid'=>$inviteid, 'deviceid'=>$deviceid]);
             $this->logic('Task')->doTaskReward(2, $inviteid);
         }
 

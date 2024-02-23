@@ -401,6 +401,7 @@ CREATE TABLE `hm_comic` (
 -- ------------------------------------
 -- Table structure for hm_comic_chapter
 -- ------------------------------------
+DROP TABLE IF EXISTS `hm_comic_chapter`;
 CREATE TABLE `hm_comic_chapter` (
  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
  `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
@@ -421,6 +422,7 @@ CREATE TABLE `hm_comic_chapter` (
 -- ------------------------------------
 -- Table structure for hm_comic_pic
 -- ------------------------------------
+DROP TABLE IF EXISTS `hm_comic_pic`;
 CREATE TABLE `hm_comic_pic` (
  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
  `cid` int(11) DEFAULT '0' COMMENT '章节ID',
@@ -472,6 +474,7 @@ CREATE TABLE `hm_comic_type` (
 -- -----------------------------------------
 -- Table structure for hm_comic_type_related
 -- -----------------------------------------
+DROP TABLE IF EXISTS `hm_comic_type_related`;
 CREATE TABLE `hm_comic_type_related` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `tid` int(11) DEFAULT '0' COMMENT '类别ID',
@@ -507,6 +510,7 @@ CREATE TABLE `hm_comic_comment` (
 -- ----------------------------
 -- Table structure for hm_comic_comment_reply
 -- ----------------------------
+DROP TABLE IF EXISTS `hm_comic_comment_reply`;
 CREATE TABLE `hm_comic_comment_reply` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `cid` int DEFAULT '0' COMMENT '评论ID',
@@ -529,6 +533,7 @@ CREATE TABLE `hm_comic_comment_reply` (
 -- ----------------------------
 -- Table structure for hm_comic_comment_zan
 -- ----------------------------
+DROP TABLE IF EXISTS `hm_comic_comment_zan`;
 CREATE TABLE `hm_comic_comment_zan` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `cid` int DEFAULT '0' COMMENT '评论ID',
@@ -540,3 +545,17 @@ CREATE TABLE `hm_comic_comment_zan` (
   UNIQUE KEY `ucf_id` (`cid`,`fid`,`uid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画评论顶记录';
 
+-- ----------------------------
+-- Table structure for hm_follow
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_follow`;
+CREATE TABLE `hm_follow` (
+ `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+ `uid` int(11) DEFAULT '0' COMMENT '用户ID',
+ `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
+ `create_time` datetime NOT NULL COMMENT '创建时间',
+ `update_time` datetime NOT NULL COMMENT '更新时间',
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `uid_mid` (`uid`,`mid`) USING BTREE,
+ KEY `uid` (`uid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='关注记录';
