@@ -25,10 +25,25 @@ class Login extends Base
         return View::fetch($install_path.'/'.$tpl.'.html');
     }
 
-
     public function index()
     {
         return $this->fetch('login/index');
+    }
+
+    public function updatePass(){
+        $pass = $this->request->post('pass');
+        $uid = session('login_id');
+
+        $m = $this->model('Admin');
+        if ($uid>0){
+            $status = $m->updatePass($uid,$pass);
+            if ($status>0){
+                Session::clear();
+                return $this->returnJson(1,'修改成功!');
+            }
+        }
+
+        return $this->returnJson(-1,'修改失败!');
     }
 
     public function code()

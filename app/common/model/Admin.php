@@ -55,6 +55,19 @@ class Admin extends Base {
 		
 	}
 
+	public function updatePass($uid, $password)
+	{
+		$udata = $this->field(true)->where('id', $uid)->find();
+		$random = Str::random(4);
+		$db_password = md5($password.'|'.$random);
+
+		$data = [
+			'password' => $db_password,
+			'random' => $random,
+		];
+		return $this->dataSave($data, $uid);
+	}
+
 	//仅在安装时使用
 	public function setRootData($username, $password){
 		// 生成包含大小写字母和数字的随机字符串

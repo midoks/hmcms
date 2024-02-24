@@ -121,6 +121,22 @@ Admin.prototype.getRand = function(_id){
     $('#'+_id).val(rand);
 };
 
+Admin.prototype.getPass = function(url){
+    layer.prompt({title: '请输入新密码',area: ['200px', '150px']},function(value, index, elem){
+        $.post(url, {pass:value}, function(res) {
+            if(res.code == 1){
+                layer.msg('修改成功',{icon: 1});
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            }else{
+                layer.msg(res.msg,{icon: 2});
+                layer.close(index);
+            }
+        },'json');
+    });
+}
+
 //批量删除
 Admin.prototype.batchDel = function(_url,_id) {
     var ids = [];

@@ -58,7 +58,7 @@
                         <cite>{$admin_data['username']}</cite>
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a onclick="Admin.updatePwd();">修改密码</a></dd>
+                        <dd><a onclick="Admin.getPass('{:url('login/updatePass')}');">修改密码</a></dd>
                         <hr>
                         <dd style="text-align: center;"> <a href="{:url('login/out')}">退出</a></dd>
                     </dl>
