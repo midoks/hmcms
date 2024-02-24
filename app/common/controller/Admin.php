@@ -98,13 +98,21 @@ class Admin extends Base
             $status = false;
 
             $route_url = strtolower($controller).'/'.strtolower($action);
-            if ($route_url == strtolower($v['route'])){
+
+            $db_route_url = strtolower($v['route']);
+            if ($route_url == $db_route_url){
+                return true;
+            }
+
+            $db_route_url = str_replace('_', '',$db_route_url);
+            if ($route_url == $db_route_url){
                 return true;
             }
 
             if (!empty($v['submenu'])){
                 $status =  $this->findMenuNavRecursion($v['submenu'], $controller, $action);
             }
+
 
             if ($status){
                 return $status;
