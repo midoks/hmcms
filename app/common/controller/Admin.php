@@ -132,6 +132,12 @@ class Admin extends Base
                         $list[$k]['submenu'][$k1]['submenu'][$k2]['selected'] = true;
                         $list[$k]['submenu'][$k1]['selected'] = true;
                     }
+
+                    $v2['route'] = str_replace('_', '',$v2['route']);
+                    if (strtolower($v2['route']) == $route_url){
+                        $list[$k]['submenu'][$k1]['submenu'][$k2]['selected'] = true;
+                        $list[$k]['submenu'][$k1]['selected'] = true;
+                    }
                 }
 
             }  
