@@ -40,11 +40,11 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 (11,  '基础设置', 'layui-icon-set',  '', 1, '','基础设置', 1, 'menu', 1,1),
 (12,  '网站配置', '',  '', 1, 'setting/index','网站配置', 1, 'submenu', 1,11),
-(13,  '用户管理', '',  '', 1, 'setting/user','用户管理', 1, 'submenu', 1,1),
+(13,  '用户配置', '',  '', 1, 'setting/user','用户管理', 1, 'submenu', 1,1),
 (14,  '缓存配置', '',  '', 1, 'setting/cache','缓存配置', 1, 'submenu', 1,11),
 (15,  '短信配置', '',  '', 1, 'setting/sms','短信配置', 1, 'submenu', 1,11),
 (16,  '邮件配置', '',  '', 1, 'setting/mail','邮件配置', 1, 'submenu', 1,11),
-(17,  '财务管理', '',  '', 1, 'setting/pay','财务管理', 1, 'submenu', 1,11);
+(17,  '财务配置', '',  '', 1, 'setting/pay','财务管理', 1, 'submenu', 1,11);
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 (18,  '添加/编辑', '',  '', 1, 'admin_menu/save','接口', 1, 'api', 1,8),
 (19,  '删除', '',  '', 1, 'admin_menu/del','接口', 1, 'api', 1,8),
