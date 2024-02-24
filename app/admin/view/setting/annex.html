@@ -1,0 +1,190 @@
+{include file="app/admin/view/common/header.html" /}
+
+<style type="text/css">
+.w120 .layui-form-label {
+    width: 120px;
+}   
+.w400{
+    width: 400px!important;
+}
+.l40{
+    margin-left: 42px!important;
+}
+.pdl60{
+    padding-left: 65px;
+}
+.select-ssl{
+    position: absolute;
+    top:0;
+    left:0;
+}
+.select-ssl .layui-unselect,.select-ssl .layui-input-inline{
+    width: 62px!important;
+}
+.select-ssl .layui-form-select .layui-input{
+    padding-right: 0px;
+}
+.select-ssl .layui-edge{
+    display: none;
+}
+
+.layui-input-block {
+    margin-left: 150px;
+    min-height: 36px;
+}
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <form class="layui-form" action="{:url('setting/save')}">
+            <div class="layui-card-body">
+                <div class="layui-tab layui-tab-brief" lay-filter="setting">
+                    <ul class="layui-tab-title">
+                        <li lay-id="t1" class="layui-this">基础配置</li>
+                        <li lay-id="t2">R3图片配置</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
+                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">是否开启:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input lay-filter="mode" type="radio" name="annex[mode]" value="0" title="关闭" {if isset($annex['mode']) && $annex['mode'] == 0 }checked{/if}>
+                                        <input lay-filter="mode" type="radio" name="annex[mode]" value="1" title="开启" {if isset($annex['mode']) && $annex['mode'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label">记录开启:</label>
+                                    <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                        <input type="radio" name="annex[record]" value="0" title="关闭" {if isset($annex['record']) && $mail['record'] == 0 }checked{/if}>
+                                        <input type="radio" name="annex[record]" value="1" title="开启" {if isset($annex['record']) && $mail['record'] == 1 }checked{/if}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">模式选择:</label>
+                                    <div class="layui-input-block">
+                                        <select name="annex[method]">
+                                            <option value="0" {if isset($annex['method']) && $annex['method'] == 0 }selected{/if}>无</option>
+                                            <option value="1" {if isset($annex['method']) && $annex['method'] == 1 }selected{/if}>根据指定</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
+                                
+                                <div id="mail_master">
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label">是否开启:</label>
+                                        <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                                            <input type="radio" name="annex[master][mode]" value="0" title="关闭" {if isset($annex['master']['mode']) && $annex['master']['mode'] == 0 }checked{/if}>
+                                            <input type="radio" name="annex[master][mode]" value="1" title="开启" {if isset($annex['master']['mode']) && $annex['master']['mode'] == 1 }checked{/if}>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">远程地址:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="annex[r3][addr]" placeholder="远程地址" value="{$annex['r3']['addr']|default=''}" class="layui-input"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">bucket_name:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="annex[r3][bucket_name]" placeholder="bucket_name" value="{$annex['r3']['bucket_name']|default=''}" class="layui-input"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">account_id:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="annex[r3][account_id]" placeholder="account_id" value="{$annex['r3']['account_id']|default=''}" class="layui-input"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">access_key_id:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="annex[r3][access_key_id]" placeholder="access_key_id" value="{$annex['r3']['access_key_id']|default=''}" class="layui-input"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item w120">
+                                        <label class="layui-form-label layui-form-required">access_key_secret:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="annex[r3][access_key_secret]" placeholder="access_key_secret" value="{$annex['r3']['access_key_secret']|default=''}" class="layui-input"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- end -->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+layui.config({
+    base: '{__STATIC__}/admin/layuiadmin/'
+}).use(['layer','form'], function () {
+//
+var form = layui.form,
+layer = layui.layer;
+
+//监听伪静态
+form.on('radio(index-mode)', function (r) {
+    if(r.value == '1'){
+        $('blockquote').show();
+    }else{
+        $('blockquote').hide();
+    }
+});
+form.on('select(url)', function (r) {
+    var _id = $(r.elem).attr('data-id');
+    $("input[name='"+_id+"']").val(r.value);
+});
+
+
+form.verify({
+    editor_code_msg: function(value) {
+        layedit.sync(editor_code_msg);
+    },
+    // editor2: function(value) {
+    //     layedit.sync(editor2);
+    // },
+    // editor3: function(value) {
+    //     layedit.sync(editor3);
+    // }
+});
+
+//
+});
+
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}

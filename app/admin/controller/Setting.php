@@ -97,6 +97,12 @@ class Setting extends Admin
         return $this->fetch('setting/pay');
     }
 
+    //附件管理
+    public function annex(){
+        $this->initCommonVar('annex');
+        return $this->fetch('setting/annex');
+    }
+
     public function save()
     {
         $m = $this->model('Option');
