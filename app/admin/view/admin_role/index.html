@@ -7,7 +7,7 @@
 		  	<div class="layui-card-body">
 		  		<script type="text/html" id="toolbar_list">
 				 	<div class="layui-btn-container">
-				    	<button class="layui-btn layui-btn-sm" onclick="Admin.open('添加','{:url('adminrole/edit')}?id=0',450,300)"><i class="layui-icon"></i>添加</button>
+				    	<button class="layui-btn layui-btn-sm" onclick="Admin.open('添加','{:url('admin_role/edit')}?id=0',450,300)"><i class="layui-icon"></i>添加</button>
 				  	</div>
 				</script>
 			    <div id="list"></div>
@@ -27,7 +27,7 @@ var admin = layui.admin
 
 table.render({
     elem: '#list',
-    url: '{:url("adminrole/list")}',
+    url: '{:url("admin_role/list")}',
     toolbar: '#toolbar_list',
     defaultToolbar: [],
     title: '数据表',
@@ -48,9 +48,9 @@ table.render({
 
 
 <script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-xs" onclick="Admin.open('【{{d.name}}】'+'设置权限','{:url('adminrole/acl')}?role_id={{d.id}}',300,460)">权限设置<i class="layui-icon">&#xe613;</i></a>
-    <a class="layui-btn layui-btn-xs" title="编辑" onclick="Admin.open('【{{d.name}}】'+'编辑','{:url('adminrole/edit')}?id={{d.id}}',450,300)"><i class="layui-icon">&#xe642;</i></a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs"  onclick="Admin.del(this, '{:url('adminrole/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('【{{d.name}}】'+'设置权限','{:url('admin_role/acl')}?role_id={{d.id}}',300,460)">权限设置<i class="layui-icon">&#xe613;</i></a>
+    <a class="layui-btn layui-btn-xs" title="编辑" onclick="Admin.open('【{{d.name}}】'+'编辑','{:url('admin_role/edit')}?id={{d.id}}',450,300)"><i class="layui-icon">&#xe642;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs"  onclick="Admin.del(this, '{:url('admin_role/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
 </script>
 
 

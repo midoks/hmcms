@@ -31,7 +31,7 @@ var admin = layui.admin
 
 table.render({
     elem: '#list',
-    url: '{:url("comicclass/list")}',
+    url: '{:url("comic_class/list")}',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
@@ -51,7 +51,7 @@ table.render({
 
 
 <script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-xs" onclick="Admin.open('编辑','{:url('comicclass/edit')}?id={{d.id}}',600,320)">编辑</a>
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('编辑','{:url('comic_class/edit')}?id={{d.id}}',600,320)">编辑</a>
 </script>
 
 

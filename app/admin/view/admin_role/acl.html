@@ -74,7 +74,7 @@ util.event('lay-acl', {
 
         if (ids.length == 0){
             layer.confirm('你真的清空角色权限吗?', { closeBtn: 2, icon: 3 }, function() {
-                $.post('{:url("adminrole/clearAcl")}', {'role_id':role_id}, function(data) {
+                $.post('{:url("admin_role/clearAcl")}', {'role_id':role_id}, function(data) {
                     showMsg(data.msg,function(){
                         if (data.code>-1){
                             location.reload();
@@ -83,7 +83,7 @@ util.event('lay-acl', {
                 },'json');
             });
         } else {
-            $.post('{:url("adminrole/setAcl")}', {'role_id':role_id, 'ids':ids}, function(data) {
+            $.post('{:url("admin_role/setAcl")}', {'role_id':role_id, 'ids':ids}, function(data) {
                 showMsg(data.msg,function(){
                     if (data.code>-1){
                         location.reload();

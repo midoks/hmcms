@@ -7,11 +7,11 @@
             <div class="layui-card-body">
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('adminmenu/batchDel')}','api')">批量删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('admin_menu/batchDel')}','api')">批量删除</button>
                     </div>
 
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm" onclick="Admin.open('添加API','{:url('adminmenu/apiedit')}?pid={$pid}&id=0',400,400)">添加</button>
+                        <button class="layui-btn layui-btn-sm" onclick="Admin.open('添加API','{:url('admin_menu/apiedit')}?pid={$pid}&id=0',400,400)">添加</button>
                     </div>
 
                 </div>
@@ -35,7 +35,7 @@ var admin = layui.admin
 
 table.render({
     elem: '#api',
-    url: '{:url("adminmenu/listpid")}?pid={$pid}',
+    url: '{:url("admin_menu/listpid")}?pid={$pid}',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
@@ -60,7 +60,7 @@ table.on('tool(api)', function(obj){
 
 function menuStatus(obj){
     layer.confirm('你真的更改显示吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("adminmenu/triggerStatus")}', {'id':obj.data.id}, function(data) {
+        $.post('{:url("admin_menu/triggerStatus")}', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
                 if (data.code>-1){
                     location.reload();
@@ -84,8 +84,8 @@ function menuStatus(obj){
 
 
 <script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-xs" onclick="Admin.open('添加API','{:url('adminmenu/apiedit')}?pid={$pid}&id={{d.id}}',400,400)"><i class="layui-icon">&#xe642;</i></a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('adminmenu/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('添加API','{:url('admin_menu/apiedit')}?pid={$pid}&id={{d.id}}',400,400)"><i class="layui-icon">&#xe642;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('admin_menu/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
 </script>
 
 </body>

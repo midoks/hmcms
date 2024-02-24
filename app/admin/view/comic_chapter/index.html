@@ -15,11 +15,11 @@
 
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('comicchapter/batchDel')}','comicchapter')">删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('comic_chapter/batchDel')}','comicchapter')">删除</button>
                     </div>
 
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm" onclick="Admin.open('新增章节','{:url('comicchapter/edit')}?mid={$mid}&id={$id|default=0}',1000,450)">新增</button>
+                        <button class="layui-btn layui-btn-sm" onclick="Admin.open('新增章节','{:url('comic_chapter/edit')}?mid={$mid}&id={$id|default=0}',1000,450)">新增</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -117,7 +117,7 @@ function render_table(){
 
     table.render({
         elem: '#comicchapter',
-        url: '{:url("comicchapter/list")}?yid='+yid,
+        url: '{:url("comic_chapter/list")}?yid='+yid,
         defaultToolbar: [],
         title: '数据表',
         cols: [[
@@ -161,7 +161,7 @@ function set_vip(_id, _vip){
             btn: ['确定', '取消'], //按钮
             shade:0.001
         }, function(index) {
-            $.post("{:url('comicchapter/batchUpdate')}", {'op':'vip','id':ids,vip:_vip,mid:"{$mid}"}, function(res) {
+            $.post("{:url('comic_chapter/batchUpdate')}", {'op':'vip','id':ids,vip:_vip,mid:"{$mid}"}, function(res) {
                 if(res.code == 1){
                     layer.msg(res.msg,{icon: 1});
                     setTimeout(function() {
@@ -190,7 +190,7 @@ function set_cion(_id){
             if(isNaN(value)){
                 layer.msg('请输入正确的数量',{icon: 2});
             }else{
-                $.post("{:url('comicchapter/batchUpdate')}", {'op':'cion','id':ids,cion:value,mid:"{$mid}"}, function(res) {
+                $.post("{:url('comic_chapter/batchUpdate')}", {'op':'cion','id':ids,cion:value,mid:"{$mid}"}, function(res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon: 1});
                         setTimeout(function() {
@@ -219,7 +219,7 @@ function set_px(_id){
         layer.msg('请选择要操作的数据',{icon: 2});
     }else{
         var req = {'op':'px','id':ids,xid:xids,mid:"{$mid}"};
-        $.post("{:url('comicchapter/batchUpdate')}", req, function(res) {
+        $.post("{:url('comic_chapter/batchUpdate')}", req, function(res) {
             if(res.code == 1){
                 layer.msg(res.msg,{icon: 1});
                 setTimeout(function() {
@@ -270,9 +270,9 @@ $('.set-px').click(function(){
 
 <script type="text/html" id="cmdTpl">
 
-    <a class="layui-btn layui-btn-xs" title="编辑" onclick="Admin.open('【{{d.name}}】'+'章节编辑','{:url('comicchapter/edit')}?id={{d.id}}',1000,450)"><i class="layui-icon">&#xe642;</i></a>
+    <a class="layui-btn layui-btn-xs" title="编辑" onclick="Admin.open('【{{d.name}}】'+'章节编辑','{:url('comic_chapter/edit')}?id={{d.id}}',1000,450)"><i class="layui-icon">&#xe642;</i></a>
 
-    <a class="layui-btn layui-btn-danger layui-btn-xs" title="删除" onclick="Admin.del(this, '{:url('comicchapter/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" title="删除" onclick="Admin.del(this, '{:url('comic_chapter/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
 </script>
 
 {include file="app/admin/view/common/footer.html" /}
