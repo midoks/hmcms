@@ -45,14 +45,17 @@ class Order extends Base {
         	$m->whereTime('create_time', '<=', $wh['jstime']);
         }
 
+        $sum_rmb = $m->sum('rmb');
+
 		$list = $m->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
 
 		if ($list){
 			$list = $list->toArray();
 		}
-		$ids = $this->getFieldList($list['data'],'id');
-		$ids_data = $this->getDataByIds($ids);
-		$list['data'] = $ids_data;
+		// $ids = $this->getFieldList($list['data'],'id');
+		// $ids_data = $this->getDataByIds($ids);
+		// $list['data'] = $ids_data;
+		$list['sum_rmb'] = $sum_rmb;
 		return $list;
 	}
 

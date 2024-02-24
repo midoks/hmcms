@@ -127,6 +127,10 @@ abstract class Base
         return $v->failException(true)->check($data);
     }
 
+    public function returnData($data){
+        return Json()->data($data);
+    }
+    
     public function returnJson($code = 0, $msg = '', $data = []){
          $result = [
             'code' => $code,

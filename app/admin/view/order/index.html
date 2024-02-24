@@ -50,6 +50,12 @@
                         <button class="layui-btn layui-btn-sm" data-id="order" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
                         </button>
                     </div>
+
+                    <div class="layui-inline mr0" style="float:right;">
+                        <div class="layui-input-inline" style="float:right;width: auto;">
+                            <button class="layui-btn icon-btn layui-btn-sm layui-btn-normal" id="rmb_count"></button>
+                        </div>
+                    </div>
                 </div>
                 <div id="order"></div>
             </div>
@@ -87,7 +93,10 @@ table.render({
         {field:'update_time', title:'完成时间',width:162,},
         {title:'操作', toolbar: '#cmdTpl', width:90, fixed: 'right'}
      ]],
-    page: true
+    page: true,
+    done: function(res, curr, count){
+        $('#rmb_count').text("总金额:"+res.rmb_count);
+    }
 });
 
 ///

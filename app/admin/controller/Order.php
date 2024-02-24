@@ -45,7 +45,13 @@ class Order extends AdminBase
         $count = $data['total'];
         $list = $data['data'];
 
-        return $this->layuiJson(0, 'ok', $list, $count);
+        return $this->returnData([
+            'code' => 0,
+            'msg' => 'ok',
+            'data' => $list,
+            'count' => $count,
+            'sum_rmb' => $data['sum_rmb'],
+        ]);
     }
 
 
