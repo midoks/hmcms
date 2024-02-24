@@ -12,9 +12,9 @@ class Test extends Base
 
 		$m = $this->model('Comic');
 
-        $data = $m->dataListPos(10);
+        $data = $m->dataListPos_cache(10);
 
-        // var_dump($data);
+        var_dump($data);
 
 		// $title = $this->logic('Task')->doTaskReward(2,1);
 		return '1';

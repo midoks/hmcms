@@ -67,10 +67,17 @@ class Base extends Model {
         return Cache::store('master')->delete($key);
     }
 
-
-    protected function cacheDeleteByID($id){
+    public function cacheDeleteByID($id){
         $key = $this->cacheKey('id|'.$id);
         return $this->cacheDelete($key); 
+    }
+
+    public function clearTag($tag){
+        $use_redis = Config::get('cache.use_redis',false);
+        if (!$use_redis){
+            return false;
+        }
+        return Cache::store('master')->clearTag($tag);
     }
     // 缓存相关方法 | end
 
@@ -261,36 +268,52 @@ class Base extends Model {
         return $data;
     }
 
-    // public function __call($func, $args)
-    // {
-    //     $func_len = strlen($func);
-    //     $suffix_func = substr($func, $func_len - 6);
-    //     //仅对查询有效[MM]
-    //     if ($suffix_func == '_cache') {
-    //         $real_func = substr($func, 0, $func_len - 6);
+    public function __call($func, $args)
+    {
 
-    //         $key = $func . http_build_query($args);
-    //         $md5_key = md5($key);
+        $func_len = strlen($func);
+        $suffix_func = substr($func, $func_len - 6);
+        //仅对查询有效[HMCMS]
+        if ($suffix_func == '_cache') {
+            $cache_time = $this->default_cache_time;
+            // var_dump($func, $args);
+            $redis_slave = Cache::store('slave')->handler();
+            $redis_master = Cache::store('master')->handler();
+            // var_dump($redis_master->get());
 
-    //         $cdata = Caches::getInstance()->getByKey($md5_key);
-    //         if ($cdata) {
-    //             return $cdata;
-    //         }
+            $real_func = substr($func, 0, $func_len - 6);
 
-    //         //防穿透
-    //         if (Caches::getInstance()->lock($md5_key)) {
-    //             $data = call_user_func_array([$this, $real_func], $args);
-    //             Caches::getInstance()->saveByKey($md5_key, $data);
-    //             Caches::getInstance()->unlock($md5_key);
-    //             return $data;
-    //         } else {
-    //             usleep(200);
-    //             $cdata = Caches::getInstance()->getByKey($md5_key);
-    //             if ($cdata) {
-    //                 return $cdata;
-    //             }
-    //         }
-    //         return false;
-    //     }
-    // }
+            $key = $func . http_build_query($args);
+            $md5_key = md5($key);
+            $cache_key = $this->cacheKey($md5_key);
+            
+
+            $data = $redis_slave->get($cache_key);
+            if ($data) {
+                $data = unserialize($data);
+                return $data;
+            }
+            $md5_key_lock = $cache_key.'_lock';
+
+            //防穿透
+            if ($redis_master->set($md5_key_lock,1,['nx', 'ex' => 5])) {
+                $data = call_user_func_array([$this, $real_func], $args);
+
+                $data = serialize($data);
+                $redis_master->set($cache_key, $data, $cache_time);
+                $redis_master->del($md5_key_lock);
+                return $data;
+            } else {
+                usleep(50);
+                $data = $redis_master->get($cache_key);
+                if ($data) {
+                    $data = unserialize($data);
+                    return $data;
+                }
+            }
+            return false;
+        }
+
+        return parent::__call($func, $args);
+    }
 }

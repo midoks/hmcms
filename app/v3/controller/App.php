@@ -18,4 +18,8 @@ class App extends Base
         
         return $this->returnData(1,$d);
     }
+
+    public function online(){
+        
+    }
 }
