@@ -7,7 +7,7 @@
             <div class="layui-card-body">
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('tasklist/batchDel')}','tasklist')">批量删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('task_list/batchDel')}','tasklist')">批量删除</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -54,7 +54,7 @@ var admin = layui.admin
 
 table.render({
     elem: '#tasklist',
-    url: '{:url("tasklist/list")}',
+    url: '{:url("task_list/list")}',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
@@ -66,7 +66,7 @@ table.render({
         {field:'vip', title:'奖励VIP',width:100},
         {field:'is_repair', title:'是否补签',width:100},
         {field:'w', title:'周几',width:100},
-        {field:'create_time', title:'时间',width:162,},
+        {field:'addtime', title:'时间',width:162,},
         {title:'操作', toolbar: '#cmdTpl', width:90, fixed: 'right'}
      ]],
     page: true
@@ -79,7 +79,7 @@ table.render({
 
 
 <script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('tasklist/del')}','{{d.id}}')">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('task_list/del')}','{{d.id}}')">删除</a>
 </script>
 
 
