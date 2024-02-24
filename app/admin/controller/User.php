@@ -16,6 +16,24 @@ class User extends AdminBase
         return $this->fetch('user/index');
     }
 
+    public function show(){
+        $id = $this->request->param('id');
+        $m = $this->model('user');
+        
+        if (!empty($id)){
+            $data = $m->getDataByID($id);
+        } else {
+            $data = [
+                'id' => 0,
+                'viptime'=>0,
+                'rz_type' =>1,
+                'bank'=>'',
+            ];
+        }
+        View::assign("data", $data);
+        return $this->fetch('user/show');
+    }
+
     public function edit(){
         $id = $this->request->param('id');
         $m = $this->model('user');
