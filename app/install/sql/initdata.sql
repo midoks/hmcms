@@ -45,27 +45,29 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 (15,  '短信配置', '',  '', 1, 'setting/sms','短信配置', 1, 'submenu', 1,11),
 (16,  '邮件配置', '',  '', 1, 'setting/mail','邮件配置', 1, 'submenu', 1,11),
 (17,  '财务配置', '',  '', 1, 'setting/pay','财务管理', 1, 'submenu', 1,11);
+(18,  '协议配置', '',  '', 1, 'setting/protocol','协议配置', 1, 'submenu', 1,11);
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
-(18,  '添加/编辑', '',  '', 1, 'admin_menu/save','接口', 1, 'api', 1,8),
-(19,  '删除', '',  '', 1, 'admin_menu/del','接口', 1, 'api', 1,8),
-(20,  '批量删除', '',  '', 1, 'admin_menu/batchDel','接口', 1, 'api', 1,8),
-(21,  '是否显示', '',  '', 1, 'admin_menu/triggerDisplay','接口', 1, 'api', 1,8),
-(22,  '是否禁用', '',  '', 1, 'admin_menu/triggerStatus','接口', 1, 'api', 1,8);
+(19,  '添加/编辑', '',  '', 1, 'admin_menu/save','接口', 1, 'api', 1,8),
+(20,  '删除', '',  '', 1, 'admin_menu/del','接口', 1, 'api', 1,8),
+(21,  '批量删除', '',  '', 1, 'admin_menu/batchDel','接口', 1, 'api', 1,8),
+(22,  '是否显示', '',  '', 1, 'admin_menu/triggerDisplay','接口', 1, 'api', 1,8),
+(23,  '是否禁用', '',  '', 1, 'admin_menu/triggerStatus','接口', 1, 'api', 1,8);
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
-(23,  '添加/编辑', '',  '', 1, 'admin_role/save','接口', 1, 'api', 1,9),
-(24,  '删除', '',  '', 1,  'admin_role/del','接口', 1, 'api', 1,9),
-(25,  '设置权限', '',  '', 1, 'admin_menu/setAcl','接口', 1, 'api', 1,9);
+(24,  '添加/编辑', '',  '', 1, 'admin_role/save','接口', 1, 'api', 1,9),
+(25,  '删除', '',  '', 1,  'admin_role/del','接口', 1, 'api', 1,9),
+(26,  '设置权限', '',  '', 1, 'admin_menu/setAcl','接口', 1, 'api', 1,9);
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
-(23,  '添加/编辑', '',  '', 1, 'admin/save','接口', 1, 'api', 1,10),
-(24,  '删除', '',  '', 1,  'admin/del','接口', 1, 'api', 1,10);
+(27,  '添加/编辑', '',  '', 1, 'admin/save','接口', 1, 'api', 1,10),
+(28,  '删除', '',  '', 1,  'admin/del','接口', 1, 'api', 1,10);
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
-(25,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,11),
-(26,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,12),
-(27,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,13),
-(28,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,14),
-(29,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,15),
-(29,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,16),
-(30,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,17);
+(29,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,11),
+(30,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,12),
+(31,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,13),
+(32,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,14),
+(33,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,15),
+(34,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,16),
+(35,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,17);
+(35,  '添加/编辑', '',  '', 1, 'setting/save','接口', 1, 'api', 1,18);
 
 
 -- INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
