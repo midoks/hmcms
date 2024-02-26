@@ -116,6 +116,15 @@ class User extends AdminBase
         if($id == 0 && empty($pass)){
             return $this->returnJson(-2, '登陆密码不能为空~！');
         }
+
+        $viptime = $this->request->post('viptime');
+        if($data['vip'] > 0 && empty($viptime)){
+            return $this->returnJson(-2, 'Vip到期时间不能为空~！');
+        }
+
+        if($data['vip'] > 0){
+            $data['viptime'] = strtotime($viptime);
+        }
         
         $pass = $this->request->post('pass');
         if(!empty($pass)){
