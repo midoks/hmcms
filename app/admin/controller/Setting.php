@@ -16,7 +16,7 @@ class Setting extends Admin
 {   
     protected $op = [
         'base', 'user', 'cache',
-        'sms', 'mail', 'pay'
+        'sms', 'mail', 'pay','protocol'
     ];
 
     protected function initCommonVar($tag='')
@@ -101,6 +101,12 @@ class Setting extends Admin
     public function annex(){
         $this->initCommonVar('annex');
         return $this->fetch('setting/annex');
+    }
+
+    //协议管理
+    public function protocol(){
+        $this->initCommonVar('protocol');
+        return $this->fetch('setting/protocol');
     }
 
     public function save()

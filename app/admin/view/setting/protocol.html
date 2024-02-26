@@ -1,0 +1,113 @@
+
+{include file="app/admin/view/common/header.html" /}
+
+<style type="text/css">
+.w120 .layui-form-label {
+    width: 120px;
+}   
+.w400{
+    width: 400px!important;
+}
+.l40{
+    margin-left: 42px!important;
+}
+.pdl60{
+    padding-left: 65px;
+}
+.select-ssl{
+    position: absolute;
+    top:0;
+    left:0;
+}
+.select-ssl .layui-unselect,.select-ssl .layui-input-inline{
+    width: 62px!important;
+}
+.select-ssl .layui-form-select .layui-input{
+    padding-right: 0px;
+}
+.select-ssl .layui-edge{
+    display: none;
+}
+
+.layui-input-block {
+    margin-left: 150px;
+    min-height: 36px;
+}
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <form class="layui-form" action="{:url('setting/save')}">
+            <div class="layui-card-body">
+                <div class="layui-tab layui-tab-brief" lay-filter="setting">
+                    <ul class="layui-tab-title">
+                        <li lay-id="t1" class="layui-this">用户协议</li>
+                        <li lay-id="t2">隐私政策</li>
+                        <li lay-id="t3">注销协议</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
+                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">用户协议:</label>
+                                    <div class="layui-input-block">
+                                    	<textarea style="min-height:100px;" name="protocol[user]" placeholder="用户协议" class="layui-textarea">{$protocol['user']|default='用户协议'}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end -->
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
+                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">隐私政策:</label>
+                                    <div class="layui-input-block">
+                                    	<textarea style="min-height:100px;" name="protocol[privacy]" placeholder="隐私政策" class="layui-textarea">{$protocol['privacy']|default='隐私政策'}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="layui-tab-item">
+                            <div class="layui-text" style="max-width: 700px;padding-top: 15px;">
+                                
+                                <div class="layui-form-item w120">
+                                    <label class="layui-form-label layui-form-required">注销协议:</label>
+                                    <div class="layui-input-block">
+                                    	<textarea style="min-height:100px;" name="protocol[cancellation]" placeholder="注销协议" class="layui-textarea">{$protocol['cancellation']|default='注销协议'}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item w120">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="submit_save" lay-submit>更新配置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end -->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{include file="app/admin/view/common/footer.html" /}
