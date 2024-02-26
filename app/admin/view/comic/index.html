@@ -172,23 +172,54 @@ function render_table(){
 render_table();
 
 
+table.on('tool(comic_list)', function(obj){
+    switch(obj.event){
+        case 'tid':triggerTid(obj);break;
+        case 'ttid':triggerTtid(obj);break;
+    };
+});
+
+function triggerTid(obj){
+    layer.confirm('你真的更改推荐吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('{:url("comic/triggerTid")}', {'id':obj.data.id}, function(data) {
+            showMsg(data.msg,function(){
+                if (data.code>-1){
+                    location.reload();
+                }
+            },{icon:data.code>-1?1:2});
+        },'json');
+    });
+}
+
+function triggerTtid(obj){
+    layer.confirm('你真的更改人工推荐吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('{:url("comic/triggerTtid")}', {'id':obj.data.id}, function(data) {
+            showMsg(data.msg,function(){
+                if (data.code>-1){
+                    location.reload();
+                }
+            },{icon:data.code>-1?1:2});
+        },'json');
+    });
+}
+
 ///
 });
 </script>
 
 <script type="text/html" id="tjTpl">
     {{#  if(d.tid == 1){ }}
-        <div style="color:#080;cursor: pointer;" class="layui-icon reco" data-id="{{d.id}}" data-tid="0" title="已推荐，点击取消推荐">&#xe605;</div>
+        <div style="color:#080;cursor: pointer;" class="layui-icon" data-id="{{d.id}}" data-tid="0" title="已推荐，点击取消推荐" lay-event='tid'>&#xe605;</div>
     {{#  } else { }}
-        <div style="color:#f30;cursor: pointer;" class="layui-icon reco" data-id="{{d.id}}" data-tid="1" title="未推荐，点击推荐">&#x1006;</div>
+        <div style="color:#f30;cursor: pointer;" class="layui-icon" data-id="{{d.id}}" data-tid="1" title="未推荐，点击推荐" lay-event='tid'>&#x1006;</div>
     {{#  } }}
 </script>
 
 <script type="text/html" id="ttjTpl">
     {{#  if(d.ttid == 1){ }}
-        <div style="color:#080;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="0" title="已推荐，点击取消推荐">&#xe605;</div>
+        <div style="color:#080;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="0" title="已推荐，点击取消推荐" lay-event='ttid'>&#xe605;</div>
     {{#  } else { }}
-        <div style="color:#f30;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="1" title="未推荐，点击推荐">&#x1006;</div>
+        <div style="color:#f30;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="1" title="未推荐，点击推荐" lay-event='ttid'>&#x1006;</div>
     {{#  } }}
 </script>
 

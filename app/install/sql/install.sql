@@ -559,3 +559,40 @@ CREATE TABLE `hm_follow` (
  UNIQUE KEY `uid_mid` (`uid`,`mid`) USING BTREE,
  KEY `uid` (`uid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='关注记录';
+
+-- ----------------------------
+-- Table structure for hm_comic_buy
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_comic_buy`;
+CREATE TABLE `hm_comic_buy` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `text` varchar(255) DEFAULT '' COMMENT '消费简介',
+ `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
+ `cid` int(11) DEFAULT '0' COMMENT '章节ID',
+ `uid` int(11) DEFAULT '0' COMMENT '消费会员ID',
+ `cion` int(11) DEFAULT '0' COMMENT '消费积分',
+ `ip` varchar(20) DEFAULT '' COMMENT 'IP',
+ `create_time` datetime NOT NULL COMMENT '创建时间',
+ `update_time` datetime NOT NULL COMMENT '更新时间',
+ PRIMARY KEY (`id`),
+ KEY `mid` (`mid`) USING BTREE,
+ KEY `cid` (`cid`) USING BTREE,
+ KEY `uid` (`uid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='消费记录';
+
+-- -----------------------------------------
+-- Table structure for hm_comic_buy_related
+-- -----------------------------------------
+DROP TABLE IF EXISTS `hm_comic_buy_related`;
+CREATE TABLE `hm_comic_buy_related` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+ `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
+ `cid` int(11) DEFAULT '0' COMMENT '章节ID',
+ `uid` int(11) DEFAULT '0' COMMENT '用户ID',
+ `auto` tinyint(1) DEFAULT '0' COMMENT '1开启自动购买',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid_mid_cid` (`uid`,`mid`,`cid`) USING BTREE,
+  KEY `mid` (`mid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画购买记录';

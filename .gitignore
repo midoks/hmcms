@@ -15,3 +15,4 @@ runtime/admin/temp/*
 runtime/session/*
 upload/*
 runtime/*
+vendor/*

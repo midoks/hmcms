@@ -61,6 +61,30 @@ class Comic extends AdminBase
         return $this->fetch('comic/edit');
     }
 
+    //推荐
+    public function triggerTid(){
+        $id = $this->request->post('id');
+        if (empty($id)){
+            return $this->returnJson(-1, '设置ID不能空!');
+        }
+
+        $m = $this->model('Comic');
+        $m->dataTriggerField($id,'tid');
+        return $this->returnJson(1, '设置成功!');
+    }
+
+    //人工推荐
+    public function triggerTtid(){
+        $id = $this->request->post('id');
+        if (empty($id)){
+            return $this->returnJson(-1, '设置ID不能空!');
+        }
+
+        $m = $this->model('Comic');
+        $m->dataTriggerField($id,'ttid');
+        return $this->returnJson(1, '设置成功!');
+    }
+
     public function save(){
         $id = $this->request->post('id');
 

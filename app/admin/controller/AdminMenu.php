@@ -15,13 +15,13 @@ class AdminMenu extends Admin
 {
     public function index()
     {
-        return $this->fetch('adminmenu/index');
+        return $this->fetch('admin_menu/index');
     }
 
     public function api(){
         $pid = $this->request->param('pid');
         View::assign("pid", strval($pid));
-        return $this->fetch('adminmenu/api');
+        return $this->fetch('admin_menu/api');
     }
 
     public function apiedit(){
@@ -38,7 +38,7 @@ class AdminMenu extends Admin
             ];
         }
         View::assign("data", $data);
-        return $this->fetch('adminmenu/apiedit');
+        return $this->fetch('admin_menu/apiedit');
     }
 
     //获取后台菜单权限列表

@@ -59,7 +59,7 @@ var admin = layui.admin
 
 table.render({
     elem: '#nav_list',
-    url: '{:url("adminmenu/list")}',
+    url: '{:url("admin_menu/list")}',
     toolbar: '#toolbar_navlist',
     defaultToolbar: [],
     title: '数据表',
@@ -142,7 +142,7 @@ table.on('tool(submenu_list)', function(obj){
 
 function menuDelete(obj){
     layer.confirm('你真的要删除吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("adminmenu/del")}', {'id':obj.data.id}, function(data) {
+        $.post('{:url("admin_menu/del")}', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
                 if (data.code>-1){
                     location.reload();
@@ -154,7 +154,7 @@ function menuDelete(obj){
 
 function menuDisplay(obj){
     layer.confirm('你真的更改显示吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("adminmenu/triggerDisplay")}', {'id':obj.data.id}, function(data) {
+        $.post('{:url("admin_menu/triggerDisplay")}', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
                 if (data.code>-1){
                     location.reload();
@@ -165,8 +165,8 @@ function menuDisplay(obj){
 }
 
 function menuStatus(obj){
-    layer.confirm('你真的更改显示吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("adminmenu/triggerStatus")}', {'id':obj.data.id}, function(data) {
+    layer.confirm('你真的更改状态吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('{:url("admin_menu/triggerStatus")}', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
                 if (data.code>-1){
                     location.reload();
@@ -405,7 +405,7 @@ function renderMenuTable(data){
 	    elem: '#menu_list',
 	    toolbar: '#toolbar_menulist',
 	    defaultToolbar: [],
-	    url: '{:url("adminmenu/listpid")}?pid='+data.id,
+	    url: '{:url("admin_menu/listpid")}?pid='+data.id,
 	    title: '数据表',
 	    cols: [[
 	    	{field:'id', title:'ID', width:30, templet:function(data){
@@ -430,7 +430,7 @@ function renderSubMenuTable(data){
 	    elem: '#submenu_list',
 	    toolbar: '#toolbar_submenulist',
 	    defaultToolbar: [],
-	    url: '{:url("adminmenu/listpid")}?pid='+data.id,
+	    url: '{:url("admin_menu/listpid")}?pid='+data.id,
 	    title: '数据表',
 	    cols: [[
 	    	{field:'id', title:'ID', width:30},

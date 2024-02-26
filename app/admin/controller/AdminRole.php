@@ -11,7 +11,7 @@ class AdminRole extends AdminBase
 
 	public function index()
     {
-        return $this->fetch('adminrole/index');
+        return $this->fetch('admin_role/index');
     }
 
     public function edit($id = ''){
@@ -24,7 +24,7 @@ class AdminRole extends AdminBase
             ];
         }
         View::assign("data", $data);
-        return $this->fetch('adminrole/edit');
+        return $this->fetch('admin_role/edit');
     }
 
     //构造菜单
@@ -68,7 +68,7 @@ class AdminRole extends AdminBase
 
         View::assign("menu_data", json_encode($jdata));
         View::assign("role_id", $role_id);
-        return $this->fetch('adminrole/acl');
+        return $this->fetch('admin_role/acl');
     }
 
     public function setAcl(){
