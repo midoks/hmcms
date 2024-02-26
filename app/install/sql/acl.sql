@@ -94,6 +94,14 @@ INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`,
 ('编辑', '',  '', 1, 'task/edit','接口', 1, 'api', 1,26),
 ('子列表', '',  '', 1, 'task/type','接口', 1, 'api', 1,26),
 ('更改开启状态', '',  '', 1, 'task/triggerStatus','接口', 1, 'api', 1,26);
+INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+('列表', '',  '', 1, 'task_list/list','接口', 1, 'api', 1,27),
+('批量删除', '',  '', 1, 'task_list/batchDel','接口', 1, 'api', 1,27),
+('删除', '',  '', 1, 'task_list/del','接口', 1, 'api', 1,27);
+INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+('列表', '',  '', 1, 'user_invite/list','接口', 1, 'api', 1,27),
+('批量删除', '',  '', 1, 'user_invite/batchDel','接口', 1, 'api', 1,27),
+('删除', '',  '', 1, 'user_invite/del','接口', 1, 'api', 1,27);
 
 -- INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 -- (18,  '应用管理', 'layui-icon-release',  '', 1, '','应用管理', 1, 'menu', 1,1),
