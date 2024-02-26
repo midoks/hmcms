@@ -1,0 +1,100 @@
+
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(1,  '系统', '', 'sys',   1, '','系统', 1, 'nav', 1,0),
+(2,  '小说', '', 'novel', 1, '', '小说', 2, 'nav',1, 0),
+(3,  '漫画', '', 'comic', 1, '', '漫画', 3, 'nav', 1, 0),
+(4,  '视频', '', 'video', 1, '', '视频', 4, 'nav', 1,0),
+(5,  '文章', '', 'article', 1, '','文章', 5, 'nav', 1, 0),
+(6,  '运营', '', 'bus', 1, '','运营', 7, 'nav', 1,0);
+
+-- 系统【权限管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(7,  '权限管理', 'layui-icon-senior',  '', 1, '','权限管理', 1, 'menu', 1,1),
+(8,  '菜单管理', '',  '', 1, 'admin_menu/index','菜单管理', 1, 'submenu', 1,8),
+(9,  '角色管理', '',  '', 1, 'admin_role/index','角色管理', 1, 'submenu', 1,8),
+(10, '管理员', '',  '', 1, 'admin/index','管理员', 1, 'submenu', 1,8);
+
+-- 系统【基础设置】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(11,  '基础设置', 'layui-icon-set',  '', 1, '','基础设置', 1, 'menu', 1,1),
+(12,  '网站配置', '',  '', 1, 'setting/index','网站配置', 1, 'submenu', 1,22),
+(13,  '用户配置', '',  '', 1, 'setting/user','用户管理', 1, 'submenu', 1,22),
+(14,  '缓存配置', '',  '', 1, 'setting/cache','缓存配置', 1, 'submenu', 1,22),
+(15,  '短信配置', '',  '', 1, 'setting/sms','短信配置', 1, 'submenu', 1,22),
+(16,  '邮件配置', '',  '', 1, 'setting/mail','邮件配置', 1, 'submenu', 1,22),
+(17,  '财务配置', '',  '', 1, 'setting/pay','财务管理', 1, 'submenu', 1,22);
+(18,  '协议配置', '',  '', 1, 'setting/protocol','协议配置', 1, 'submenu', 1,22);
+
+-- 运营【会员管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(19,  '会员管理', 'layui-icon-username',  '', 1, '','会员管理', 1, 'menu', 1,6),
+(20,  '用户列表', '',  '', 1, 'user/index','用户列表', 1, 'submenu', 1,31),
+(21,  '消息管理', '',  '', 1, 'message/index','消息管理', 1, 'submenu', 1,31),
+(22,  '反馈管理', '',  '', 1, 'feedback/index','反馈管理', 1, 'submenu', 1,31);
+
+-- 运营【财务管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(23,  '财务管理', 'layui-icon-rmb',  '', 1, '','财务管理', 1, 'menu', 1,6),
+(24,  '订单管理', '',  '', 1, 'order/index','订单管理', 1, 'submenu', 1,31);
+
+-- 运营【任务管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(25,  '任务管理', 'layui-icon-rmb',  '', 1, '','任务管理', 1, 'menu', 1,6),
+(26,  '订单管理', '',  '', 1, 'order/index','订单管理', 1, 'submenu', 1,31);
+
+
+-- 系统【权限管理】| API
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(27,  '添加/编辑', '',  '', 1, 'admin_menu/save','接口', 1, 'api', 1,8),
+(28,  '删除', '',  '', 1, 'admin_menu/del','接口', 1, 'api', 1,8),
+(29,  '批量删除', '',  '', 1, 'admin_menu/batchDel','接口', 1, 'api', 1,8),
+(30,  '是否显示', '',  '', 1, 'admin_menu/triggerDisplay','接口', 1, 'api', 1,8),
+(31,  '是否禁用', '',  '', 1, 'admin_menu/triggerStatus','接口', 1, 'api', 1,8);
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(32,  '添加/编辑', '',  '', 1, 'admin_role/save','接口', 1, 'api', 1,9),
+(33,  '删除', '',  '', 1,  'admin_role/del','接口', 1, 'api', 1,9),
+(34,  '设置权限', '',  '', 1, 'admin_menu/setAcl','接口', 1, 'api', 1,9);
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(35,  '添加/编辑', '',  '', 1, 'admin/save','接口', 1, 'api', 1,10),
+(36,  '删除', '',  '', 1,  'admin/del','接口', 1, 'api', 1,10);
+
+-- 系统【基础设置】| API
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(37,  '保存', '',  '', 1, 'setting/save','接口', 1, 'api', 1,23);
+
+-- 运营【会员管理】| API
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(38,  '列表', '',  '', 1, 'user/list','接口', 1, 'api', 1,32),
+(39,  '保存', '',  '', 1, 'user/save','接口', 1, 'api', 1,32),
+(40,  '批量删除', '',  '', 1, 'user/batchDel','接口', 1, 'api', 1,32),
+(41,  '删除', '',  '', 1, 'user/del','接口', 1, 'api', 1,32),
+(42,  '添加/保存', '',  '', 1, 'user/edit','接口', 1, 'api', 1,32);
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(43,  '列表', '',  '', 1, 'message/list','接口', 1, 'api', 1,33),
+(44,  '保存', '',  '', 1, 'message/save','接口', 1, 'api', 1,33),
+(45,  '批量删除', '',  '', 1, 'message/batchDel','接口', 1, 'api', 1,33),
+(46,  '删除', '',  '', 1, 'message/del','接口', 1, 'api', 1,33),
+(47,  '添加/保存', '',  '', 1, 'message/edit','接口', 1, 'api', 1,33);
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(48,  '列表', '',  '', 1, 'feedback/list','接口', 1, 'api', 1,34),
+(49,  '批量删除', '',  '', 1, 'feedback/batchDel','接口', 1, 'api', 1,34),
+(50,  '删除', '',  '', 1, 'feedback/del','接口', 1, 'api', 1,34);
+
+-- 运营【财务管理】| API
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(51,  '财务管理', 'layui-icon-rmb',  '', 1, '','财务管理', 1, 'menu', 1,6),
+(52,  '订单管理', '',  '', 1, 'order/index','订单管理', 1, 'submenu', 1,31);
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(53,  '列表', '',  '', 1, 'order/list','接口', 1, 'api', 1,49),
+(54,  '批量删除', '',  '', 1, 'order/batchDel','接口', 1, 'api', 1,49),
+(55,  '删除', '',  '', 1, 'order/del','接口', 1, 'api', 1,49);
+
+-- 运营【任务管理】 | API
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(56,  '列表', '',  '', 1, 'order/list','接口', 1, 'api', 1,49),
+(57,  '批量删除', '',  '', 1, 'order/batchDel','接口', 1, 'api', 1,49),
+(58,  '删除', '',  '', 1, 'order/del','接口', 1, 'api', 1,49);
+
+-- INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+-- (18,  '应用管理', 'layui-icon-release',  '', 1, '','应用管理', 1, 'menu', 1,1),
+-- (19,  '应用列表', '',  '', 1, 'app/index','应用列表', 1, 'submenu', 1,18);

@@ -285,6 +285,22 @@ class Index extends Base
         }
         //初始化数据
         if($initdata=='1'){
+            $sql_file_acl = $root_path.'app/install/sql/acl.sql';
+            if (file_exists($sql_file_acl)) {
+                $sql = file_get_contents($sql_file_acl);
+                $sql_list = hm_parse_sql($sql, 0, ['hm_' => $db_config['prefix']]);
+                if ($sql_list) {
+                    $sql_list = array_filter($sql_list);
+                    foreach ($sql_list as $v) {
+                        try {
+                            Db::execute($v);
+                        } catch(\Exception $e) {
+                            return $this->error(lang('install/init_data_err'). $e);
+                        }
+                    }
+                }
+            }
+
             $sql_file = $root_path.'app/install/sql/initdata.sql';
             if (file_exists($sql_file)) {
                 $sql = file_get_contents($sql_file);
