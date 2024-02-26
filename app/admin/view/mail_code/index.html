@@ -1,0 +1,84 @@
+{include file="app/admin/view/common/header.html" /}
+
+<div class="layui-fluid">
+    <div class="layui-col-md12" style="padding: 5px;">
+        <div class="layui-card">
+            
+            <div class="layui-card-body">
+                <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('mail_code/batchDel')}','list')">批量删除</button>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <input name="times" class="layui-input date-icon h30" type="text" placeholder="请选择日期范围" autocomplete="off" lay-key="1">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-inline select100 mr0">
+                        <div class="layui-input-inline h30">
+                            <select name="zd">
+                                <option value="email" selected>邮件地址</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <input type="text" name="key" placeholder="请输入关键字" autocomplete="off" class="layui-input h30" value="">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <button class="layui-btn layui-btn-sm" data-id="list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
+                        </button>
+                    </div>
+
+                </div>
+                <div id="list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+table.render({
+    elem: '#list',
+    url: '{:url("mail_code/list")}',
+    defaultToolbar: [],
+    title: '数据表',
+    cols: [[
+        {type: 'checkbox', fixed: 'left'},
+        {field:'id', title:'订单ID', width:100},
+        {field:'email', title:'邮件地址'},
+        {field:'code', title:'验证码'},
+        {field:'create_time', title:'发送时间',width:162,},
+        {title:'操作', toolbar: '#cmdTpl', width:90, fixed: 'right'}
+     ]],
+    page: true,
+    done: function(res, curr, count){
+    }
+});
+
+///
+});
+</script>
+
+
+<script type="text/html" id="cmdTpl">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('mail_code/del')}','{{d.id}}')">删除</a>
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}
