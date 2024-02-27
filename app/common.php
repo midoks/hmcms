@@ -260,6 +260,68 @@ function encodeImage($imgsrc, $newsrc, $xor_num = '136'){
     file_put_contents($newsrc, $binData);
 }
 
+/**
+ * 图片格式转换
+ * @param string $image_path 文件路径或url
+ * @param string $to_ext 待转格式，支持png,gif,jpeg,wbmp,webp,xbm
+ * @param null|string $save_path 存储路径，null则返回二进制内容，string则返回true|false
+ * @return boolean|string $save_path是null则返回二进制内容，是string则返回true|false
+ * @throws Exception
+ */
+function toImageFormat($image_path, $save_path = '', $to_ext = 'jpeg', $del_source = false, $quality=80)
+{
+    if (!in_array($to_ext, ['png', 'gif', 'jpg','jpeg', 'wbmp', 'webp', 'xbm'])) {
+        return false;
+    }
+    $image_type = exif_imagetype($image_path);
+    // var_dump($image_type);
+    switch ($image_type) {
+        case IMAGETYPE_GIF :
+            $img = imagecreatefromgif($image_path);
+            break;
+        case IMAGETYPE_JPEG :
+        case IMAGETYPE_JPEG2000:
+            $img = imagecreatefromjpeg($image_path);
+            break;
+        case IMAGETYPE_PNG:
+            $img = imagecreatefrompng($image_path);
+            break;
+        case IMAGETYPE_BMP:
+        case IMAGETYPE_WBMP:
+            $img = imagecreatefromwbmp($image_path);
+            break;
+        case IMAGETYPE_XBM:
+            $img = imagecreatefromxbm($image_path);
+            break;
+        case IMAGETYPE_WEBP: //(从 PHP 7.1.0 开始支持)
+            $img = imagecreatefromwebp($image_path);
+            break;
+        default :
+            return false;
+    }
+
+    $function = 'image' . $to_ext;
+
+    $parts = explode('.', $image_path);
+    $extension = end($parts);
+
+
+    $new_path = $parts[0].'.'.$to_ext;
+    if (!empty($save_path)) {
+        $new_path = $save_path;
+    }
+    
+    $function($img, $new_path, $quality);
+
+    if ($del_source){
+        if ($new_path != $image_path){
+            unlink($image_path);
+        }
+    }
+
+    return $new_path;
+}
+
 //真实密码隐藏
 function hm_hidden_pass($pass, $len = 2, $x = 6)
 {
@@ -303,6 +365,7 @@ function sortArrByField(&$array, $field, $desc = false)
     $sort = $desc == false ? SORT_ASC : SORT_DESC;
     array_multisort($fieldArr, $sort, $array);
 }
+
 
 
 function toPinyin($name){

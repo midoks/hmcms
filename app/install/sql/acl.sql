@@ -10,9 +10,9 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 -- 系统【权限管理】
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 (7,  '权限管理', 'layui-icon-senior',  '', 1, '','权限管理', 1, 'menu', 1,1),
-(8,  '菜单管理', '',  '', 1, 'admin_menu/index','菜单管理', 1, 'submenu', 1,8),
-(9,  '角色管理', '',  '', 1, 'admin_role/index','角色管理', 1, 'submenu', 1,8),
-(10, '管理员', '',  '', 1, 'admin/index','管理员', 1, 'submenu', 1,8);
+(8,  '菜单管理', '',  '', 1, 'admin_menu/index','菜单管理', 1, 'submenu', 1,7),
+(9,  '角色管理', '',  '', 1, 'admin_role/index','角色管理', 1, 'submenu', 1,7),
+(10, '管理员', '',  '', 1, 'admin/index','管理员', 1, 'submenu', 1,7);
 
 -- 系统【基础设置】
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
@@ -48,7 +48,7 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 (29,  '验证码管理', 'layui-icon-reply-fill',  '', 1, '','验证码管理', 1, 'menu', 1,6),
 (30,  '手机验证码', '',  '', 1, 'tel_code/index','手机验证码', 1, 'submenu', 1,29),
-(31,  '邮件验证码', '',  '', 1, 'mail_code/index','邮件验证码', 1, 'submenu', 1,30);
+(31,  '邮件验证码', '',  '', 1, 'mail_code/index','邮件验证码', 1, 'submenu', 1,29);
 
 
 -- 系统【权限管理】| API
