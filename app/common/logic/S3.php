@@ -1,21 +1,29 @@
 <?php
+namespace app\common\logic;
 
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
-
 //S3文件
-class S3{
+class S3 extends Base{
 
 	public $client;
 	public $bucket;
 
 	public function __construct(){
+		// $bucket_name        = "semang";
+		// $account_id         = "26c97a0d4f5655a3533e281ac0d4662c";
+		// $access_key_id      = "403a3e6ea7bcc77e471484d60d3acc85";
+		// $access_key_secret  = "deb4805e8cd1cd9b13b558b9f2e99c93ca2660dfa6a85ec3bb0ab865c9bfd0f7";
 
+		$m = $this->model('Option');
+		$annex = $m->getValueByName('annex');
 
-		$bucket_name        = S3_BUCKET_NAME;
-		$account_id         = S3_ACCOUNT_ID;
-		$access_key_id      = S3_ACCESS_KEY_ID;
-		$access_key_secret  = S3_ACCESS_KEY_SECRET;
+		$r3 = $m->getValueByName('r3');
+
+		$bucket_name        = $r3['bucket_name'];
+		$account_id         = $r3['account_id'];
+		$access_key_id      = $r3['access_key_id'];
+		$access_key_secret  = $r3['access_key_secret'];
 
 		$credentials = new Aws\Credentials\Credentials($access_key_id, $access_key_secret);
 
@@ -52,9 +60,9 @@ class S3{
 
 	public function list(){
 		$buckets = $this->client->listBuckets();
-
-		var_dump($buckets);
+		// var_dump($buckets);
 	}
+
 }
 
 ?>

@@ -16,7 +16,7 @@ class Setting extends Admin
 {   
     protected $op = [
         'base', 'user', 'cache',
-        'sms', 'mail', 'pay','protocol'
+        'sms', 'mail', 'pay','protocol','annex'
     ];
 
     protected function initCommonVar($tag='')
