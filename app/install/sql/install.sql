@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `hm_admin_menu` (
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`),
   KEY `status` (`status`),
+  UNIQUE KEY `name_pid` (`name`,`pid`),
   KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='权限关联表';
 

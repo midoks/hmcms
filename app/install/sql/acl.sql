@@ -44,11 +44,26 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 (27,  '任务记录', '',  '', 1, 'task_list/index','任务记录', 1, 'submenu', 1,25),
 (28,  '邀请记录', '',  '', 1, 'user_invite/index','邀请记录', 1, 'submenu', 1,25);
 
--- 运营【任务管理】
+-- 运营【验证码管理】
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 (29,  '验证码管理', 'layui-icon-reply-fill',  '', 1, '','验证码管理', 1, 'menu', 1,6),
 (30,  '手机验证码', '',  '', 1, 'tel_code/index','手机验证码', 1, 'submenu', 1,29),
 (31,  '邮件验证码', '',  '', 1, 'mail_code/index','邮件验证码', 1, 'submenu', 1,29);
+
+
+-- 漫画【漫画管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(32,  '漫画管理', 'layui-icon-template',  '', 1, '','漫画管理', 1, 'menu', 1,3),
+(33,  '漫画列表', '',  '', 1, 'comic/index','漫画列表', 1, 'submenu', 1,32),
+(34,  '漫画分类', '',  '', 1, 'comic_class/index','漫画分类', 1, 'submenu', 1,32),
+(35,  '漫画类型', '',  '', 1, 'comic_type/index','漫画类型', 1, 'submenu', 1,32),
+(36,  '漫画章节', '',  '', 1, 'comic_chapter/index','漫画分类', 1, 'submenu', 1,32);
+
+-- 漫画【评论管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(37,  '评论管理', 'layui-icon-template-1',  '', 1, '','评论管理', 1, 'menu', 1,3),
+(38,  '评论列表', '',  '', 1, 'comic_comment/index','评论列表', 1, 'submenu', 1,37),
+(39,  '回复列表', '',  '', 1, 'comic_comment_reply/index','回复列表', 1, 'submenu', 1,37);
 
 
 -- 系统【权限管理】| API
