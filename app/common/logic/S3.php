@@ -10,10 +10,6 @@ class S3 extends Base{
 	public $bucket;
 
 	public function __construct(){
-		// $bucket_name        = "semang";
-		// $account_id         = "26c97a0d4f5655a3533e281ac0d4662c";
-		// $access_key_id      = "403a3e6ea7bcc77e471484d60d3acc85";
-		// $access_key_secret  = "deb4805e8cd1cd9b13b558b9f2e99c93ca2660dfa6a85ec3bb0ab865c9bfd0f7";
 
 		$m = $this->model('Option');
 		$annex = $m->getValueByName('annex');
