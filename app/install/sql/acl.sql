@@ -22,7 +22,7 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 (14,  '缓存配置', '',  '', 1, 'setting/cache','缓存配置', 1, 'submenu', 1,11),
 (15,  '短信配置', '',  '', 1, 'setting/sms','短信配置', 1, 'submenu', 1,11),
 (16,  '邮件配置', '',  '', 1, 'setting/mail','邮件配置', 1, 'submenu', 1,11),
-(17,  '财务配置', '',  '', 1, 'setting/pay','财务管理', 1, 'submenu', 1,11);
+(17,  '财务配置', '',  '', 1, 'setting/pay','财务管理', 1, 'submenu', 1,11),
 (18,  '协议配置', '',  '', 1, 'setting/protocol','协议配置', 1, 'submenu', 1,11);
 
 -- 运营【会员管理】
@@ -64,6 +64,18 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 (37,  '评论管理', 'layui-icon-template-1',  '', 1, '','评论管理', 1, 'menu', 1,3),
 (38,  '评论列表', '',  '', 1, 'comic_comment/index','评论列表', 1, 'submenu', 1,37),
 (39,  '回复列表', '',  '', 1, 'comic_comment_reply/index','回复列表', 1, 'submenu', 1,37);
+
+-- 视频【视频管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(40,  '视频管理', 'layui-icon-play',  '', 1, '','视频管理', 1, 'menu', 1,4),
+(41,  '视频列表', '',  '', 1, 'vod/index','视频列表', 1, 'submenu', 1,40),
+(42,  '视频分类', '',  '', 1, 'vod_class/index','视频分类', 1, 'submenu', 1,40);
+
+-- 视频【评论管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(43,  '视频评论', 'layui-icon-template-1',  '', 1, '','视频评论', 1, 'menu', 1,4),
+(44,  '评论列表', '',  '', 1, 'vod_comment/index','评论列表', 1, 'submenu', 1,43),
+(45,  '回复列表', '',  '', 1, 'vod_comment_reply/index','回复列表', 1, 'submenu', 1,43);
 
 
 -- 系统【权限管理】| API
@@ -120,9 +132,9 @@ INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`,
 ('批量删除', '',  '', 1, 'task_list/batchDel','接口', 1, 'api', 1,27),
 ('删除', '',  '', 1, 'task_list/del','接口', 1, 'api', 1,27);
 INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
-('列表', '',  '', 1, 'user_invite/list','接口', 1, 'api', 1,27),
-('批量删除', '',  '', 1, 'user_invite/batchDel','接口', 1, 'api', 1,27),
-('删除', '',  '', 1, 'user_invite/del','接口', 1, 'api', 1,27);
+('列表', '',  '', 1, 'user_invite/list','接口', 1, 'api', 1,28),
+('批量删除', '',  '', 1, 'user_invite/batchDel','接口', 1, 'api', 1,28),
+('删除', '',  '', 1, 'user_invite/del','接口', 1, 'api', 1,28);
 
 -- INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 -- (18,  '应用管理', 'layui-icon-release',  '', 1, '','应用管理', 1, 'menu', 1,1),

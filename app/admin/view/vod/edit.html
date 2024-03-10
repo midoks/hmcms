@@ -1,0 +1,317 @@
+{include file="app/admin/view/common/header_head.html" /}
+<style type="text/css">
+.layui-form-item .layui-input-inline{
+    width: auto;
+    margin-left: 5px;
+}
+.type-input{
+    height:70px;
+    overflow-y: auto;
+}
+.type-input::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+}
+.type-input::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background   : #666;
+}
+.type-input::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background   : #ededed;
+}
+.layui-form-radio{
+    margin: 0; 
+    padding-right: 0;
+}
+
+.layui-form-pane .layui-form-checkbox {
+    margin: 4px 0 4px 1px;
+}
+.layui-form-checkbox[lay-skin=primary] span {
+    padding-right: 4px;
+}
+.layui-form-checkbox[lay-skin=primary] i {
+    left: 6px;
+}
+.layui-form-item .layui-col-xs12{
+    margin-top: 10px;
+}
+@media screen and (max-width: 990px){
+    .layui-form-item .layui-col-xs12:first-child{
+        margin-top: 0px;
+    }
+    .layui-form-item{
+        margin-bottom: 10px; 
+    }
+}
+</style>
+<!-- start -->
+
+<div class="layui-fluid">
+    <form class="layui-form layui-form-pane" action="{:url('comic/save')}">
+        <div class="layui-form-item">
+            <div class="layui-col-xs12 layui-col-md2">
+                <label class="layui-form-label">漫画分类</label>
+                <div class="layui-input-block">
+                    <select name="cid">
+                        <option value="">选择分类</option>
+                        {volist name="classData" id="row" key="k"}
+
+                        {if isset($data['cid']) && $row['id'] == $data['cid']}
+                        <option value="{$row['id']}" selected>{$row['name']}</option>
+                        {else}
+                        <option value="{$row['id']}">{$row['name']}</option>
+                        {/if}
+
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">漫画状态</label>
+                <div class="layui-input-block">
+                    <select name="serialize">
+                        <option value="完结">已完结</option>
+                        <option value="连载">连载中</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md2">
+                <label class="layui-form-label">是否锁定</label>
+                <div class="layui-input-block">
+                    <select name="sid">
+                        <option value="0">未锁</option>
+                        <option value="1">已锁</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md2">
+                <label class="layui-form-label">是否推荐</label>
+                <div class="layui-input-block">
+                    <select name="tid">
+                        <option value="0">未推</option>
+                        <option value="1">已推</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label" style="width: 200px;">是否人工推荐(banner)</label>
+                <div class="layui-input-block" style="margin-left: 200px;">
+                    <select name="ttid">
+                        <option value="0">未推</option>
+                        <option value="1">已推</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">漫画标题</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" required lay-verify="required" class="layui-input" value="{$data['name']|default=''}" placeholder="请输入漫画标题">
+                </div>
+            </div>
+
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">英文别名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="yname" class="layui-input" value="{$data['yname']|default=''}" placeholder="请输入漫画英文别名">
+                </div>
+            </div>
+
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">漫画作者</label>
+                <div class="layui-input-block">
+                    <input type="text" name="author" class="layui-input" value="{$data['author']|default=''}" placeholder="请输入漫画作者名字">
+                </div>
+            </div>
+
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">总得分</label>
+                <div class="layui-input-block">
+                    <input type="number" name="score" class="layui-input" value="{$data['score']|default=''}" placeholder="漫画评分总得分">
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md12">
+                <label class="layui-form-label">简介</label>
+                <div class="layui-input-block">
+                    <input type="text" name="text" class="layui-input" value="{$data['text']|default=''}" placeholder="一句话介绍漫画，10个字以内">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-col-xs12 layui-col-md6">
+                <label class="layui-form-label">竖版封面</label>
+                <div class="layui-input-block">
+                    <input type="text" id="pic" name="pic" class="layui-input" placeholder="请上传漫画竖版封面或者输入图片URL" value="{$data['pic']|default=''}">
+                    <div class="layui-btn layui-btn-normal uppic" style="position: absolute;top: 0px;right: 0;">封面上传</div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md6">
+                <label class="layui-form-label">横版封面</label>
+                <div class="layui-input-block">
+                    <input type="text" id="picx" name="picx" class="layui-input" placeholder="请上传漫画横版封面或者输入图片URL" value="{$data['picx']|default='0'}">
+                    <div class="layui-btn layui-btn-normal uppicx" style="position: absolute;top: 0px;right: 0;">封面上传</div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">日人气</label>
+                <div class="layui-input-block">
+                    <input type="number" name="rhits" class="layui-input" value="{$data['rhits']|default='0'}" placeholder="请输入漫画日人气">
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">周人气</label>
+                <div class="layui-input-block">
+                    <input type="number" name="zhits" class="layui-input" value="{$data['zhits']|default='0'}" placeholder="请输入漫画周人气">
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">月人气</label>
+                <div class="layui-input-block">
+                    <input type="number" name="yhits" class="layui-input" value="{$data['yhits']|default='0'}" placeholder="请输入漫画月人气">
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">总人气</label>
+                <div class="layui-input-block">
+                    <input type="number" name="hits" class="layui-input" value="{$data['hits']|default='0'}" placeholder="请输入漫画总人气">
+                </div>
+            </div>
+        </div>
+        <!-- 类型/xx related -->
+        {volist name="typeData" id="row" key="k"}
+        <div class="layui-col-xs12 layui-col-md6">
+            <div class="layui-form-item" pane>
+                <label class="layui-form-label">{$row['name']}</label>
+                <div class="layui-input-block type-input" style="background-color: white;">
+                {volist name="row['submenu']" id="item" key="k1"}
+                    <input value="{$item['id']}" type="{if $item['mode']==1}checkbox{else}radio{/if}" name="type[{$item['field']}][]" lay-skin="primary" title="{$item['name']}" {if isset($item['checked']) && $item['checked']}checked{/if}>
+                {/volist}
+                </div>
+            </div>
+        </div>
+        {/volist}
+        <div class="layui-form-item">
+            <div class="layui-col-xs12 layui-col-md6">
+                <label class="layui-form-label">图作者</label>
+                <div class="layui-input-block">
+                    <input type="text" name="pic_author" class="layui-input" placeholder="请填写图作者" value="{$data['pic_author']|default=''}">
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md6">
+                <label class="layui-form-label">文作者</label>
+                <div class="layui-input-block">
+                    <input type="text" name="txt_author" class="layui-input" placeholder="请填写文作者" value="{$data['txt_author']|default=''}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">作者公告</label>
+            <div class="layui-input-block">
+                <textarea id="editor2" name="notice" placeholder="作者漫画公告" class="layui-textarea">{$data['notice']|default=''}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">漫画简介</label>
+            <div class="layui-input-block">
+                <textarea id="editor2" name="content" placeholder="漫画简介" class="layui-textarea" style="min-height:100px;">{$data['content']|default=''}</textarea>
+            </div>
+        </div>
+
+        <div class="layui-col-xs12 layui-col-md4">
+            <label class="layui-form-label">审核</label>
+            <div class="layui-input-block">
+                <select name="yid" lay-filter="yid">
+                    <option value="0" {if isset($data['yid']) && $data['yid']==0}selected{/if}>已通过</option>
+                    <option value="1" {if isset($data['yid']) && $data['yid']==1}selected{/if}>待审核</option>
+                    <option value="2" {if isset($data['yid']) && $data['yid']==2}selected{/if}>未通过</option>
+                </select>
+            </div>
+        </div>
+        <div id="yid" class="layui-col-xs12 layui-col-md4">
+            <label class="layui-form-label">未通过原因</label>
+            <div class="layui-input-block">
+                <input type="text" name="msg" class="layui-input" value="{$data['msg']|default=''}" placeholder="请输入未通过原因">
+            </div>
+        </div>
+
+        <div class="layui-col-xs12 layui-col-md4">
+            <div class="layui-form-item">
+                <!-- <label class="layui-form-label">复选框</label> -->
+                <div class="layui-input-block" style="margin-left: 0px;">
+                    <input type="checkbox" name="update_time" title="更新时间">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="text-align: center;padding: 5px;">
+            <input type="hidden" name="id" value="{$data['id']|default='0'}">
+            <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+
+<!-- end -->
+
+<script type="text/javascript">
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table,
+upload = layui.upload;
+
+upload.render({
+    elem: '.uppic',
+    url: "{:url('common/uploadComicCover')}?id={$data['id']}",
+    accept: 'file',
+    acceptMime: 'image/*',
+    exts: 'jpg|gif|png|jpeg|bmp|webp',
+    done: function(res){
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+            $('#pic').val(res['data']['url']);
+        } else {
+            layer.msg(res.msg,{icon: 2});
+        }
+    }
+});
+
+
+upload.render({
+    elem: '.uppicx',
+    url: "{:url('common/uploadComicCoverX')}?id={$data['id']}",
+    accept: 'file',
+    acceptMime: 'image/*',
+    exts: 'jpg|gif|png|jpeg|bmp|webp',
+    done: function(res){
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+            $('#picx').val(res['data']['url']);
+        } else {
+            layer.msg(res.msg,{icon: 2});
+        }
+    }
+});
+
+//
+});
+    
+</script>
+</body>
+</html>
+
+

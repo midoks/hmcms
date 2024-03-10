@@ -285,7 +285,7 @@ CREATE TABLE `hm_app` (
 -- -----------------------------
 DROP TABLE IF EXISTS `hm_telcode`;
 CREATE TABLE `hm_telcode` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `tel` varchar(20) DEFAULT '' COMMENT '手机号码',
   `code` varchar(10) DEFAULT '' COMMENT '验证码',
   `create_time` datetime NOT NULL COMMENT '创建时间',
@@ -299,7 +299,7 @@ CREATE TABLE `hm_telcode` (
 -- -----------------------------
 DROP TABLE IF EXISTS `hm_mailcode`;
 CREATE TABLE `hm_mailcode` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(20) DEFAULT '' COMMENT '邮件地址',
   `code` varchar(10) DEFAULT '' COMMENT '验证码',
   `create_time` datetime NOT NULL COMMENT '创建时间',
@@ -566,7 +566,7 @@ CREATE TABLE `hm_follow` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_comic_buy`;
 CREATE TABLE `hm_comic_buy` (
- `id` int(11) NOT NULL AUTO_INCREMENT,
+ `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
  `text` varchar(255) DEFAULT '' COMMENT '消费简介',
  `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
  `cid` int(11) DEFAULT '0' COMMENT '章节ID',
@@ -586,14 +586,51 @@ CREATE TABLE `hm_comic_buy` (
 -- -----------------------------------------
 DROP TABLE IF EXISTS `hm_comic_buy_related`;
 CREATE TABLE `hm_comic_buy_related` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
- `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
- `cid` int(11) DEFAULT '0' COMMENT '章节ID',
- `uid` int(11) DEFAULT '0' COMMENT '用户ID',
- `auto` tinyint(1) DEFAULT '0' COMMENT '1开启自动购买',
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `mid` int(11) DEFAULT '0' COMMENT '漫画ID',
+  `cid` int(11) DEFAULT '0' COMMENT '章节ID',
+  `uid` int(11) DEFAULT '0' COMMENT '用户ID',
+  `auto` tinyint(1) DEFAULT '0' COMMENT '1开启自动购买',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uid_mid_cid` (`uid`,`mid`,`cid`) USING BTREE,
   KEY `mid` (`mid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='漫画购买记录';
+
+
+-- -----------------------------------------
+-- Table structure for hm_vod_class
+-- -----------------------------------------
+DROP TABLE IF EXISTS `hm_vod_class`;
+CREATE TABLE `hm_vod_class` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `type_id` int(11) DEFAULT '0' COMMENT '类型ID',
+  `type_pid` int(11) DEFAULT '0' COMMENT '类型PID',
+  `group_id` int(11) DEFAULT '0' COMMENT '分组ID',
+  `name` varchar(255) DEFAULT '0' COMMENT '名称',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='视频分类';
+
+-- -----------------------------------------
+-- Table structure for hm_vod
+-- -----------------------------------------
+DROP TABLE IF EXISTS `hm_vod`;
+CREATE TABLE `hm_vod` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `type_id` int(11) DEFAULT '0' COMMENT '类型ID',
+  `type_pid` int(11) DEFAULT '0' COMMENT '类型PID',
+  `group_id` int(11) DEFAULT '0' COMMENT '分组ID',
+  `name` varchar(255) DEFAULT '0' COMMENT '名称',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='视频';
+
+
+
+
+
+
