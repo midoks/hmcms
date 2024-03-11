@@ -44,7 +44,13 @@ class VodClass extends AdminBase
         }
         View::assign("data", $data);
 
-        
+
+        $where = [];
+        $where['pid'] = ['eq','0'];
+        $order='sort asc';
+        $parent = $m->where($where)->order($order)->limit(10)->select();
+
+        var_dump($parent);
 
 
         return $this->fetch('vod_class/edit');
