@@ -698,7 +698,29 @@ CREATE TABLE `hm_vod` (
   `status` tinyint(1) unsigned DEFAULT NULL COMMENT "状态|0:禁止显示,1:正常",
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `level` (`level`) USING BTREE,
+  KEY `hits` (`hits`) USING BTREE,
+  KEY `letter` (`vod_letter`) USING BTREE,
+  KEY `name` (`name`) USING BTREE,
+  KEY `year` (`year`) USING BTREE,
+  KEY `area` (`area`) USING BTREE,
+  KEY `lang` (`lang`) USING BTREE,
+  KEY `tag` (`tag`) USING BTREE,
+  KEY `class` (`class`) USING BTREE,
+  KEY `lock` (`lock`) USING BTREE,
+  KEY `up` (`up`) USING BTREE,
+  KEY `down` (`down`) USING BTREE,
+  KEY `group_id` (`group_id`) USING BTREE,
+  KEY `actor` (`actor`) USING BTREE,
+  KEY `director` (`director`) USING BTREE,
+  KEY `score_all` (`score_all`) USING BTREE,
+  KEY `score_num` (`score_num`) USING BTREE,
+  KEY `total` (`total`) USING BTREE,
+  KEY `score` (`score`) USING BTREE,
+  KEY `version` (`version`),
+  KEY `state` (`state`),
+  KEY `isend` (`isend`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='视频';
 
 
