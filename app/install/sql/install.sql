@@ -605,13 +605,25 @@ CREATE TABLE `hm_comic_buy_related` (
 DROP TABLE IF EXISTS `hm_vod_class`;
 CREATE TABLE `hm_vod_class` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `type_id` int(11) DEFAULT '0' COMMENT '类型ID',
-  `type_pid` int(11) DEFAULT '0' COMMENT '类型PID',
-  `group_id` int(11) DEFAULT '0' COMMENT '分组ID',
+  `pid` int(11) DEFAULT '0' COMMENT '类型PID',
   `name` varchar(255) DEFAULT '0' COMMENT '名称',
+  `name_en` varchar(255) DEFAULT '0' COMMENT '英文名称',
+  `sort` smallint unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `key` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词',
+  `desc` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
+  `extend` text  COMMENT '扩展信息',
+  `logo` varchar(255) NOT NULL DEFAULT '' COMMENT 'Logo',
+  `pic` varchar(255) NOT NULL DEFAULT '' COMMENT '图片信息',
+  `jumpurl` varchar(255) NOT NULL DEFAULT '' COMMENT '跳转地址',
+  `status` tinyint(1) unsigned DEFAULT NULL COMMENT "状态|1:正常,0:禁止显示",
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `sort` (`sort`) USING BTREE,
+  KEY `pid` (`pid`) USING BTREE,
+  KEY `name` (`name`),
+  KEY `name_en` (`name_en`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='视频分类';
 
 -- -----------------------------------------
@@ -620,8 +632,8 @@ CREATE TABLE `hm_vod_class` (
 DROP TABLE IF EXISTS `hm_vod`;
 CREATE TABLE `hm_vod` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `type_id` int(11) DEFAULT '0' COMMENT '类型ID',
-  `type_pid` int(11) DEFAULT '0' COMMENT '类型PID',
+  `cid` int(11) DEFAULT '0' COMMENT '类型ID',
+  `cpid` int(11) DEFAULT '0' COMMENT '类型PID',
   `group_id` int(11) DEFAULT '0' COMMENT '分组ID',
   `name` varchar(255) DEFAULT '0' COMMENT '名称',
   `create_time` datetime NOT NULL COMMENT '创建时间',

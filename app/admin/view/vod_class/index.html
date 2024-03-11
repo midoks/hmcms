@@ -1,0 +1,58 @@
+{include file="app/admin/view/common/header.html" /}
+
+<div class="layui-fluid">
+	<div class="layui-col-md12" style="padding: 5px;">
+		<div class="layui-card">
+		  	
+		  	<div class="layui-card-body">
+
+                <!--
+                <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm" onclick="Admin.open('编辑','{:url('comictype/edit')}',600,320)">添加</button>
+                    </div>
+                </div>
+                -->
+
+			    <div id="list"></div>
+		  	</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+table.render({
+    elem: '#list',
+    url: '{:url("comic_class/list")}',
+    defaultToolbar: [],
+    title: '数据表',
+    cols: [[
+    	{field:'id', title:'ID', width:30},
+       	{field:'name', title:'分类名称',},
+        {field:'yname', title:'英文别名',},
+        {field:'sort', title:'排序',},
+       	{title:'操作', toolbar: '#cmdTpl', width:80, fixed: 'right',}
+     ]],
+    page: true
+});
+
+
+///
+});
+</script>
+
+
+<script type="text/html" id="cmdTpl">
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('编辑','{:url('comic_class/edit')}?id={{d.id}}',600,320)">编辑</a>
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}
