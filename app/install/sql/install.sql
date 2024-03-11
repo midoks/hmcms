@@ -613,7 +613,7 @@ CREATE TABLE `hm_vod_class` (
   `desc` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `extend` text  COMMENT '扩展信息',
-  `logo` varchar(255) NOT NULL DEFAULT '' COMMENT 'Logo',
+  `logo` varchar(255) NOT NULL DEFAULT '' COMMENT 'LOGO',
   `pic` varchar(255) NOT NULL DEFAULT '' COMMENT '图片信息',
   `jumpurl` varchar(255) NOT NULL DEFAULT '' COMMENT '跳转地址',
   `status` tinyint(1) unsigned DEFAULT NULL COMMENT "状态|1:正常,0:禁止显示",
