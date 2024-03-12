@@ -40,20 +40,50 @@ class VodClass extends AdminBase
         if (!empty($id)){
             $data = $m->getDataByID($id);
         } else {
-            $data = ['id' => 0,'status' => 0];
+            $data = ['id' => 0,'status' => 0,'pid'=>0];
         }
         View::assign("data", $data);
 
 
-        $where = [];
-        $where['pid'] = ['eq','0'];
-        $order='sort asc';
-        $parent = $m->where($where)->order($order)->limit(10)->select();
-
-        var_dump($parent);
-
-
+        $wh = [];
+        $wh['pid'] = 0;
+        $wh['order'] = 'sort asc';
+        $parent = $m->list(1, 10000, $wh);
+        View::assign("parent", $parent['data']);
         return $this->fetch('vod_class/edit');
+    }
+
+    public function save(){
+        $id = $this->request->post('id');
+
+        $data = [];
+        $data['name'] = $this->request->post('name');
+        $data['sort'] = $this->request->post('sort');
+        $data['pid'] = $this->request->post('pid');
+        $data['title'] = $this->request->post('title');
+        $data['key'] = $this->request->post('key');
+        $data['desc'] = $this->request->post('desc');
+        $data['status'] = $this->request->post('status');
+        $data['jumpurl'] = $this->request->post('jumpurl');
+        
+
+        if(empty($data['name'])){
+            return $this->returnJson(-1, '分类名称不能为空~!');
+        }
+
+        if (empty($data['name_en'])) {
+            $data['name_en'] = toPinyin($data['name']);
+        }
+
+        $m = $this->model('VodClass');
+        $r = $m->dataSave($data, $id);
+
+        $msg_head = $id > 0 ? '更新' : '添加';
+        if ($r){
+            return $this->returnJson(1, $msg_head.'成功!');
+        } else {
+            return $this->returnJson(-1, $msg_head.'失败!');
+        }
     }
 
     public function del(){

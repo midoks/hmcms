@@ -43,8 +43,14 @@ class VodClass extends Base {
 		if (isset($wh['pid'])){
       		$m->where('pid', $wh['pid']);
       	}
-      	
-		$list = $m->order('id', 'desc')->paginate(['page'=>$page,'list_rows'=>$size]);
+
+      	if (isset($wh['order'])){
+      		$m->order($wh['order']);
+      	} else {
+      		$m->order('id', 'desc');
+      	}
+
+		$list = $m->paginate(['page'=>$page,'list_rows'=>$size]);
 		if ($list){
 			$list = $list->toArray();
 		}
