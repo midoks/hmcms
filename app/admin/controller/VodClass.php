@@ -26,11 +26,9 @@ class VodClass extends AdminBase
         $wh['sort_order'] = $this->request->param('sort_order','');
 
         $m = $this->model('VodClass');
-        $data = $m->list($page, $limit, $wh);
-        $count = $data['total'];
-        $list = $data['data'];
+        $list = $m->tree(0, true, $wh);
 
-        return $this->layuiJson(0, 'ok', $list, $count);
+        return $this->layuiJson(0, 'ok', $list);
     }
 
 
@@ -84,6 +82,18 @@ class VodClass extends AdminBase
         } else {
             return $this->returnJson(-1, $msg_head.'失败!');
         }
+    }
+
+    //是否开启
+    public function triggerStatus(){
+        $id = $this->request->post('id');
+        if (empty($id)){
+            return $this->returnJson(-1, '设置ID不能空!');
+        }
+
+        $m = $this->model('VodClass');
+        $m->dataTriggerField($id,'status');
+        return $this->returnJson(1, '设置成功!');
     }
 
     public function del(){

@@ -75,7 +75,19 @@
             </div>
         </div>
 
-        
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">分类图标</label>
+            <div class="layui-input-block">
+                <input type="text" id="pic" name="pic" class="layui-input" placeholder="请上传分类图标" value="{$data['pic']|default=''}"><div class="layui-btn layui-btn-normal uppic" style="position: absolute;top: 0px;right: 0;">图标上传</div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">分类封面</label>
+            <div class="layui-input-block">
+                <input type="text" id="pic" name="pic" class="layui-input" placeholder="请上传分类封面" value="{$data['logo']|default=''}"><div class="layui-btn layui-btn-normal uppic" style="position: absolute;top: 0px;right: 0;">封面上传</div>
+            </div>
+        </div>
 
         <div class="layui-form-item" style="text-align: center;">
             <input type="hidden" name="id" value="{$data.id|default=0}">
@@ -85,7 +97,56 @@
     </form>
 </div>
 
+
 <!-- end -->
+
+<script type="text/javascript">
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table,
+upload = layui.upload;
+
+upload.render({
+    elem: '.uppic',
+    url: "{:url('common/uploadComicCover')}?id={$data['id']}",
+    accept: 'file',
+    acceptMime: 'image/*',
+    exts: 'jpg|gif|png|jpeg|bmp|webp',
+    done: function(res){
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+            $('#pic').val(res['data']['url']);
+        } else {
+            layer.msg(res.msg,{icon: 2});
+        }
+    }
+});
+
+
+upload.render({
+    elem: '.uppicx',
+    url: "{:url('common/uploadComicCoverX')}?id={$data['id']}",
+    accept: 'file',
+    acceptMime: 'image/*',
+    exts: 'jpg|gif|png|jpeg|bmp|webp',
+    done: function(res){
+        if(res.code == 1){
+            layer.msg(res.msg,{icon: 1});
+            $('#picx').val(res['data']['url']);
+        } else {
+            layer.msg(res.msg,{icon: 2});
+        }
+    }
+});
+
+//
+});
+    
+</script>
+
 </body>
 </html>
 

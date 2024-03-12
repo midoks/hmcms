@@ -7,21 +7,21 @@
 
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="yid">
-                        <li class="layui-this" data-yid="0">已审漫画</li>
-                        <li data-yid="1">待审漫画</li>
-                        <li data-yid="2">未通过漫画</li>
-                        <li data-yid="3">检测重复漫画</li>
+                        <li class="layui-this" data-yid="0">已审视频</li>
+                        <li data-yid="1">待审视频</li>
+                        <li data-yid="2">未通过视频</li>
+                        <li data-yid="3">检测重复视频</li>
                     </ul>
                 </div>
 
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                 <form class="layui-form" action="" id="comic_form" onclick="return false;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('comic/batchDel')}','comic_list')">删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('vod/batchDel')}','comic_list')">删除</button>
                     </div>
 
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('新增漫画','{:url('comic/edit')}?id=0',1200,480)">添加</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('新增漫画','{:url('vod/edit')}?id=0',1200,480)">添加</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -86,12 +86,12 @@
                     </div>
 
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm" id="table-sreach" data-id="comic_list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
+                        <button class="layui-btn layui-btn-sm" id="table-sreach" data-id="list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
                         </button>
                     </div>
                 </div>
                 </form>
-			    <div id="comic_list"></div>
+			    <div id="list"></div>
 		  	</div>
 		</div>
 	</div>
@@ -135,18 +135,18 @@ function render_table(){
     var yid = $('#yid li.layui-this').data('yid');
 
     table.render({
-        elem: '#comic_list',
-        url: '{:url("comic/list")}?yid='+yid,
+        elem: '#list',
+        url: '{:url("vod/list")}?yid='+yid,
         defaultToolbar: [],
         title: '数据表',
         cols: [[
             {type: 'checkbox', fixed: 'left'},
-            {field:'id', title:'漫画ID', width:100,sort:true},
-            {field:'name', title:'漫画名称', width:230},
+            {field:'id', title:'视频ID', width:100,sort:true},
+            {field:'name', title:'名称', width:230},
             {field:'tid', title:'推荐', width:80,templet:'#tjTpl',sort:true},
             {field:'ttid', title:'人工推荐', width:120,templet:'#ttjTpl',sort:true},
             {field:'pay', title:'收费', width:100,templet:'#payTpl'},
-            {field:'author', title:'漫画作者', width:100},
+            {field:'author', title:'作者', width:100},
             {field:'shits', title:'收藏', width:80,sort:true},
             {field:'serialize', title:'连载', width:100},
             {field:'hits', title:'总', width:100},

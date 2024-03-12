@@ -36,6 +36,38 @@ class VodClass extends Base {
 		}
 		return true;
    	}
+
+   	public function tree($pid = 0, $recursion = false, $wh = []){
+   		$m = $this->where('pid', $pid);
+
+   		if (isset($wh['status'])){
+   			$m->where('status', $wh['status']);
+   		}
+
+   		if (isset($wh['order'])){
+   			$m->order($wh['order']);
+   		} else {
+			$m->order('sort asc');
+   		}
+
+   		$list = $m->select();
+   		if ($list){
+			$list = $list->toArray();
+		}
+
+		if (!empty($list) && $recursion){
+			foreach ($list as $k => $v) {
+				$data = $this->tree($v['id'], $recursion, $wh);
+				foreach ($data as $vd) {
+					$vd['name'] = '    ├ '.$vd['name'];
+					$list[] = $vd;
+				}
+			}
+		}
+
+		return $list;
+   	}
+
     
 	public function list($page=1, $size=10, $wh=[]) {
 		$m = $this->field('id');
