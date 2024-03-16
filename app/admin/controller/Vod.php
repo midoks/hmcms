@@ -21,7 +21,7 @@ class Vod extends AdminBase
         $limit = $this->request->param('limit');
 
         $wh = [];
-        $wh['yid'] = $this->request->param('yid');
+        $wh['status'] = $this->request->param('status');
         $wh['sort_field'] = $this->request->param('sort_field','');
         $wh['sort_order'] = $this->request->param('sort_order','');
 
@@ -44,19 +44,19 @@ class Vod extends AdminBase
                 'id' => 0,
             ];
         }
-        View::assign("data", $data);
+        // View::assign("data", $data);
 
-        $classM = $this->model('ComicClass');
-        $classData = $classM->list(1, 100, ['pid'=>0]);
-        View::assign("classData", $classData['data']);
+        // $classM = $this->model('ComicClass');
+        // $classData = $classM->list(1, 100, ['pid'=>0]);
+        // View::assign("classData", $classData['data']);
 
-        $typeM = $this->model('ComicType');
-        $typeData = $typeM->menuList(0);
-        if ($id >0 ){
-           $typeRelatedM = $this->model('ComicTypeRelated');
-            $typeData = $typeRelatedM->checkTypeData($typeData, $id); 
-        }
-        View::assign("typeData", $typeData);
+        // $typeM = $this->model('ComicType');
+        // $typeData = $typeM->menuList(0);
+        // if ($id >0 ){
+        //    $typeRelatedM = $this->model('ComicTypeRelated');
+        //     $typeData = $typeRelatedM->checkTypeData($typeData, $id); 
+        // }
+        // View::assign("typeData", $typeData);
 
         return $this->fetch('comic/edit');
     }

@@ -695,7 +695,7 @@ CREATE TABLE `hm_vod` (
   `down_server` varchar(255) NOT NULL DEFAULT '' COMMENT '下载服务器',
   `down_note` varchar(255) NOT NULL DEFAULT '' COMMENT '下载NOTE',
   `down_url` mediumtext NOT NULL COMMENT '下载地址',
-  `status` tinyint(1) unsigned DEFAULT NULL COMMENT "状态|0:禁止显示,1:正常",
+  `status` tinyint(1) unsigned DEFAULT NULL COMMENT "状态|0:待审核,1:正常",
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),

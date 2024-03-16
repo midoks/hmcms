@@ -6,11 +6,11 @@
 		  	<div class="layui-card-body">
 
                 <div class="layui-tab layui-tab-brief">
-                    <ul class="layui-tab-title" id="yid">
-                        <li class="layui-this" data-yid="0">已审视频</li>
-                        <li data-yid="1">待审视频</li>
-                        <li data-yid="2">未通过视频</li>
-                        <li data-yid="3">检测重复视频</li>
+                    <ul class="layui-tab-title" id="status">
+                        <li class="layui-this" data-status="1">已审视频</li>
+                        <li data-status="0">待审视频</li>
+                        <li data-status="2">未通过视频</li>
+                        <li data-status="3">检测重复视频</li>
                     </ul>
                 </div>
 
@@ -108,8 +108,8 @@ var admin = layui.admin
 ,table = layui.table;
 
 
-$('#yid li').click(function(){
-    $('#yid li').removeClass('layui-this');
+$('#status li').click(function(){
+    $('#status li').removeClass('layui-this');
     $(this).addClass('layui-this');
 
     render_table();
@@ -132,11 +132,11 @@ function render_table(){
         where_data['jstime'] = '';
     }
     where_data['times'] = undefined;
-    var yid = $('#yid li.layui-this').data('yid');
+    var status = $('#status li.layui-this').data('status');
 
     table.render({
         elem: '#list',
-        url: '{:url("vod/list")}?yid='+yid,
+        url: '{:url("vod/list")}?status='+status,
         defaultToolbar: [],
         title: '数据表',
         cols: [[
@@ -159,8 +159,8 @@ function render_table(){
     });
 
     
-    table.on('sort(comic_list)', function(obj){
-        table.reload('comic_list', {
+    table.on('sort(list)', function(obj){
+        table.reload('list', {
             initSort: obj,
             where: {
                 sort_field: obj.field,
@@ -172,7 +172,7 @@ function render_table(){
 render_table();
 
 
-table.on('tool(comic_list)', function(obj){
+table.on('tool(list)', function(obj){
     switch(obj.event){
         case 'tid':triggerTid(obj);break;
         case 'ttid':triggerTtid(obj);break;
@@ -181,7 +181,7 @@ table.on('tool(comic_list)', function(obj){
 
 function triggerTid(obj){
     layer.confirm('你真的更改推荐吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("comic/triggerTid")}', {'id':obj.data.id}, function(data) {
+        $.post('{:url("vod/triggerTid")}', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
                 if (data.code>-1){
                     location.reload();
@@ -193,7 +193,7 @@ function triggerTid(obj){
 
 function triggerTtid(obj){
     layer.confirm('你真的更改人工推荐吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("comic/triggerTtid")}', {'id':obj.data.id}, function(data) {
+        $.post('{:url("vod/triggerTtid")}', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
                 if (data.code>-1){
                     location.reload();
