@@ -23,7 +23,7 @@ class Message extends AdminBase
 
     public function save()
     {
-        $m = $this->model('message');
+        $m = $this->model('Message');
 
         $data = [];
         $data['uid'] = $this->request->param('uid');
@@ -57,7 +57,7 @@ class Message extends AdminBase
             $page=1;
         }
 
-        $m = $this->model('message');
+        $m = $this->model('Message');
 
         $wh = [
             'name' => $name,
@@ -81,7 +81,7 @@ class Message extends AdminBase
             return $this->returnJson(-1, '删除ID不能空!');
         }
 
-        $m = $this->model('message');
+        $m = $this->model('Message');
         $res = $m->dataDelete($id);
         if (!$res){
             return $this->returnJson(-1, '删除失败!');
@@ -93,7 +93,7 @@ class Message extends AdminBase
 
     public function batchDel(){
         $ids = $this->request->param('id');
-        $m = $this->model('message');
+        $m = $this->model('Message');
 
         foreach ($ids as $k => $id) {
             $res = $m->dataDelete($id);
