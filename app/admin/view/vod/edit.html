@@ -54,7 +54,7 @@
 <!-- start -->
 
 <div class="layui-fluid" style="background-color: white;">
-    <form class="layui-form layui-form-pane" action="{:url('comic/save')}">
+    <form class="layui-form layui-form-pane" action="{:url('vod/save')}">
         <div class="layui-form-item">
             <div class="layui-col-xs12 layui-col-md3">
                 <label class="layui-form-label">分类</label>
@@ -155,7 +155,7 @@
             <div class="layui-col-xs12 layui-col-md3">
                 <label class="layui-form-label">演员</label>
                 <div class="layui-input-block">
-                    <input type="text" name="actor" required lay-verify="required" class="layui-input" value="{$data['actor']|default=''}" placeholder="请输入演员">
+                    <input type="text" name="actor" class="layui-input" value="{$data['actor']|default=''}" placeholder="请输入演员">
                 </div>
             </div>
 

@@ -115,14 +115,14 @@ class Vod extends AdminBase
 
 
         if(empty($data['name'])){
-            return $this->returnJson(-1, '漫画名称不能为空~!');
+            return $this->returnJson(-1, '名称不能为空~!');
         }
 
-        if (empty($data['yname'])) {
-            $data['yname'] = toPinyin($data['name']);
+        if (empty($data['name_en'])) {
+            $data['name_en'] = toPinyin($data['name']);
         }
 
-        $m = $this->model('Comic');
+        $m = $this->model('Vod');
         $r = $m->dataSave($data, $id);
 
 
