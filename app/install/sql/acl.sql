@@ -131,13 +131,13 @@ INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`,
 -- 运营【会员管理】| API
 INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 ('列表', '',  '', 1, 'user/list','接口', 1, 'api', 1,22),
-('保存', '',  '', 1, 'user/save','接口', 1, 'api', 1,22),
+('保存API', '',  '', 1, 'user/save','接口', 1, 'api', 1,22),
 ('批量删除', '',  '', 1, 'user/batchDel','接口', 1, 'api', 1,22),
 ('删除', '',  '', 1, 'user/del','接口', 1, 'api', 1,22),
 ('添加/保存', '',  '', 1, 'user/edit','接口', 1, 'api', 1,22);
 INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 ('列表', '',  '', 1, 'message/list','接口', 1, 'api', 1,23),
-('保存', '',  '', 1, 'message/save','接口', 1, 'api', 1,23),
+('保存API', '',  '', 1, 'message/save','接口', 1, 'api', 1,23),
 ('批量删除', '',  '', 1, 'message/batchDel','接口', 1, 'api', 1,23),
 ('删除', '',  '', 1, 'message/del','接口', 1, 'api', 1,23),
 ('添加/保存', '',  '', 1, 'message/edit','接口', 1, 'api', 1,23);
