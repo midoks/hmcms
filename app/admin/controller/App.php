@@ -48,7 +48,6 @@ class App extends AdminBase
         $data['name'] = $this->request->post('name');
         $data['apikey'] = $this->request->post('apikey');
         $data['aeskey'] = $this->request->post('aeskey');
-        $data['is_encrypt'] = $this->request->post('is_encrypt');
         $data['status'] = $this->request->post('status');
         $m = $this->model('App');
         $r = $m->dataSave($data, $id);
