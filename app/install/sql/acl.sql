@@ -1,4 +1,5 @@
 
+truncate table hm_admin_menu;
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 (1,  '系统', '', 'sys',   1, '','系统', 1, 'nav', 1,0),
 (2,  '小说', '', 'novel', 1, '', '小说', 2, 'nav',1, 0),
@@ -46,9 +47,9 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 
 -- 运营【验证码管理】
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
-(29,  '验证码管理', 'layui-icon-reply-fill',  '', 1, '','验证码管理', 1, 'menu', 1,6),
-(30,  '手机验证码', '',  '', 1, 'tel_code/index','手机验证码', 1, 'submenu', 1,29),
-(31,  '邮件验证码', '',  '', 1, 'mail_code/index','邮件验证码', 1, 'submenu', 1,29);
+(29,  '验证码', 'layui-icon-reply-fill',  '', 1, '','验证码管理', 1, 'menu', 1,6),
+(30,  '手机', '',  '', 1, 'tel_code/index','手机验证码', 1, 'submenu', 1,29),
+(31,  '邮件', '',  '', 1, 'mail_code/index','邮件验证码', 1, 'submenu', 1,29);
 
 
 -- 漫画【漫画管理】
@@ -136,6 +137,3 @@ INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`,
 ('批量删除', '',  '', 1, 'user_invite/batchDel','接口', 1, 'api', 1,28),
 ('删除', '',  '', 1, 'user_invite/del','接口', 1, 'api', 1,28);
 
--- INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
--- (18,  '应用管理', 'layui-icon-release',  '', 1, '','应用管理', 1, 'menu', 1,1),
--- (19,  '应用列表', '',  '', 1, 'app/index','应用列表', 1, 'submenu', 1,18);

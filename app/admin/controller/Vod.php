@@ -44,21 +44,14 @@ class Vod extends AdminBase
                 'id' => 0,
             ];
         }
-        // View::assign("data", $data);
+        View::assign("data", $data);
 
-        // $classM = $this->model('ComicClass');
-        // $classData = $classM->list(1, 100, ['pid'=>0]);
-        // View::assign("classData", $classData['data']);
+        $vod_class = $this->model('VodClass');
+        $classData = $vod_class->tree(0, true, []);
+        View::assign("classData", $classData);
 
-        // $typeM = $this->model('ComicType');
-        // $typeData = $typeM->menuList(0);
-        // if ($id >0 ){
-        //    $typeRelatedM = $this->model('ComicTypeRelated');
-        //     $typeData = $typeRelatedM->checkTypeData($typeData, $id); 
-        // }
-        // View::assign("typeData", $typeData);
 
-        return $this->fetch('comic/edit');
+        return $this->fetch('vod/edit');
     }
 
     //推荐

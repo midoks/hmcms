@@ -17,10 +17,10 @@
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                 <form class="layui-form" action="" id="comic_form" onclick="return false;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('vod/batchDel')}','comic_list')">删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('vod/batchDel')}','comic_list')">批量删除</button>
                     </div>
 
-                    <div class="layui-inline mr0" >
+                    <div class="layui-inline mr0">
                         <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('新增漫画','{:url('vod/edit')}?id=0',1200,480)">添加</button>
                     </div>
 
@@ -141,7 +141,7 @@ function render_table(){
         title: '数据表',
         cols: [[
             {type: 'checkbox', fixed: 'left'},
-            {field:'id', title:'视频ID', width:100,sort:true},
+            {field:'id', title:'ID', width:100,sort:true},
             {field:'name', title:'名称', width:230},
             {field:'tid', title:'推荐', width:80,templet:'#tjTpl',sort:true},
             {field:'ttid', title:'人工推荐', width:120,templet:'#ttjTpl',sort:true},

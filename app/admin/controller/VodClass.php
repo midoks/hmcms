@@ -27,13 +27,12 @@ class VodClass extends AdminBase
 
         $m = $this->model('VodClass');
         $list = $m->tree(0, true, $wh);
-
         return $this->layuiJson(0, 'ok', $list);
     }
 
 
     public function edit($id=''){
-        $m = $this->model('VodClass');
+        $vod_class = $this->model('VodClass');
 
         if (!empty($id)){
             $data = $m->getDataByID($id);
@@ -41,7 +40,6 @@ class VodClass extends AdminBase
             $data = ['id' => 0,'status' => 0,'pid'=>0];
         }
         View::assign("data", $data);
-
 
         $wh = [];
         $wh['pid'] = 0;

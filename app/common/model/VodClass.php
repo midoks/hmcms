@@ -37,7 +37,7 @@ class VodClass extends Base {
 		return true;
    	}
 
-   	public function tree($pid = 0, $recursion = false, $wh = []){
+   	public function tree($pid = 0, $recursion = false, $wh = [], $deep = 0){
    		$m = $this->where('pid', $pid);
 
    		if (isset($wh['status'])){
@@ -55,17 +55,23 @@ class VodClass extends Base {
 			$list = $list->toArray();
 		}
 
+		// var_dump($deep);
+		$new_list = [];
 		if (!empty($list) && $recursion){
+			$deep++;
 			foreach ($list as $k => $v) {
-				$data = $this->tree($v['id'], $recursion, $wh);
+				$t = [];
+				$t[] = $v;
+				$data = $this->tree($v['id'], $recursion, $wh , $deep);
 				foreach ($data as $vd) {
 					$vd['name'] = '    ├ '.$vd['name'];
-					$list[] = $vd;
+					$t[] = $vd;
 				}
+				$new_list = array_merge($new_list,$t);
 			}
 		}
 
-		return $list;
+		return $new_list;
    	}
 
     
