@@ -35,7 +35,7 @@ class VodClass extends AdminBase
         $vod_class = $this->model('VodClass');
 
         if (!empty($id)){
-            $data = $m->getDataByID($id);
+            $data = $vod_class->getDataByID($id);
         } else {
             $data = ['id' => 0,'status' => 0,'pid'=>0];
         }
@@ -44,7 +44,7 @@ class VodClass extends AdminBase
         $wh = [];
         $wh['pid'] = 0;
         $wh['order'] = 'sort asc';
-        $parent = $m->list(1, 10000, $wh);
+        $parent = $vod_class->list(1, 10000, $wh);
         View::assign("parent", $parent['data']);
         return $this->fetch('vod_class/edit');
     }
