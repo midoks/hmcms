@@ -39,7 +39,6 @@ class Task extends AdminBase
             $page=1;
         }
 
-
         $m = $this->model('task');
 
         $data = $m->list($page, $limit, $wh);

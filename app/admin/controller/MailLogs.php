@@ -21,7 +21,7 @@ class MailLogs extends AdminBase
         $limit = $this->request->param('limit');
 
         $m = $this->model('MailLogs');
-        $data = $m->list();
+        $data = $m->list($page, $limit);
         $count = $data['total'];
         $list = $data['data'];
 

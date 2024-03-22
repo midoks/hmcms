@@ -42,25 +42,17 @@ class ComicClass extends AdminBase
     }
 
     public function classAdd(){
-        $name = $this->request->post('name');
-        $yname = $this->request->post('yname');
-        $pid = $this->request->post('pid');
-        $sort = $this->request->post('sort');
+        
         $id = $this->request->post('id');
 
-        if (empty($name)){
+        $data = [];
+        $data['name'] = $this->request->post('name');
+        $data['yname'] = $this->request->post('yname');
+        $data['pid'] = $this->request->post('pid');
+        $data['sort'] = $this->request->post('sort');
+
+        if (empty($data['name'])){
             return $this->layuiJson(-1, '名称不能为空');
-        }
-
-        $data = [
-            'name' => $name,
-            'yname' => $yname,
-            'pid' => $pid,
-            'sort' => $sort,
-        ];
-
-        if ($pid){
-            $data['pid'] = $pid;
         }
 
         $comic_class = $this->model('ComicClass');

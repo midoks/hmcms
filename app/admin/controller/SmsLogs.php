@@ -20,7 +20,7 @@ class SmsLogs extends AdminBase
         $limit = $this->request->param('limit');
 
         $m = $this->model('SmsLogs');
-        $data = $m->list();
+        $data = $m->list($page, $limit);
         $count = $data['total'];
         $list = $data['data'];
 

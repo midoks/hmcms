@@ -21,23 +21,19 @@ class ComicCommentReply extends AdminBase
         $page = $this->request->param('page');
         $limit = $this->request->param('limit');
 
-        $zd = $this->request->param('zd');
-        $key = $this->request->param('key','');
-        $kstime = $this->request->param('kstime');
-        $jstime = $this->request->param('jstime');
+       
+
+        $wh = [];
+        $wh['zd'] = $this->request->param('zd');
+        $wh['key'] = $this->request->param('key','');
+        $wh['kstime'] = $this->request->param('kstime');
+        $wh['jstime'] = $this->request->param('jstime');
 
         if( $page == 0 ) {
             $page=1;
         }
 
         $m = $this->model('ComicCommentReply');
-
-        $wh = [
-            'zd' => $zd,
-            'key' => $key,
-            'kstime' => $kstime,
-            'jstime' => $jstime,
-        ];
 
         $data = $m->list($page, $limit, $wh);
         $count = $data['total'];
