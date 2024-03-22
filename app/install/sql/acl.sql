@@ -75,8 +75,29 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 -- 视频【评论管理】
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 (43,  '视频评论', 'layui-icon-template-1',  '', 1, '','视频评论', 1, 'menu', 1,4),
-(44,  '评论列表', '',  '', 1, 'vod_comment/index','评论列表', 1, 'submenu', 1,43),
-(45,  '回复列表', '',  '', 1, 'vod_comment_reply/index','回复列表', 1, 'submenu', 1,43);
+(44,  '评论列表', '',  '', 1, 'vod_comment/index','评论列表', 1, 'submenu', 1,43);
+
+-- 小说【小说管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(45,  '小说管理', 'layui-icon-read',  '', 1, '','小说管理', 1, 'menu', 1, 2),
+(46,  '小说列表', '',  '', 1, 'novel/index','小说列表', 1, 'submenu', 1, 45),
+(47,  '小说分类', '',  '', 1, 'novel_class/index','小说分类', 1, 'submenu', 1, 45);
+
+-- 小说【评论管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(48,  '小说评论', 'layui-icon-template-1',  '', 1, '','小说评论', 1, 'menu', 1, 2),
+(49,  '评论列表', '',  '', 1, 'novel_comment/index','评论列表', 1, 'submenu', 1, 48);
+
+-- 文章【文章管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(50,  '文章管理', 'layui-icon-list',  '', 1, '','文章管理', 1, 'menu', 1,5),
+(51,  '文章列表', '',  '', 1, 'article/index','文章列表', 1, 'submenu', 1,50),
+(52,  '文章分类', '',  '', 1, 'article_class/index','文章分类', 1, 'submenu', 1,50);
+
+-- 文章【评论管理】
+INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
+(53,  '文章评论', 'layui-icon-template-1',  '', 1, '','文章评论', 1, 'menu', 1,5),
+(54,  '评论列表', '',  '', 1, 'article_comment/index','评论列表', 1, 'submenu', 1,53);
 
 
 -- 系统【权限管理】| API
@@ -118,9 +139,9 @@ INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`,
 
 -- 运营【财务管理】| API
 INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
-('列表', '',  '', 1, 'order/list','接口', 1, 'api', 1,26),
-('批量删除', '',  '', 1, 'order/batchDel','接口', 1, 'api', 1,26),
-('删除', '',  '', 1, 'order/del','接口', 1, 'api', 1,26);
+('列表', '',  '', 1, 'order/list','接口', 1, 'api', 1,24),
+('批量删除', '',  '', 1, 'order/batchDel','接口', 1, 'api', 1,24),
+('删除', '',  '', 1, 'order/del','接口', 1, 'api', 1,24);
 
 -- 运营【任务管理】 | API
 INSERT INTO `hm_admin_menu` (`name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
