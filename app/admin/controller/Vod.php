@@ -83,7 +83,7 @@ class Vod extends AdminBase
 
         $data = [];
         $data['name'] = $this->request->post('name');
-        $data['yname'] = $this->request->post('yname');
+        $data['name_en'] = $this->request->post('name_en');
         $data['sid'] = $this->request->post('sid');
         $data['cid'] = $this->request->post('cid');
         $data['yid'] = $this->request->post('yid');

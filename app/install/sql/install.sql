@@ -633,7 +633,6 @@ DROP TABLE IF EXISTS `hm_vod`;
 CREATE TABLE `hm_vod` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `cid` int(11) DEFAULT '0' COMMENT '类型ID',
-  `cpid` int(11) DEFAULT '0' COMMENT '类型PID',
   `group_id` int(11) DEFAULT '0' COMMENT '分组ID',
   `name` varchar(255) DEFAULT '0' COMMENT '名称',
   `name_en` varchar(255) DEFAULT '0' COMMENT '名称拼音',
@@ -722,6 +721,36 @@ CREATE TABLE `hm_vod` (
   KEY `state` (`state`),
   KEY `isend` (`isend`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='视频';
+
+-- ----------------------------
+-- Table structure for hm_vod_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_vod_comment`;
+CREATE TABLE `hm_vod_comment` (
+  `id` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mid` tinyint(1) unsigned NOT NULL DEFAULT '1' ,
+  `rid` bigint(10) unsigned NOT NULL DEFAULT '0' ,
+  `pid` bigint(10) unsigned NOT NULL DEFAULT '0' ,
+  `uid` bigint(10) unsigned NOT NULL DEFAULT '0' ,
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' ,
+  `name` varchar(60) NOT NULL DEFAULT '' ,
+  `ip` bigint(10) unsigned NOT NULL DEFAULT '0' ,
+  `content` text NOT NULL DEFAULT '',
+  `up` mediumint(8) unsigned NOT NULL DEFAULT '0' ,
+  `down` mediumint(8) unsigned NOT NULL DEFAULT '0' ,
+  `reply` mediumint(8) unsigned NOT NULL DEFAULT '0' ,
+  `report` tinyint(2) unsigned NOT NULL DEFAULT '0' ,
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `mid` (`mid`) USING BTREE,
+  KEY `rid` (`rid`) USING BTREE,
+  KEY `time` (`time`) USING BTREE,
+  KEY `pid` (`pid`),
+  KEY `uid` (`uid`),
+  KEY `reply` (`reply`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='视频评论';
+
 
 
 
