@@ -75,11 +75,11 @@ table.render({
     title: '数据表',
     cols: [[
         {type: 'checkbox', fixed: 'left'},
-        {field:'id', title:'ID', width:30},
-        {field:'uid', title:'会员ID'},
-        {field:'name', title:'类型'},
+        {field:'id', title:'ID', width:100},
+        {field:'uid', title:'会员ID', width:100},
+        {field:'name', title:'类型',width:120},
         {field:'text', title:'内容'},
-        {field:'did', title:'是否已读',toolbar: '#didTpl'},
+        {field:'did', title:'是否已读',toolbar: '#didTpl', width:90},
         {field:'create_time', title:'评论时间',width:170,},
         {title:'操作', toolbar: '#cmdTpl', width:70, fixed: 'right'}
      ]],

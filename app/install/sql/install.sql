@@ -345,6 +345,25 @@ CREATE TABLE `hm_mail_logs` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='邮件日志表';
 
 -- ----------------------------
+-- Table structure for hm_link
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_link`;
+CREATE TABLE `hm_link` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' ,
+  `name` varchar(60) NOT NULL DEFAULT '' ,
+  `sort` smallint(6) NOT NULL DEFAULT '0' ,
+  `time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
+  `url` varchar(255) NOT NULL DEFAULT '' COMMENT 'URL',
+  `logo` varchar(255) NOT NULL DEFAULT '' COMMENT 'LOGO',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `sort` (`sort`) USING BTREE,
+  KEY `type` (`type`) USING BTREE,
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='友情链接表';
+
+-- ----------------------------
 -- Table structure for hm_comic
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_comic`;
