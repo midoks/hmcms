@@ -52,7 +52,7 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 
 -- 运营【验证码管理】
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
-(31,  '验证码', 'layui-icon-reply-fill',  '', 1, '','验证码管理', 1, 'menu', 1,6),
+(31,  '验证管理', 'layui-icon-reply-fill',  '', 1, '','验证码管理', 1, 'menu', 1,6),
 (32,  '手机', '',  '', 1, 'tel_code/index','手机验证码', 1, 'submenu', 1,31),
 (33,  '邮件', '',  '', 1, 'mail_code/index','邮件验证码', 1, 'submenu', 1,31);
 

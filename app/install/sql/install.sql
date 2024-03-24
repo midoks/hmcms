@@ -896,6 +896,132 @@ CREATE TABLE `hm_article_comment` (
 
 
 
+-- ----------------------------
+-- Table structure for hm_novel
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_novel`;
+CREATE TABLE `hm_novel` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uid` bigint unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `type_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '分类ID',
+  `group_id` smallint(6) unsigned NOT NULL DEFAULT '0' ,
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '名称',
+  `en` varchar(255) NOT NULL DEFAULT '' COMMENT '英文',
+  `sub` varchar(255) NOT NULL DEFAULT '' COMMENT '',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
+  `letter` char(1) NOT NULL DEFAULT '' COMMENT '首字母',
+  `color` varchar(6) NOT NULL DEFAULT '' COMMENT '颜色',
+  `from` varchar(30) NOT NULL DEFAULT '' COMMENT '来自',
+  `author` varchar(30) NOT NULL DEFAULT '' COMMENT '作者',
+  `tag` varchar(100) NOT NULL DEFAULT ''  COMMENT '标签',
+  `class` varchar(255) NOT NULL DEFAULT '' ,
+  `pic` varchar(1024) NOT NULL DEFAULT '' ,
+  `pic_thumb` varchar(1024) NOT NULL DEFAULT '' ,
+  `pic_slide` varchar(1024) NOT NULL DEFAULT '' ,
+  `pic_screenshot` text,
+  `blurb` varchar(255) NOT NULL DEFAULT '' ,
+  `remarks` varchar(100) NOT NULL DEFAULT '' ,
+  `jumpurl` varchar(150) NOT NULL DEFAULT '' ,
+  `tpl` varchar(30) NOT NULL DEFAULT '' ,
+  `level` tinyint(1) unsigned NOT NULL DEFAULT '0' ,
+  `lock` tinyint(1) unsigned NOT NULL DEFAULT '0' ,
+  `points` smallint(6) unsigned NOT NULL DEFAULT '0' ,
+  `points_detail` smallint(6) unsigned NOT NULL DEFAULT '0' ,
+  `up` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '顶',
+  `down` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '',
+  `hits` bigint DEFAULT '0' COMMENT '总点击',
+  `yhits` bigint DEFAULT '0' COMMENT '月点击',
+  `zhits` bigint DEFAULT '0' COMMENT '周点击',
+  `rhits` bigint DEFAULT '0' COMMENT '日点击',
+  `hits_uptime` bigint NOT NULL DEFAULT '0' COMMENT '统计更新时间',
+  `score` decimal(3,1) unsigned NOT NULL DEFAULT '0.0' ,
+  `score_all` mediumint(8) unsigned NOT NULL DEFAULT '0' ,
+  `score_num` mediumint(8) unsigned NOT NULL DEFAULT '0' ,
+  `pwd` varchar(10) NOT NULL DEFAULT '' ,
+  `pwd_url` varchar(255) NOT NULL DEFAULT '' ,
+  `title` mediumtext NOT NULL ,
+  `note` mediumtext NOT NULL ,
+  `content` mediumtext NOT NULL ,
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `type_id` (`type_id`) USING BTREE,
+  KEY `level` (`level`) USING BTREE,
+  KEY `letter` (`letter`) USING BTREE,
+  KEY `down` (`down`) USING BTREE,
+  KEY `up` (`up`) USING BTREE,
+  KEY `tag` (`tag`) USING BTREE,
+  KEY `name` (`name`) USING BTREE,
+  KEY `en` (`en`) USING BTREE,
+  KEY `hits` (`hits`) USING BTREE,
+  KEY `yhits` (`yhits`) USING BTREE,
+  KEY `zhits` (`zhits`) USING BTREE,
+  KEY `rhits` (`rhits`) USING BTREE,
+  KEY `hits_uptime` (`hits_uptime`) USING BTREE,
+  KEY `lock` (`lock`),
+  KEY `score` (`score`),
+  KEY `score_all` (`score_all`),
+  KEY `score_num` (`score_num`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='小说';
+
+-- -----------------------------------------
+-- Table structure for hm_novel_class
+-- -----------------------------------------
+DROP TABLE IF EXISTS `hm_novel_class`;
+CREATE TABLE `hm_novel_class` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `pid` int(11) DEFAULT '0' COMMENT '类型PID',
+  `name` varchar(255) DEFAULT '0' COMMENT '名称',
+  `en` varchar(255) DEFAULT '0' COMMENT '英文名称',
+  `sort` smallint unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `key` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词',
+  `desc` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
+  `extend` text  COMMENT '扩展信息',
+  `logo` varchar(255) NOT NULL DEFAULT '' COMMENT 'LOGO',
+  `pic` varchar(255) NOT NULL DEFAULT '' COMMENT '图片信息',
+  `jumpurl` varchar(255) NOT NULL DEFAULT '' COMMENT '跳转地址',
+  `status` tinyint(1) unsigned DEFAULT NULL COMMENT "状态|1:正常,0:禁止显示",
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `sort` (`sort`) USING BTREE,
+  KEY `pid` (`pid`) USING BTREE,
+  KEY `name` (`name`) USING BTREE,
+  KEY `en` (`en`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='小说分类';
+
+
+-- ----------------------------
+-- Table structure for hm_novel_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_novel_comment`;
+CREATE TABLE `hm_novel_comment` (
+  `id` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mid` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '类型|1,文章:2,专题',
+  `rid` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '回复ID',
+  `pid` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '上级ID',
+  `uid` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+  `name` varchar(60) NOT NULL DEFAULT '' ,
+  `ip` bigint(10) unsigned NOT NULL DEFAULT '0' ,
+  `content` text,
+  `up` mediumint(8) unsigned NOT NULL DEFAULT '0' ,
+  `down` mediumint(8) unsigned NOT NULL DEFAULT '0' ,
+  `reply` mediumint(8) unsigned NOT NULL DEFAULT '0' ,
+  `report` tinyint(2) unsigned NOT NULL DEFAULT '0' ,
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `mid` (`mid`) USING BTREE,
+  KEY `rid` (`rid`) USING BTREE,
+  KEY `pid` (`pid`),
+  KEY `uid` (`uid`),
+  KEY `reply` (`reply`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='小说评论';
+
+
+
 
 
 
