@@ -17,11 +17,11 @@
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                 <form class="layui-form" action="" id="comic_form" onclick="return false;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('vod/batchDel')}','comic_list')">批量删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('article/batchDel')}','comic_list')">批量删除</button>
                     </div>
 
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('新增漫画','{:url('vod/edit')}?id=0',1200,480)">添加</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('添加','{:url('article/edit')}?id=0',1200,480)">添加</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -33,9 +33,10 @@
                     <div class="layui-inline select100 mr0">
                         <div class="layui-input-inline h30">
                             <select name="zd">
-                                <option value="name">漫画名称</option>
-                                <option value="author">漫画作者</option>
-                                <option value="id">漫画ID</option>
+                                <option value="name">名称</option>
+                                <option value="author">作者</option>
+                                <option value="uid">用户ID</option>
+                                <option value="id">ID</option>
                             </select>
                         </div>
                     </div>
@@ -75,15 +76,6 @@
                             </select>
                         </div>
                     </div>
-                    <div class="layui-inline select70 mr0">
-                        <div class="layui-input-inline h30">
-                            <select name="ttid">
-                                <option value="">人工推荐</option>
-                                <option value="2">是</option>
-                                <option value="1">否</option>
-                            </select>
-                        </div>
-                    </div>
 
                     <div class="layui-inline mr0">
                         <button class="layui-btn layui-btn-sm" id="table-sreach" data-id="list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
@@ -116,8 +108,6 @@ $('#status li').click(function(){
 });
 
 
-
-
 function render_table(){
 
     var where_data = $('#comic_form').serializeArray();
@@ -144,7 +134,6 @@ function render_table(){
             {field:'id', title:'ID', width:100,sort:true},
             {field:'name', title:'名称', width:230},
             {field:'tid', title:'推荐', width:80,templet:'#tjTpl',sort:true},
-            {field:'ttid', title:'人工推荐', width:120,templet:'#ttjTpl',sort:true},
             {field:'pay', title:'收费', width:100,templet:'#payTpl'},
             {field:'author', title:'作者', width:100},
             {field:'shits', title:'收藏', width:80,sort:true},
@@ -175,25 +164,12 @@ render_table();
 table.on('tool(list)', function(obj){
     switch(obj.event){
         case 'tid':triggerTid(obj);break;
-        case 'ttid':triggerTtid(obj);break;
     };
 });
 
 function triggerTid(obj){
     layer.confirm('你真的更改推荐吗?', { closeBtn: 2, icon: 3 }, function() {
         $.post('{:url("vod/triggerTid")}', {'id':obj.data.id}, function(data) {
-            showMsg(data.msg,function(){
-                if (data.code>-1){
-                    location.reload();
-                }
-            },{icon:data.code>-1?1:2});
-        },'json');
-    });
-}
-
-function triggerTtid(obj){
-    layer.confirm('你真的更改人工推荐吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("vod/triggerTtid")}', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
                 if (data.code>-1){
                     location.reload();
@@ -215,13 +191,6 @@ function triggerTtid(obj){
     {{#  } }}
 </script>
 
-<script type="text/html" id="ttjTpl">
-    {{#  if(d.ttid == 1){ }}
-        <div style="color:#080;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="0" title="已推荐，点击取消推荐" lay-event='ttid'>&#xe605;</div>
-    {{#  } else { }}
-        <div style="color:#f30;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="1" title="未推荐，点击推荐" lay-event='ttid'>&#x1006;</div>
-    {{#  } }}
-</script>
 
 <script type="text/html" id="payTpl">
     {{#  if(d.pay == 2){ }}

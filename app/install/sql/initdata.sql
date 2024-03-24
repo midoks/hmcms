@@ -125,7 +125,7 @@ INSERT INTO `hm_vod_class` (`id`, `pid`, `name`, `en`, `sort`, `status`, `create
 (37, 4, '记录', 'record', 99, 1, '2024-01-14 23:58:37', '2024-01-14 23:58:37');
 
 
-truncate table hm_article_class;
+truncate table hm_article_class
 INSERT INTO `hm_article_class` (`id`, `pid`, `name`, `en`, `sort`, `status`, `create_time`, `update_time`) VALUES
 (1, 0, '财经', 'finance', 99, 1, '2024-01-14 23:58:37', '2024-01-14 23:58:37'),
 (2, 0, '科技', 'sat', 99, 1, '2024-01-14 23:58:37', '2024-01-14 23:58:37'),
