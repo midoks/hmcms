@@ -872,11 +872,11 @@ CREATE TABLE `hm_article_class` (
 DROP TABLE IF EXISTS `hm_article_comment`;
 CREATE TABLE `hm_article_comment` (
   `id` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
-  `mid` tinyint(1) unsigned NOT NULL DEFAULT '1' ,
-  `rid` bigint(10) unsigned NOT NULL DEFAULT '0' ,
-  `pid` bigint(10) unsigned NOT NULL DEFAULT '0' ,
-  `uid` bigint(10) unsigned NOT NULL DEFAULT '0' ,
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' ,
+  `mid` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '类型|1,文章:2,专题',
+  `rid` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '回复ID',
+  `pid` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '上级ID',
+  `uid` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   `name` varchar(60) NOT NULL DEFAULT '' ,
   `ip` bigint(10) unsigned NOT NULL DEFAULT '0' ,
   `content` text,

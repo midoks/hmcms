@@ -418,3 +418,21 @@ function send_sms($tel, $code, $type, $sms_type, $config)
     }
 }
 
+function is_wxpay_url($url){
+    $r = "/weixin[s]?:\/\/[\w.]+[\w\/]*[\w.]*\??[\w=&\+\%]*/is";
+    if(preg_match($r,$url)){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function is_url($url){
+    $r = "/http[s]?:\/\/[\w.]+[\w\/]*[\w.]*\??[\w=&\+\%]*/is";
+    if(preg_match($r,$url)){
+        return true;
+    }else{
+        return false;
+    }
+}
+
