@@ -4,9 +4,9 @@ namespace app\common\model;
 
 use think\Db;
 
-class Article extends Base {
+class ArticleClass extends Base {
 
-	protected $name = 'article';
+	protected $name = 'article_class';
 	protected $pk = 'id';
 
 
@@ -43,19 +43,19 @@ class Article extends Base {
             $m->where('pay', $wh['pay']);
         }
 
-        if (!empty($wh['kstime'])) {
-            $m->whereTime('addtime', '>=', strtotime($wh['kstime']));
-        }
-        if (!empty($wh['jstime'])) {
-        	$m->whereTime('addtime', '<=', strtotime($wh['jstime']));
-        }
-
-		// if (!empty($wh['kstime'])) {
-        //     $m->whereTime('create_time', '>=', $wh['kstime']);
+        // if (!empty($wh['kstime'])) {
+        //     $m->whereTime('addtime', '>=', strtotime($wh['kstime']));
         // }
         // if (!empty($wh['jstime'])) {
-        // 	$m->whereTime('create_time', '<=', $wh['jstime']);
+        // 	$m->whereTime('addtime', '<=', strtotime($wh['jstime']));
         // }
+
+		if (!empty($wh['kstime'])) {
+            $m->whereTime('create_time', '>=', $wh['kstime']);
+        }
+        if (!empty($wh['jstime'])) {
+        	$m->whereTime('create_time', '<', $wh['jstime']);
+        }
 
         if (!empty($wh['sort_field']) && !empty($wh['sort_order'])){
             $m->order($wh['sort_field'], $wh['sort_order']);
@@ -91,7 +91,43 @@ class Article extends Base {
 		return $list;
 	}
 
-    public function dataListPos($pos = 0, $wh = [], $size = 10, $order = ['id'=>'desc']){
+    public function tree($pid = 0, $recursion = false, $wh = [], $deep = 0){
+        $m = $this->where('pid', $pid);
+
+        if (isset($wh['status'])){
+            $m->where('status', $wh['status']);
+        }
+
+        if (isset($wh['order'])){
+            $m->order($wh['order']);
+        } else {
+            $m->order('sort asc');
+        }
+
+        $list = $m->select();
+        if ($list){
+            $list = $list->toArray();
+        }
+
+        $new_list = [];
+        if (!empty($list) && $recursion){
+            $deep++;
+            foreach ($list as $k => $v) {
+                $t = [];
+                $t[] = $v;
+                $data = $this->tree($v['id'], $recursion, $wh , $deep);
+                foreach ($data as $vd) {
+                    $vd['name'] = '    ├ '.$vd['name'];
+                    $t[] = $vd;
+                }
+                $new_list = array_merge($new_list,$t);
+            }
+        }
+        
+        return $new_list;
+    }
+
+    public function pos($pos = 0, $wh = [], $size = 10, $order = ['id'=>'desc']){
 
         $args = get_defined_vars();
         // var_dump($args);
@@ -112,10 +148,10 @@ class Article extends Base {
         }
 
         if (!empty($wh['kstime'])) {
-            $m->whereTime('addtime', '>=', strtotime($wh['kstime']));
+            $m->whereTime('create_time', '>=', $wh['kstime']);
         }
         if (!empty($wh['jstime'])) {
-            $m->whereTime('addtime', '<=', strtotime($wh['jstime']));
+            $m->whereTime('create_time', '<', $wh['jstime']);
         }
 
         if (!empty($order)){

@@ -626,7 +626,7 @@ CREATE TABLE `hm_vod_class` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `pid` int(11) DEFAULT '0' COMMENT '类型PID',
   `name` varchar(255) DEFAULT '0' COMMENT '名称',
-  `name_en` varchar(255) DEFAULT '0' COMMENT '英文名称',
+  `en` varchar(255) DEFAULT '0' COMMENT '英文名称',
   `sort` smallint unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   `key` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词',
   `desc` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
@@ -654,7 +654,7 @@ CREATE TABLE `hm_vod` (
   `cid` int(11) DEFAULT '0' COMMENT '类型ID',
   `group_id` int(11) DEFAULT '0' COMMENT '分组ID',
   `name` varchar(255) DEFAULT '0' COMMENT '名称',
-  `name_en` varchar(255) DEFAULT '0' COMMENT '名称拼音',
+  `en` varchar(255) DEFAULT '0' COMMENT '名称拼音',
   `sub` varchar(255) NOT NULL DEFAULT '' COMMENT '副标题',
   `letter` char(1) NOT NULL DEFAULT '' COMMENT '首字母',
   `color` varchar(6) NOT NULL DEFAULT '' COMMENT '颜色' ,
@@ -775,7 +775,8 @@ CREATE TABLE `hm_vod_comment` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_article`;
 CREATE TABLE `hm_article` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uid` bigint unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
   `type_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '分类ID',
   `group_id` smallint(6) unsigned NOT NULL DEFAULT '0' ,
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '名称',
