@@ -7,12 +7,12 @@ use app\common\controller\Admin as AdminBase;
 use think\facade\View;
 use think\facade\Db;
 
-class VodClass extends AdminBase
+class ArticleClass extends AdminBase
 {
 
     public function index()
     {
-        return $this->fetch('vod_class/index');
+        return $this->fetch('article_class/index');
     }
 
     public function list(){
@@ -24,14 +24,14 @@ class VodClass extends AdminBase
         $wh['sort_field'] = $this->request->param('sort_field','');
         $wh['sort_order'] = $this->request->param('sort_order','');
 
-        $m = $this->model('VodClass');
+        $m = $this->model('ArticleClass');
         $list = $m->tree(0, true, $wh);
         return $this->layuiJson(0, 'ok', $list);
     }
 
 
     public function edit($id=''){
-        $vod_class = $this->model('VodClass');
+        $vod_class = $this->model('ArticleClass');
 
         if (!empty($id)){
             $data = $vod_class->getDataByID($id);
@@ -45,7 +45,7 @@ class VodClass extends AdminBase
         $wh['order'] = 'sort asc';
         $parent = $vod_class->list(1, 10000, $wh);
         View::assign("parent", $parent['data']);
-        return $this->fetch('vod_class/edit');
+        return $this->fetch('article_class/edit');
     }
 
     public function save(){
@@ -66,11 +66,11 @@ class VodClass extends AdminBase
             return $this->returnJson(-1, '分类名称不能为空~!');
         }
 
-        if (empty($data['name_en'])) {
-            $data['name_en'] = toPinyin($data['name']);
+        if (empty($data['en'])) {
+            $data['en'] = toPinyin($data['name']);
         }
 
-        $m = $this->model('VodClass');
+        $m = $this->model('ArticleClass');
         $r = $m->dataSave($data, $id);
 
         $msg_head = $id > 0 ? '更新' : '添加';
@@ -88,7 +88,7 @@ class VodClass extends AdminBase
             return $this->returnJson(-1, '设置ID不能空!');
         }
 
-        $m = $this->model('VodClass');
+        $m = $this->model('ArticleClass');
         $m->dataTriggerField($id,'status');
         return $this->returnJson(1, '设置成功!');
     }
@@ -99,7 +99,7 @@ class VodClass extends AdminBase
             return $this->returnJson(-1, '删除ID不能空!');
         }
 
-        $m = $this->model('VodClass');
+        $m = $this->model('ArticleClass');
         $res = $m->dataDelete($id);
         if (!$res){
             return $this->returnJson(-1, '删除失败!');

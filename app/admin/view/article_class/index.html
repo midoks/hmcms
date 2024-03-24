@@ -1,0 +1,82 @@
+{include file="app/admin/view/common/header.html" /}
+
+<div class="layui-fluid">
+    <div class="layui-col-md12" style="padding: 5px;">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('新增','{:url('article_class/edit')}?id=0',600,480)">添加</button>
+                    </div>
+                </div>
+                <div id="list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+table.render({
+    elem: '#list',
+    url: '{:url("article_class/list")}',
+    defaultToolbar: [],
+    title: '数据表',
+    cols: [[
+        // {field:'id', title:'ID', width:30},
+        {field:'name', title:'名称',},
+        {field:'name_en', title:'英文',},
+        {field:'sort', title:'排序',},
+        {field:'status', title:'是否开启',width:100,toolbar: '#statusTpl'},
+        {title:'操作', toolbar: '#cmdTpl', width:150, fixed: 'right',}
+     ]],
+    page: false
+});
+
+table.on('tool(list)', function(obj){
+    switch(obj.event){
+        case 'status':menuStatus(obj);break;
+    };
+});
+
+function menuStatus(obj){
+    layer.confirm('你真的更改状态吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('{:url("article_class/triggerStatus")}', {'id':obj.data.id}, function(data) {
+            showMsg(data.msg,function(){
+                if (data.code>-1){
+                    location.reload();
+                }
+            },{icon:data.code>-1?1:2});
+        },'json');
+    });
+}
+
+///
+});
+</script>
+
+<script type="text/html" id="statusTpl">
+    {{# if (d.status == 1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="status">已启用</a>
+    {{# } else if (d.status == 0) { }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">已暂停</a>
+    {{# } }}
+</script>
+
+
+<script type="text/html" id="cmdTpl">
+    
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('编辑','{:url('article_class/edit')}?id={{d.id}}',600,480)"><i class="layui-icon">&#xe624;</i></a>
+    <a class="layui-btn layui-btn-xs" onclick="Admin.open('编辑','{:url('article_class/edit')}?id={{d.id}}',600,480)"><i class="layui-icon">&#xe642;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" title="删除" onclick="Admin.del(this, '{:url('article_class/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
+</script>
+
+
+{include file="app/admin/view/common/footer.html" /}
