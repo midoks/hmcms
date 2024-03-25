@@ -127,6 +127,7 @@ form.on('radio(index-mode)', function (r) {
         $('blockquote').hide();
     }
 });
+
 form.on('select(url)', function (r) {
     var _id = $(r.elem).attr('data-id');
     $("input[name='"+_id+"']").val(r.value);
@@ -144,6 +145,7 @@ $('.hmcms-label').click(function(){
 ClassicEditor.create( document.querySelector( '#user' ), {
     // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ],
     language:'zh-cn',
+    updateSourceElementOnDestroy: true
 }).then( editor => {
     window.editor = editor;
     data = editor.getData();
