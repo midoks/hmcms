@@ -7,7 +7,7 @@
             <div class="layui-card-body">
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('vod_comment/batchDel')}','comic_comment')">批量删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('novel_comment/batchDel')}','comic_comment')">批量删除</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -35,11 +35,11 @@
                     </div>
 
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm" data-id="comic_comment" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
+                        <button class="layui-btn layui-btn-sm" data-id="list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
                         </button>
                     </div>
                 </div>
-                <div id="comic_comment"></div>
+                <div id="list"></div>
             </div>
         </div>
     </div>
@@ -56,9 +56,8 @@ var admin = layui.admin
 ,table = layui.table;
 
 table.render({
-    elem: '#comic_comment',
-    url: '{:url("comic_comment/list")}',
-    // toolbar: '#toolbar_list',
+    elem: '#list',
+    url: '{:url("novel_comment/list")}',
     defaultToolbar: [],
     title: '数据表',
     cols: [[
@@ -99,7 +98,7 @@ table.render({
 
 
 <script type="text/html" id="cmdTpl">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('comic_comment/del')}','{{d.id}}')">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('novel_comment/del')}','{{d.id}}')">删除</a>
 </script>
 
 
