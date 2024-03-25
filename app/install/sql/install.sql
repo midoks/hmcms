@@ -1001,6 +1001,43 @@ CREATE TABLE `hm_novel_class` (
   KEY `en` (`en`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='小说分类';
 
+-- -----------------------------------------
+-- Table structure for hm_novel_source
+-- -----------------------------------------
+DROP TABLE IF EXISTS `hm_novel_source`;
+CREATE TABLE `hm_novel_source` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT '0' COMMENT '名称',
+  `en` varchar(255) DEFAULT '0' COMMENT '英文名称',
+  `remarks` varchar(100) NOT NULL DEFAULT ''  COMMENT '备注',
+  `sort` smallint unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `status` tinyint(1) unsigned DEFAULT NULL COMMENT "状态|1:正常,0:禁止显示",
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `sort` (`sort`) USING BTREE,
+  KEY `name` (`name`) USING BTREE,
+  KEY `en` (`en`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='小说来源';
+
+-- -----------------------------------------
+-- Table structure for hm_novel_level
+-- -----------------------------------------
+DROP TABLE IF EXISTS `hm_novel_level`;
+CREATE TABLE `hm_novel_level` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT '0' COMMENT '名称',
+  `remarks` varchar(100) NOT NULL DEFAULT ''  COMMENT '备注',
+  `sort` smallint unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `status` tinyint(1) unsigned DEFAULT NULL COMMENT "状态|1:正常,0:禁止显示",
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `sort` (`sort`) USING BTREE,
+  KEY `name` (`name`) USING BTREE,
+  KEY `en` (`en`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='小说推荐管理';
+
 
 -- ----------------------------
 -- Table structure for hm_novel_comment
