@@ -33,6 +33,8 @@
     margin-left: 150px;
     min-height: 36px;
 }
+
+
 </style>
 
 <div class="layui-fluid">
@@ -51,8 +53,8 @@
                                 
                                 <div class="layui-form-item w120">
                                     <label class="layui-form-label layui-form-required">用户协议:</label>
-                                    <div class="layui-input-block">
-                                    	<textarea style="min-height:100px;" name="protocol[user]" placeholder="用户协议" class="layui-textarea">{$protocol['user']|default='用户协议'}</textarea>
+                                    <div class="layui-input-block" style="width:800px;">
+                                    	<textarea id="user" style="min-height:100px;" name="protocol[user]" placeholder="用户协议" class="layui-textarea">{$protocol['user']|default='用户协议'}</textarea>
                                     </div>
                                 </div>
 
@@ -70,7 +72,7 @@
                                 
                                 <div class="layui-form-item w120">
                                     <label class="layui-form-label layui-form-required">隐私政策:</label>
-                                    <div class="layui-input-block">
+                                    <div class="layui-input-block" style="width:800px;">
                                     	<textarea style="min-height:100px;" name="protocol[privacy]" placeholder="隐私政策" class="layui-textarea">{$protocol['privacy']|default='隐私政策'}</textarea>
                                     </div>
                                 </div>
@@ -89,7 +91,7 @@
                                 
                                 <div class="layui-form-item w120">
                                     <label class="layui-form-label layui-form-required">注销协议:</label>
-                                    <div class="layui-input-block">
+                                    <div class="layui-input-block" style="width:800px;">
                                     	<textarea style="min-height:100px;" name="protocol[cancellation]" placeholder="注销协议" class="layui-textarea">{$protocol['cancellation']|default='注销协议'}</textarea>
                                     </div>
                                 </div>
@@ -109,5 +111,52 @@
     </div>
 </div>
 
+<script type="text/javascript">
+layui.config({
+    base: '{__STATIC__}/admin/layuiadmin/'
+}).use(['layer','form'], function () {
+//
+var form = layui.form,
+layer = layui.layer;
+
+//监听伪静态
+form.on('radio(index-mode)', function (r) {
+    if(r.value == '1'){
+        $('blockquote').show();
+    }else{
+        $('blockquote').hide();
+    }
+});
+form.on('select(url)', function (r) {
+    var _id = $(r.elem).attr('data-id');
+    $("input[name='"+_id+"']").val(r.value);
+});
+
+$('.hmcms-label').click(function(){
+    var id= $(this).attr('data-id');
+    var tpl= $(this).attr('data-name');
+    // console.log(id,tpl);
+    layedit.setContent(eval('editor'+id), tpl, true);
+});
+
+
+
+ClassicEditor.create( document.querySelector( '#user' ), {
+    // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ],
+    language:'zh-cn',
+}).then( editor => {
+    window.editor = editor;
+    data = editor.getData();
+    editor.updateSourceElement();
+    console.log(data);
+}).catch( err => {
+    console.error( err.stack );
+});
+
+//
+});
+
+
+</script>
 
 {include file="app/admin/view/common/footer.html" /}

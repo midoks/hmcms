@@ -250,7 +250,7 @@
                                 
                                 <div class="layui-form-item w120">
                                     <label class="layui-form-label">验证码发送标题:</label>
-                                    <div class="layui-input-block">
+                                    <div class="layui-input-block" style="width: 800px;">
                                         <!-- 您正在{site_name}操作的验证码 -->
                                         <input type="text" name="mail[tpl][code_title]" placeholder="验证码发送邮件标题" value="{if isset($mail['tpl']['code_title']) && $mail['tpl']['code_title'] !== ''}{$mail['tpl']['code_title']}{else}验证码-{code}{/if}" class="layui-input"/>
                                     </div>
@@ -258,8 +258,8 @@
 
                                 <div class="layui-form-item w120">
                                     <label class="layui-form-label">验证码发送内容:</label>
-                                    <div class="layui-input-block">
-                                        <textarea lay-verify="editor1" id="editor_code_msg" name="mail[tpl][code_msg]" placeholder="验证码发送内容" class="layui-textarea">{if isset($mail['tpl']['code_msg']) && $mail['tpl']['code_msg'] !== ''}{$mail['tpl']['code_msg']}{else}验证码为：{code}，验证码将在5分钟后失效。请及时使用。如果非本人操作请忽略,有任何疑问与我们联系。{/if}</textarea>
+                                    <div class="layui-input-block" style="width: 800px;">
+                                        <textarea lay-verify="editor" id="editor_code_msg" name="mail[tpl][code_msg]" placeholder="验证码发送内容" class="layui-textarea">{if isset($mail['tpl']['code_msg']) && $mail['tpl']['code_msg'] !== ''}{$mail['tpl']['code_msg']}{else}验证码为：{code}，验证码将在5分钟后失效。请及时使用。如果非本人操作请忽略,有任何疑问与我们联系。{/if}</textarea>
                                         <div class="layui-form-mid layui-word-aux">
                                             验证码：<a class="hmcms-label" href="javascript:" data-id="1" data-name="{code}" title="验证码">{code}</a>
                                         </div>
@@ -311,17 +311,7 @@ $('.hmcms-label').click(function(){
     layedit.setContent(eval('editor'+id), tpl, true);
 });
 
-form.verify({
-    editor_code_msg: function(value) {
-        layedit.sync(editor_code_msg);
-    },
-    // editor2: function(value) {
-    //     layedit.sync(editor2);
-    // },
-    // editor3: function(value) {
-    //     layedit.sync(editor3);
-    // }
-});
+
 
 
 form.on('submit(submit_slave_test)', function(data){
@@ -378,7 +368,29 @@ form.on('submit(submit_master_test)', function(data){
     return false;
 });
 
+form.verify({
+    editor_code_msg: function(value) {
+        layedit.sync(editor_code_msg);
+    },
+    // editor2: function(value) {
+    //     layedit.sync(editor2);
+    // },
+    // editor3: function(value) {
+    //     layedit.sync(editor3);
+    // }
+});
+
 //
+});
+
+
+
+ClassicEditor.create( document.querySelector( '#editor_code_msg' ), {
+    // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+}).then( editor => {
+    window.editor = editor;
+}).catch( err => {
+    console.error( err.stack );
 });
 
 </script>

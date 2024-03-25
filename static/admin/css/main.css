@@ -13,3 +13,7 @@
 .select120,.select120 .layui-unselect,.select120 .layui-input-inline{
     width: 120px!important;
 }
+
+.ck-editor__editable_inline {
+    min-height: 400px;
+}
