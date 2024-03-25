@@ -1,27 +1,13 @@
 {include file="app/admin/view/common/header.html" /}
 
 <div class="layui-fluid">
-	<div class="layui-col-md12" style="padding: 5px;">
-		<div class="layui-card">
-		  	<div class="layui-card-body">
-
-                <div class="layui-tab layui-tab-brief">
-                    <ul class="layui-tab-title" id="status">
-                        <li class="layui-this" data-status="1">已审视频</li>
-                        <li data-status="0">待审视频</li>
-                        <li data-status="2">未通过视频</li>
-                        <li data-status="3">检测重复视频</li>
-                    </ul>
-                </div>
-
+    <div class="layui-col-md12" style="padding: 5px;">
+        <div class="layui-card">
+            
+            <div class="layui-card-body">
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
-                <form class="layui-form" action="" id="comic_form" onclick="return false;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('vod/batchDel')}','comic_list')">批量删除</button>
-                    </div>
-
-                    <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('新增漫画','{:url('vod/edit')}?id=0',1200,480)">添加</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('vod_comment/batchDel')}','comic_comment')">批量删除</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -32,10 +18,12 @@
 
                     <div class="layui-inline select100 mr0">
                         <div class="layui-input-inline h30">
-                            <select name="zd">
-                                <option value="name">漫画名称</option>
-                                <option value="author">漫画作者</option>
-                                <option value="id">漫画ID</option>
+                            <select name="zd" class="h30">
+                                <option value="0">无</option>
+                                <option value="text">评论内容</option>
+                                <option value="mid">漫画ID</option>
+                                <option value="uid">会员ID</option>
+                                <option value="ip">评论IP</option>
                             </select>
                         </div>
                     </div>
@@ -46,55 +34,15 @@
                         </div>
                     </div>
 
-                    <div class="layui-inline select70 mr0">
-                        <div class="layui-input-inline h30">
-                            <select name="serialize">
-                                <option value="">状态</option>
-                                <option value="连载">连载</option>
-                                <option value="完结">完结</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="layui-inline select70 mr0">
-                        <div class="layui-input-inline h30">
-                            <select name="pay">
-                                <option value="">收费</option>
-                                <option value="1">否</option>
-                                <option value="2">是</option>
-                                <option value="3">VIP</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-inline select70 mr0">
-                        <div class="layui-input-inline h30">
-                            <select name="tid">
-                                <option value="">推荐</option>
-                                <option value="2">是</option>
-                                <option value="1">否</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-inline select70 mr0">
-                        <div class="layui-input-inline h30">
-                            <select name="ttid">
-                                <option value="">人工推荐</option>
-                                <option value="2">是</option>
-                                <option value="1">否</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm" id="table-sreach" data-id="list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
+                        <button class="layui-btn layui-btn-sm" data-id="comic_comment" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
                         </button>
                     </div>
                 </div>
-                </form>
-			    <div id="list"></div>
-		  	</div>
-		</div>
-	</div>
+                <div id="comic_comment"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -107,147 +55,52 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
-
-$('#status li').click(function(){
-    $('#status li').removeClass('layui-this');
-    $(this).addClass('layui-this');
-
-    render_table();
+table.render({
+    elem: '#comic_comment',
+    url: '{:url("comic_comment/list")}',
+    // toolbar: '#toolbar_list',
+    defaultToolbar: [],
+    title: '数据表',
+    cols: [[
+        {type: 'checkbox', fixed: 'left'},
+        {field:'id', title:'ID', width:30},
+        {field:'mid', title:'漫画ID'},
+        {field:'uid', title:'会员ID'},
+        {field:'reply_num', title:'回复总数'},
+        {field:'text', title:'内容'},
+        {field:'machine', title:'来源'},
+        {field:'ip', title:'IP'},
+        {field:'zan', title:'赞', width:20,},
+        {field:'create_time', title:'评论时间',width:170,},
+        {title:'操作', toolbar: '#cmdTpl', width:100, fixed: 'right'}
+     ]],
+    page: true
 });
 
+// table.on('tool(list)', function(obj){
+//     console.log(obj);
+//     switch(obj.event){
+//         case 'delete':opDelete(obj);break;
+//         case 'edit':opAdd(obj);break;
+//     };
+// });
 
-
-
-function render_table(){
-
-    var where_data = $('#comic_form').serializeArray();
-    where_data = array2arr(where_data);
-
-    if (where_data['times']) {
-        var searchDate = where_data['times'].split(' - ');
-        where_data['kstime'] = searchDate[0];
-        where_data['jstime'] = searchDate[1];
-    } else {
-        where_data['kstime'] = '';
-        where_data['jstime'] = '';
-    }
-    where_data['times'] = undefined;
-    var status = $('#status li.layui-this').data('status');
-
-    table.render({
-        elem: '#list',
-        url: '{:url("vod/list")}?status='+status,
-        defaultToolbar: [],
-        title: '数据表',
-        cols: [[
-            {type: 'checkbox', fixed: 'left'},
-            {field:'id', title:'ID', width:100,sort:true},
-            {field:'name', title:'名称', width:230},
-            {field:'tid', title:'推荐', width:80,templet:'#tjTpl',sort:true},
-            {field:'ttid', title:'人工推荐', width:120,templet:'#ttjTpl',sort:true},
-            {field:'pay', title:'收费', width:100,templet:'#payTpl'},
-            {field:'author', title:'作者', width:100},
-            {field:'shits', title:'收藏', width:80,sort:true},
-            {field:'serialize', title:'连载', width:100},
-            {field:'hits', title:'总', width:100},
-            {field:'rhits', title:'日', width:100},
-            {field:'sid', title:'状态', width:100, templet:'#ztTpl'},
-            {title:'操作', toolbar: '#cmdTpl', width:150, fixed: 'right',}
-         ]],
-        page: true,
-        where:where_data
-    });
-
-    
-    table.on('sort(list)', function(obj){
-        table.reload('list', {
-            initSort: obj,
-            where: {
-                sort_field: obj.field,
-                sort_order: obj.type //排序方式  desc||asc
-            }
-        });
-    });    
-}
-render_table();
-
-
-table.on('tool(list)', function(obj){
-    switch(obj.event){
-        case 'tid':triggerTid(obj);break;
-        case 'ttid':triggerTtid(obj);break;
-    };
-});
-
-function triggerTid(obj){
-    layer.confirm('你真的更改推荐吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("vod/triggerTid")}', {'id':obj.data.id}, function(data) {
-            showMsg(data.msg,function(){
-                if (data.code>-1){
-                    location.reload();
-                }
-            },{icon:data.code>-1?1:2});
-        },'json');
-    });
-}
-
-function triggerTtid(obj){
-    layer.confirm('你真的更改人工推荐吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("vod/triggerTtid")}', {'id':obj.data.id}, function(data) {
-            showMsg(data.msg,function(){
-                if (data.code>-1){
-                    location.reload();
-                }
-            },{icon:data.code>-1?1:2});
-        },'json');
-    });
-}
+//头工具栏事件
+// table.on('toolbar(list)', function(obj){
+//     console.log(obj);
+//     switch(obj.event){
+//         case 'add':opAdd(obj);break;
+//     };
+// });
 
 ///
 });
 </script>
 
-<script type="text/html" id="tjTpl">
-    {{#  if(d.tid == 1){ }}
-        <div style="color:#080;cursor: pointer;" class="layui-icon" data-id="{{d.id}}" data-tid="0" title="已推荐，点击取消推荐" lay-event='tid'>&#xe605;</div>
-    {{#  } else { }}
-        <div style="color:#f30;cursor: pointer;" class="layui-icon" data-id="{{d.id}}" data-tid="1" title="未推荐，点击推荐" lay-event='tid'>&#x1006;</div>
-    {{#  } }}
-</script>
-
-<script type="text/html" id="ttjTpl">
-    {{#  if(d.ttid == 1){ }}
-        <div style="color:#080;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="0" title="已推荐，点击取消推荐" lay-event='ttid'>&#xe605;</div>
-    {{#  } else { }}
-        <div style="color:#f30;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="1" title="未推荐，点击推荐" lay-event='ttid'>&#x1006;</div>
-    {{#  } }}
-</script>
-
-<script type="text/html" id="payTpl">
-    {{#  if(d.pay == 2){ }}
-    <font color=#f60>VIP</font>
-    {{#  } else if(d.pay == 1){ }}
-    <font color=red>收费</font>
-    {{#  } else { }}
-    免费
-    {{#  } }}
-</script>
-
-<script type="text/html" id="ztTpl">
-    {{#  if(d.sid == 1){ }}
-    <input type="checkbox" data-id="{{d.id}}" name="switch" lay-text="正常|锁定" lay-skin="switch" lay-filter="*">
-    {{#  } else { }}
-    <input type="checkbox" data-id="{{d.id}}" name="switch" lay-text="正常|锁定" lay-skin="switch" lay-filter="*" checked>
-    {{#  } }}
-</script>
 
 <script type="text/html" id="cmdTpl">
-
-    <a class="layui-btn layui-btn-xs" title="编辑" onclick="location.href='{:url('comicchapter/index')}?mid={{d.id}}'"><i class="layui-icon">&#xe615;</i></a>
-
-    <a class="layui-btn layui-btn-xs" title="编辑" onclick="Admin.open('【{{d.name}}】'+'编辑','{:url('comic/edit')}?id={{d.id}}',1200,480)"><i class="layui-icon">&#xe642;</i></a>
-
-    <a class="layui-btn layui-btn-danger layui-btn-xs" title="删除" onclick="Admin.del(this, '{:url('comic/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="Admin.del(this, '{:url('comic_comment/del')}','{{d.id}}')">删除</a>
 </script>
+
 
 {include file="app/admin/view/common/footer.html" /}
