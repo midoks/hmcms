@@ -1034,8 +1034,7 @@ CREATE TABLE `hm_novel_level` (
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `sort` (`sort`) USING BTREE,
-  KEY `name` (`name`) USING BTREE,
-  KEY `en` (`en`) USING BTREE
+  KEY `name` (`name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='小说推荐管理';
 
 
