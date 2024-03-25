@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `hm_admin_access` (
   `node_id` smallint(6) unsigned NOT NULL,
   `level` tinyint(1) NOT NULL,
   `module` varchar(50) DEFAULT NULL,
-  KEY `groupId` (`role_id`),
-  KEY `nodeId` (`node_id`)
+  KEY `role_id` (`role_id`),
+  KEY `node_id` (`node_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 -- ----------------------------
@@ -793,7 +793,7 @@ CREATE TABLE `hm_article` (
   `pic_thumb` varchar(1024) NOT NULL DEFAULT '' ,
   `pic_slide` varchar(1024) NOT NULL DEFAULT '' ,
   `pic_screenshot` text,
-  `blurb` varchar(255) NOT NULL DEFAULT '' ,
+  `blurb` varchar(255) NOT NULL DEFAULT '' COMMENT '简介',
   `remarks` varchar(100) NOT NULL DEFAULT '' ,
   `jumpurl` varchar(150) NOT NULL DEFAULT '' ,
   `tpl` varchar(30) NOT NULL DEFAULT '' ,
@@ -895,53 +895,45 @@ CREATE TABLE `hm_article_comment` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='文章评论';
 
 
-
 -- ----------------------------
 -- Table structure for hm_novel
 -- ----------------------------
 DROP TABLE IF EXISTS `hm_novel`;
 CREATE TABLE `hm_novel` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `uid` bigint unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
   `type_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '分类ID',
-  `group_id` smallint(6) unsigned NOT NULL DEFAULT '0' ,
+  `group_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '组ID',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '名称',
   `en` varchar(255) NOT NULL DEFAULT '' COMMENT '英文',
-  `sub` varchar(255) NOT NULL DEFAULT '' COMMENT '',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
+  `sub` varchar(255) NOT NULL DEFAULT '' COMMENT '副标题',
   `letter` char(1) NOT NULL DEFAULT '' COMMENT '首字母',
   `color` varchar(6) NOT NULL DEFAULT '' COMMENT '颜色',
   `from` varchar(30) NOT NULL DEFAULT '' COMMENT '来自',
   `author` varchar(30) NOT NULL DEFAULT '' COMMENT '作者',
   `tag` varchar(100) NOT NULL DEFAULT ''  COMMENT '标签',
-  `class` varchar(255) NOT NULL DEFAULT '' ,
-  `pic` varchar(1024) NOT NULL DEFAULT '' ,
-  `pic_thumb` varchar(1024) NOT NULL DEFAULT '' ,
-  `pic_slide` varchar(1024) NOT NULL DEFAULT '' ,
-  `pic_screenshot` text,
-  `blurb` varchar(255) NOT NULL DEFAULT '' ,
-  `remarks` varchar(100) NOT NULL DEFAULT '' ,
-  `jumpurl` varchar(150) NOT NULL DEFAULT '' ,
-  `tpl` varchar(30) NOT NULL DEFAULT '' ,
-  `level` tinyint(1) unsigned NOT NULL DEFAULT '0' ,
-  `lock` tinyint(1) unsigned NOT NULL DEFAULT '0' ,
-  `points` smallint(6) unsigned NOT NULL DEFAULT '0' ,
-  `points_detail` smallint(6) unsigned NOT NULL DEFAULT '0' ,
-  `up` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '顶',
-  `down` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '',
+  `class` varchar(255) NOT NULL DEFAULT '' COMMENT '扩展分类',
+  `pic` varchar(1024) NOT NULL DEFAULT '' COMMENT '封面',
+  `pic_thumb` varchar(1024) NOT NULL DEFAULT '' COMMENT '封面缩略',
+  `pic_slide` varchar(1024) NOT NULL DEFAULT '' COMMENT '海报',
+  `remarks` varchar(100) NOT NULL DEFAULT ''  COMMENT '备注',
+  `level` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '推荐方式',
+  `lock` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否锁定',
+  `up` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '顶👍',
+  `down` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '踩👎',
   `hits` bigint DEFAULT '0' COMMENT '总点击',
   `yhits` bigint DEFAULT '0' COMMENT '月点击',
   `zhits` bigint DEFAULT '0' COMMENT '周点击',
   `rhits` bigint DEFAULT '0' COMMENT '日点击',
   `hits_uptime` bigint NOT NULL DEFAULT '0' COMMENT '统计更新时间',
-  `score` decimal(3,1) unsigned NOT NULL DEFAULT '0.0' ,
-  `score_all` mediumint(8) unsigned NOT NULL DEFAULT '0' ,
-  `score_num` mediumint(8) unsigned NOT NULL DEFAULT '0' ,
-  `pwd` varchar(10) NOT NULL DEFAULT '' ,
-  `pwd_url` varchar(255) NOT NULL DEFAULT '' ,
-  `title` mediumtext NOT NULL ,
-  `note` mediumtext NOT NULL ,
-  `content` mediumtext NOT NULL ,
+  `score` decimal(3,1) unsigned NOT NULL DEFAULT '0.0' COMMENT '评分',
+  `score_all` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '评分总分',
+  `score_num` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '评分人数',
+  `blurb` varchar(255) NOT NULL DEFAULT '' COMMENT '短简介',
+  `content` mediumtext NOT NULL COMMENT '简介',
+  `pay` tinyint(1) DEFAULT '0' COMMENT '0:是否收费,1:金币,2:VIP',
+  `cion` int DEFAULT '0' COMMENT '金币',
+  `status` tinyint(1) DEFAULT '0' COMMENT '0:已审核，1:待审核，2:未通过',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
@@ -963,6 +955,24 @@ CREATE TABLE `hm_novel` (
   KEY `score_all` (`score_all`),
   KEY `score_num` (`score_num`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='小说';
+
+
+-- ------------------------------------
+-- Table structure for hm_novel_chapter
+-- ------------------------------------
+DROP TABLE IF EXISTS `hm_novel_chapter`;
+CREATE TABLE `hm_novel_chapter` (
+ `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+ `nid` int(11) DEFAULT '0' COMMENT '小说ID',
+ `name` varchar(128) DEFAULT '' COMMENT '章节名称',
+ `addr` text COMMENT '内容地址',
+ `vip` tinyint(1) DEFAULT '0' COMMENT 'VIP阅读，0否1是',
+ `cion` int(11) DEFAULT '0' COMMENT '章节需要金币',
+ `create_time` datetime NOT NULL COMMENT '入库时间',
+ `update_time` datetime NOT NULL COMMENT '更新时间',
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `nid_name` (`nid`,`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='小说章节';
 
 -- -----------------------------------------
 -- Table structure for hm_novel_class
