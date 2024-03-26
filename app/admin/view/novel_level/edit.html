@@ -1,0 +1,66 @@
+{include file="app/admin/view/common/header_head.html" /}
+<!-- start -->
+
+<div class="layui-fluid" style="background-color: white;">
+
+    <form class="layui-form layui-form-pane" action="{:url('novel_level/save')}">
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">排序</label>
+            <div class="layui-input-block">
+                <input type="number" name="sort" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data.sort|default=99}" placeholder="排序">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">分类名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input" value="{$data.name|default=''}" placeholder="分类名称">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">备注</label>
+            <div class="layui-input-block">
+                <input type="text" name="remark" autocomplete="off" class="layui-input" value="{$data.remark|default=''}" placeholder="备注">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input name="status" type="radio" value="0" title="禁用" {if condition="$data.status eq 0"}checked{/if}>
+                <input name="status" type="radio" value="1" title="启用" {if condition="$data.status eq 1"}checked{/if}>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="text-align: center;">
+            <input type="hidden" name="id" value="{$data.id|default=0}">
+            <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+
+
+<!-- end -->
+
+<script type="text/javascript">
+layui.config({base: '{__STATIC__}/admin/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table,
+upload = layui.upload;
+
+//
+});
+    
+</script>
+
+</body>
+</html>
+
+

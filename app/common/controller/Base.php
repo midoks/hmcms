@@ -165,7 +165,7 @@ abstract class Base
     {
         $type = $this->getResponseType();
         $result = [
-            'code' => 0,
+            'code' => 1,
             'msg'  => $msg,
             'data' => $data,
             'url'  => $url,
