@@ -17,11 +17,11 @@
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                 <form class="layui-form" action="" id="comic_form" onclick="return false;">
                     <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('novel/batchDel')}','comic_list')">批量删除</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="Admin.batchDel('{:url('vod/batchDel')}','comic_list')">批量删除</button>
                     </div>
 
                     <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('新增小说','{:url('novel/edit')}?id=0',1200,480)">添加</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('新增漫画','{:url('vod/edit')}?id=0',1200,480)">添加</button>
                     </div>
 
                     <div class="layui-inline mr0">
@@ -102,12 +102,16 @@ var admin = layui.admin
 $('#status li').click(function(){
     $('#status li').removeClass('layui-this');
     $(this).addClass('layui-this');
+
     render_table();
 });
 
+
+
+
 function render_table(){
 
-    var where_data = $('#list').serializeArray();
+    var where_data = $('#comic_form').serializeArray();
     where_data = array2arr(where_data);
 
     if (where_data['times']) {
@@ -123,7 +127,7 @@ function render_table(){
 
     table.render({
         elem: '#list',
-        url: '{:url("novel/list")}?status='+status,
+        url: '{:url("vod/list")}?status='+status,
         defaultToolbar: [],
         title: '数据表',
         cols: [[
@@ -131,6 +135,7 @@ function render_table(){
             {field:'id', title:'ID', width:100,sort:true},
             {field:'name', title:'名称', width:230},
             {field:'tid', title:'推荐', width:80,templet:'#tjTpl',sort:true},
+            {field:'ttid', title:'人工推荐', width:120,templet:'#ttjTpl',sort:true},
             {field:'pay', title:'收费', width:100,templet:'#payTpl'},
             {field:'author', title:'作者', width:100},
             {field:'shits', title:'收藏', width:80,sort:true},
@@ -161,12 +166,25 @@ render_table();
 table.on('tool(list)', function(obj){
     switch(obj.event){
         case 'tid':triggerTid(obj);break;
+        case 'ttid':triggerTtid(obj);break;
     };
 });
 
 function triggerTid(obj){
     layer.confirm('你真的更改推荐吗?', { closeBtn: 2, icon: 3 }, function() {
-        $.post('{:url("novel/triggerTid")}', {'id':obj.data.id}, function(data) {
+        $.post('{:url("vod/triggerTid")}', {'id':obj.data.id}, function(data) {
+            showMsg(data.msg,function(){
+                if (data.code>-1){
+                    location.reload();
+                }
+            },{icon:data.code>-1?1:2});
+        },'json');
+    });
+}
+
+function triggerTtid(obj){
+    layer.confirm('你真的更改人工推荐吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('{:url("vod/triggerTtid")}', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
                 if (data.code>-1){
                     location.reload();
@@ -185,6 +203,14 @@ function triggerTid(obj){
         <div style="color:#080;cursor: pointer;" class="layui-icon" data-id="{{d.id}}" data-tid="0" title="已推荐，点击取消推荐" lay-event='tid'>&#xe605;</div>
     {{#  } else { }}
         <div style="color:#f30;cursor: pointer;" class="layui-icon" data-id="{{d.id}}" data-tid="1" title="未推荐，点击推荐" lay-event='tid'>&#x1006;</div>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="ttjTpl">
+    {{#  if(d.ttid == 1){ }}
+        <div style="color:#080;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="0" title="已推荐，点击取消推荐" lay-event='ttid'>&#xe605;</div>
+    {{#  } else { }}
+        <div style="color:#f30;cursor: pointer;" class="layui-icon treco" data-id="{{d.id}}" data-ttid="1" title="未推荐，点击推荐" lay-event='ttid'>&#x1006;</div>
     {{#  } }}
 </script>
 
@@ -210,9 +236,9 @@ function triggerTid(obj){
 
     <a class="layui-btn layui-btn-xs" title="编辑" onclick="location.href='{:url('comicchapter/index')}?mid={{d.id}}'"><i class="layui-icon">&#xe615;</i></a>
 
-    <a class="layui-btn layui-btn-xs" title="编辑" onclick="Admin.open('【{{d.name}}】'+'编辑','{:url('novel/edit')}?id={{d.id}}',1200,480)"><i class="layui-icon">&#xe642;</i></a>
+    <a class="layui-btn layui-btn-xs" title="编辑" onclick="Admin.open('【{{d.name}}】'+'编辑','{:url('comic/edit')}?id={{d.id}}',1200,480)"><i class="layui-icon">&#xe642;</i></a>
 
-    <a class="layui-btn layui-btn-danger layui-btn-xs" title="删除" onclick="Admin.del(this, '{:url('novel/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" title="删除" onclick="Admin.del(this, '{:url('comic/del')}','{{d.id}}')"><i class="layui-icon">&#xe640;</i></a>
 </script>
 
 {include file="app/admin/view/common/footer.html" /}

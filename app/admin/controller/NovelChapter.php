@@ -8,12 +8,12 @@ use app\common\controller\Admin as AdminBase;
 use think\facade\View;
 use think\facade\Db;
 
-class Novel extends AdminBase
+class NovelChapter extends AdminBase
 {
 
     public function index()
     {
-        return $this->fetch('novel/index');
+        return $this->fetch('novel_chapter/index');
     }
 
     public function list(){
@@ -25,7 +25,7 @@ class Novel extends AdminBase
         $wh['sort_field'] = $this->request->param('sort_field','');
         $wh['sort_order'] = $this->request->param('sort_order','');
 
-        $m = $this->model('Novel');
+        $m = $this->model('NovelChapter');
         $data = $m->list($page, $limit, $wh);
         $count = $data['total'];
         $list = $data['data'];
@@ -35,7 +35,7 @@ class Novel extends AdminBase
 
 
     public function edit($id=''){
-        $m = $this->model('Novel');
+        $m = $this->model('NovelChapter');
 
         if (!empty($id)){
             $data = $m->getDataByID($id);
@@ -51,19 +51,7 @@ class Novel extends AdminBase
         View::assign("classData", $classData);
 
 
-        return $this->fetch('novel/edit');
-    }
-
-    //推荐
-    public function triggerTid(){
-        $id = $this->request->post('id');
-        if (empty($id)){
-            return $this->returnJson(-1, '设置ID不能空!');
-        }
-
-        $m = $this->model('Novel');
-        $m->dataTriggerField($id,'tid');
-        return $this->returnJson(1, '设置成功!');
+        return $this->fetch('vod/edit');
     }
 
 
@@ -72,7 +60,7 @@ class Novel extends AdminBase
 
         $data = [];
         $data['name'] = $this->request->post('name');
-        $data['en'] = $this->request->post('en');
+        $data['name_en'] = $this->request->post('name_en');
         $data['sid'] = $this->request->post('sid');
         $data['cid'] = $this->request->post('cid');
         $data['yid'] = $this->request->post('yid');
@@ -86,6 +74,8 @@ class Novel extends AdminBase
         $data['msg'] = $this->request->post('msg');
         $data['serialize'] = $this->request->post('serialize');
         $data['author'] = $this->request->post('author');
+        $data['pic_author'] = $this->request->post('pic_author');
+        $data['txt_author'] = $this->request->post('txt_author');
         $data['content'] = $this->request->post('content');
         $data['hits'] = $this->request->post('hits');
         $data['yhits'] = $this->request->post('yhits');
@@ -94,28 +84,32 @@ class Novel extends AdminBase
 
         // $data['update_time'] = date('Y-m-d H:i:s');
 
-        if ($data['status'] == 2 && empty($data['msg'])) {
+        // var_dump($data);
+
+        if ($data['yid'] == 2 && empty($data['msg'])) {
             return $this->returnJson(-1, '未通过原因不能为空~!');
         }
 
 
         if(empty($data['name'])){
-            return $this->returnJson(-1, '名称不能为空~!');
+            return $this->returnJson(-1, '漫画名称不能为空~!');
         }
 
-        if (empty($data['name'])) {
-            $data['en'] = toPinyin($data['name']);
+        if (empty($data['yname'])) {
+            $data['yname'] = toPinyin($data['name']);
         }
 
-        $m = $this->model('Novel');
+        $m = $this->model('Comic');
         $r = $m->dataSave($data, $id);
 
-        // $type = $this->request->post('type');
-        // //更新附表内容
-        // if ($r || $id > 0){
-        //     $ctr_m = $this->model('ComicTypeRelated');
-        //     $ctr_m->setType($id, $type);
-        // }
+
+
+        $type = $this->request->post('type');
+        //更新附表内容
+        if ($r || $id > 0){
+            $ctr_m = $this->model('ComicTypeRelated');
+            $ctr_m->setType($id, $type);
+        }
 
         $msg_head = $id > 0 ? '更新' : '添加';
         if ($r){
@@ -123,21 +117,6 @@ class Novel extends AdminBase
         } else {
             return $this->returnJson(2, $msg_head.'失败!');
         }
-
-    }
-
-    public function batchDel(){
-        $ids = $this->request->param('id');
-        $m = $this->model('Novel');
-
-        foreach ($ids as $k => $id) {
-            $res = $m->dataDelete($id);
-            if (!$res){
-                return $this->returnJson(-1, '删除失败['.$id.']!');
-            }
-        }
-
-        return $this->returnJson(1, '批量删除成功!');
     }
 
     public function del(){
@@ -146,7 +125,7 @@ class Novel extends AdminBase
             return $this->returnJson(-1, '删除ID不能空!');
         }
 
-        $m = $this->model('Novel');
+        $m = $this->model('NovelChapter');
         $res = $m->dataDelete($id);
         if (!$res){
             return $this->returnJson(-1, '删除失败!');

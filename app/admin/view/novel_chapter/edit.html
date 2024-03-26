@@ -54,7 +54,7 @@
 <!-- start -->
 
 <div class="layui-fluid" style="background-color: white;">
-    <form class="layui-form layui-form-pane" action="{:url('novel/save')}">
+    <form class="layui-form layui-form-pane" action="{:url('comic/save')}">
         <div class="layui-form-item">
             <div class="layui-col-xs12 layui-col-md3">
                 <label class="layui-form-label">分类</label>
@@ -73,7 +73,7 @@
                     </select>
                 </div>
             </div>
-            <div class="layui-col-xs12 layui-col-md3">
+            <div class="layui-col-xs12 layui-col-md2">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
                     <select name="serialize">
@@ -82,17 +82,17 @@
                     </select>
                 </div>
             </div>
-            <div class="layui-col-xs12 layui-col-md3">
-                <label class="layui-form-label">锁定</label>
+            <div class="layui-col-xs12 layui-col-md2">
+                <label class="layui-form-label">是否锁定</label>
                 <div class="layui-input-block">
-                    <select name="lock">
+                    <select name="sid">
                         <option value="0">未锁</option>
                         <option value="1">已锁</option>
                     </select>
                 </div>
             </div>
-            <div class="layui-col-xs12 layui-col-md3">
-                <label class="layui-form-label">推荐</label>
+            <div class="layui-col-xs12 layui-col-md2">
+                <label class="layui-form-label">是否推荐</label>
                 <div class="layui-input-block">
                     <select name="tid">
                         <option value="0">未推</option>
@@ -101,8 +101,79 @@
                 </div>
             </div>
 
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label" style="width: 200px;">是否人工推荐(banner)</label>
+                <div class="layui-input-block" style="margin-left: 200px;">
+                    <select name="ttid">
+                        <option value="0">未推</option>
+                        <option value="1">已推</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" required lay-verify="required" class="layui-input" value="{$data['name']|default=''}" placeholder="请输入名称">
+                </div>
+            </div>
+
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">英文</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name_en" class="layui-input" value="{$data['name_en']|default=''}" placeholder="请输入漫画英文别名">
+                </div>
+            </div>
+
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">副标</label>
+                <div class="layui-input-block">
+                    <input type="text" name="sub" class="layui-input" value="{$data['sub']|default=''}" placeholder="请输入副标">
+                </div>
+            </div>
+
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <input type="text" name="remarks" class="layui-input" value="{$data['score']|default=''}" placeholder="备注">
+                </div>
+            </div>
+            
         </div>
 
+        <div class="layui-form-item">
+
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">导演</label>
+                <div class="layui-input-block">
+                    <input type="text" name="director" class="layui-input" value="{$data['director']|default=''}" placeholder="请输入导演">
+                </div>
+            </div>
+
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">演员</label>
+                <div class="layui-input-block">
+                    <input type="text" name="actor" required lay-verify="required" class="layui-input" value="{$data['actor']|default=''}" placeholder="请输入演员">
+                </div>
+            </div>
+
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">编剧</label>
+                <div class="layui-input-block">
+                    <input type="text" name="writer" class="layui-input" value="{$data['writer']|default=''}" placeholder="请输入编剧">
+                </div>
+            </div>
+
+            <div class="layui-col-xs12 layui-col-md3">
+                <label class="layui-form-label">幕后</label>
+                <div class="layui-input-block">
+                    <input type="text" name="behind" class="layui-input" value="{$data['behind']|default=''}" placeholder="请输入幕后">
+                </div>
+            </div>
+            
+        </div>
         <div class="layui-form-item">
             <div class="layui-col-xs12 layui-col-md6">
                 <label class="layui-form-label">竖版封面</label>
