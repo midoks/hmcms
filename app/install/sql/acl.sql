@@ -93,18 +93,18 @@ INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`re
 -- 小说【评论管理】
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 (53,  '小说评论', 'layui-icon-template-1',  '', 1, '','小说评论', 1, 'menu', 1, 2),
-(54,  '评论列表', '',  '', 1, 'novel_comment/index','评论列表', 1, 'submenu', 1, 50);
+(54,  '评论列表', '',  '', 1, 'novel_comment/index','评论列表', 1, 'submenu', 1, 53);
 
 -- 文章【文章管理】
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 (55,  '文章管理', 'layui-icon-list',  '', 1, '','文章管理', 1, 'menu', 1,5),
-(56,  '文章列表', '',  '', 1, 'article/index','文章列表', 1, 'submenu', 1,52),
-(57,  '文章分类', '',  '', 1, 'article_class/index','文章分类', 1, 'submenu', 1,52);
+(56,  '文章列表', '',  '', 1, 'article/index','文章列表', 1, 'submenu', 1,55),
+(57,  '文章分类', '',  '', 1, 'article_class/index','文章分类', 1, 'submenu', 1,55);
 
 -- 文章【评论管理】
 INSERT INTO `hm_admin_menu` (`id`, `name`, `icon`, `alias`,`status`, `route`,`remark`, `sort`, `type`, `display`,`pid`) VALUES
 (58,  '文章评论', 'layui-icon-template-1',  '', 1, '','文章评论', 1, 'menu', 1,5),
-(59,  '评论列表', '',  '', 1, 'article_comment/index','评论列表', 1, 'submenu', 1,55);
+(59,  '评论列表', '',  '', 1, 'article_comment/index','评论列表', 1, 'submenu', 1,58);
 
 
 -- 系统【权限管理】| API
